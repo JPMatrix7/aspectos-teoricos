@@ -424,11 +424,24 @@ button{font-family:inherit}
   .hud-xpwrap{width:120px}
   .brand-text small{display:none}
 }
-@media (max-width:560px){
-  .hud-level-badge{width:34px;height:34px}
+/* ── Tablet pequeno / celular grande ── */
+@media (max-width:640px){
+  #topbar{gap:8px;padding:0 12px}
+  .hud{gap:6px}
   .hud-xpwrap{display:none}
-  .hud-chip{padding:7px 9px}
+  #hudPoints{display:none}
+  .hud-level-badge{width:34px;height:34px;font-size:13px}
+  .hud-chip{padding:5px 9px;font-size:12px}
   #main{padding:22px 16px 70px}
   .flashcard{height:280px}
   .hero{padding:24px 20px}
+}
+/* ── Celular pequeno (≤ 400 px) ── */
+@media (max-width:400px){
+  #topbar{gap:6px;padding:0 8px}
+  .brand-logo{font-size:22px}
+  .brand-text strong{font-size:13px}
+  #hudStreak{display:none}
+  .hud-level-badge{width:30px;height:30px;font-size:12px}
+  .icon-btn{width:34px;height:34px;font-size:15px}
 }

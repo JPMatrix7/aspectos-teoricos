@@ -192,6 +192,51 @@ button{font-family:inherit}
 .eval-btn.active[data-f="A2"]{border-color:#22c55e;background:rgba(34,197,94,.15);color:#86efac}
 .section-title .eval-filter{display:inline-flex;margin:0 0 0 12px;vertical-align:middle}
 
+/* ============================ PDF BUTTONS ============================ */
+.pdf-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pdf-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(99,102,241,.12);border:1.5px solid rgba(99,102,241,.30);
+  color:#c7d2fe;border-radius:20px;padding:5px 14px;font-size:12.5px;font-weight:600;
+  text-decoration:none;transition:all .18s;
+}
+.pdf-btn:hover{background:rgba(99,102,241,.25);border-color:#6366f1;color:#e0e7ff}
+
+/* ============================ TIMELINE ============================ */
+.timeline{padding:8px 0 40px;max-width:860px}
+.tl-group-label{
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--muted2);margin:28px 0 16px 36px;display:flex;align-items:center;gap:8px;
+}
+.tl-item{display:flex;align-items:flex-start;gap:0;position:relative;margin-bottom:6px}
+.tl-dot{
+  width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:18px;
+  background:var(--bg2);border:2.5px solid var(--border-strong);z-index:1;
+  transition:all .3s;
+}
+.tl-dot.partial{border-color:#6366f1;background:rgba(99,102,241,.3)}
+.tl-dot.done{border-color:#22c55e;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.5)}
+.tl-line{
+  width:2px;background:var(--border);flex-shrink:0;
+  margin-top:36px;margin-left:-10px;margin-right:8px;
+  align-self:stretch;min-height:100%;
+}
+.tl-item:last-child .tl-line{display:none}
+.tl-card{
+  flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:16px 18px;margin-left:10px;margin-bottom:12px;transition:border-color .2s;
+}
+.tl-card:hover{border-color:var(--border-strong)}
+.tl-card-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tl-num{font-size:11px;font-weight:800;color:var(--muted2);min-width:22px}
+.tl-ico{font-size:20px}
+.tl-card-title{flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:15px}
+.tl-study-btn{margin-left:auto;white-space:nowrap}
+.tl-summary{font-size:13.5px;color:var(--muted);margin:8px 0 6px;line-height:1.5}
+.tl-meta{display:flex;gap:14px;font-size:12.5px;color:var(--muted2);flex-wrap:wrap}
+.tl-pct{margin-left:auto;font-weight:700;color:var(--muted)}
+.tl-pdfs{margin-top:10px}
+
 /* ============================ ACHIEVEMENTS ============================ */
 .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .ach{

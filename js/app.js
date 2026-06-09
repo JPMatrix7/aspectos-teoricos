@@ -280,6 +280,7 @@
     if (a === "mod" && b) return { view: "module", id: decodeURIComponent(b), tab: c || "conteudo" };
     if (a === "simulado") return { view: "simulado" };
     if (a === "cards") return { view: "cards" };
+    if (a === "timeline") return { view: "timeline" };
     return { view: "home" };
   }
   function go(hash) { location.hash = hash; }
@@ -291,6 +292,7 @@
     let h = "";
     h += `<div class="nav-section">Geral</div>`;
     h += navItem("#home", "🏠", "Início", null, route.view === "home");
+    h += navItem("#timeline", "📅", "Linha do Tempo", null, route.view === "timeline");
     h += navItem("#simulado", "🎯", "Simulado Geral", null, route.view === "simulado");
     h += navItem("#cards", "🎴", "Flashcards Gerais", null, route.view === "cards");
 
@@ -340,6 +342,7 @@
     if (route.view === "module") return viewModule();
     if (route.view === "simulado") return viewSimulado();
     if (route.view === "cards") return viewCards();
+    if (route.view === "timeline") return viewTimeline();
     viewHome();
   }
 
@@ -435,6 +438,16 @@
     </div>`;
   }
 
+  /* ---------------------------------------------------------- PDF BUTTONS */
+  function pdfButtons(m) {
+    if (!m.pdfs || !m.pdfs.length) return "";
+    return `<div class="pdf-btns">${m.pdfs.map((p) =>
+      `<a class="btn btn-sm pdf-btn" href="pdfs/${p.file}" target="_blank" rel="noopener">
+        📄 ${esc(p.label)}
+      </a>`
+    ).join("")}</div>`;
+  }
+
   /* --------------------------------------------------------- VIEW: MODULE */
   function viewModule() {
     const m = byId(route.id);
@@ -454,11 +467,12 @@
         <h1>${m.icon} ${esc(m.title)} <span class="eval-badge eval-badge-${m.eval === "A2" ? "a2" : "a1"}" style="font-size:14px;vertical-align:middle">${m.eval || "A1"}</span></h1>
         <div style="color:var(--muted);font-size:14.5px;max-width:75ch">${esc(m.summary)}</div>
         <div style="margin-top:12px">${m.tags.map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+        <div style="display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap">
           <div style="flex:1;max-width:340px" class="mod-prog"><i style="width:${p.pct}%"></i></div>
           <span class="pill">${p.pct}% concluído</span>
           ${p.done ? '<span class="pill" style="color:var(--grn)">✅ módulo dominado</span>' : ""}
         </div>
+        ${pdfButtons(m)}
       </div>
       <div class="tabs" id="tabs">
         ${tabs.map(([k, ico, lbl, cnt]) => `<div class="tab ${route.tab === k ? "active" : ""}" data-tab="${k}">${ico} ${lbl}${cnt != null ? ` <span class="cnt">${cnt}</span>` : ""}</div>`).join("")}
@@ -747,6 +761,63 @@
       if (i < all.length - 1) { i++; } draw();
     });
     draw();
+  }
+
+  /* ---------------------------------------------------- VIEW: TIMELINE */
+  function viewTimeline() {
+    const mods = filteredMods();
+    main.innerHTML = `
+      <div class="page-head fade-in">
+        <h1>📅 Linha do Tempo</h1>
+        <div class="muted" style="margin-bottom:12px">Conteúdo do curso em ordem cronológica. Clique nos botões de PDF para abrir o material original em nova aba.</div>
+        ${evalFilterBar()}
+      </div>
+      <div class="timeline fade-in" id="tlRoot"></div>`;
+    bindEvalFilter(() => viewTimeline());
+
+    const root = $("#tlRoot");
+    let lastEval = null;
+    mods.forEach((m, idx) => {
+      if (m.eval !== lastEval) {
+        lastEval = m.eval;
+        const div = document.createElement("div");
+        div.className = "tl-group-label";
+        div.innerHTML = m.eval === "A2"
+          ? `<span class="eval-badge eval-badge-a2">A2</span> Segunda Avaliação`
+          : `<span class="eval-badge eval-badge-a1">A1</span> Primeira Avaliação`;
+        root.appendChild(div);
+      }
+
+      const p = moduleProgress(m.id);
+      const item = document.createElement("div");
+      item.className = "tl-item fade-in";
+      item.innerHTML = `
+        <div class="tl-dot ${p.done ? "done" : p.pct > 0 ? "partial" : ""}"></div>
+        <div class="tl-line"></div>
+        <div class="tl-card">
+          <div class="tl-card-head">
+            <span class="tl-num">${String(m.module).padStart(2,"0")}</span>
+            <span class="tl-ico">${m.icon}</span>
+            <div class="tl-card-title">
+              <strong>${esc(m.title)}</strong>
+              <span class="eval-badge eval-badge-${m.eval === "A2" ? "a2" : "a1"}">${m.eval}</span>
+            </div>
+            <button class="btn btn-sm tl-study-btn" data-id="${m.id}">📖 Estudar</button>
+          </div>
+          <p class="tl-summary">${esc(m.summary)}</p>
+          <div class="tl-meta">
+            <span>🎴 ${m.flashcards.length} fc</span>
+            <span>❓ ${m.quiz.length} quiz</span>
+            <span>✍️ ${m.exercises.length} ex</span>
+            <span class="tl-pct">${p.pct}%</span>
+          </div>
+          ${m.pdfs && m.pdfs.length ? `<div class="pdf-btns tl-pdfs">${m.pdfs.map((pdf) =>
+            `<a class="btn btn-sm pdf-btn" href="pdfs/${pdf.file}" target="_blank" rel="noopener">📄 ${esc(pdf.label)}</a>`
+          ).join("")}</div>` : ""}
+        </div>`;
+      item.querySelector(".tl-study-btn").addEventListener("click", () => go(`#mod/${m.id}`));
+      root.appendChild(item);
+    });
   }
 
   /* --------------------------------------------------------------- UTILS */

@@ -442,9 +442,7 @@
   function pdfButtons(m) {
     if (!m.pdfs || !m.pdfs.length) return "";
     return `<div class="pdf-btns">${m.pdfs.map((p) =>
-      `<a class="btn btn-sm pdf-btn" href="pdfs/${p.file}" target="_blank" rel="noopener">
-        📄 ${esc(p.label)}
-      </a>`
+      `<a class="btn btn-sm pdf-btn" href="pdfs/${p.file}" target="_blank" rel="noopener">📄 ${esc(p.label)}</a>`
     ).join("")}</div>`;
   }
 

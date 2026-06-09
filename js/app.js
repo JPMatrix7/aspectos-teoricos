@@ -251,6 +251,27 @@
     }
   }
 
+  /* ---------------------------------------------------------- EVAL FILTER */
+  let filterEval = "all"; // "all" | "A1" | "A2"
+  function filteredMods() {
+    return filterEval === "all" ? MODS : MODS.filter((m) => m.eval === filterEval);
+  }
+  function evalFilterBar() {
+    const opts = [
+      { v: "all", ico: "📚", lbl: "Ambos" },
+      { v: "A1",  ico: "", lbl: "1ª Avaliação" },
+      { v: "A2",  ico: "", lbl: "2ª Avaliação" },
+    ];
+    return `<div class="eval-filter">${opts.map((o) =>
+      `<button class="eval-btn${filterEval === o.v ? " active" : ""}" data-f="${o.v}">` +
+      (o.v === "A1" ? `<span class="eval-badge eval-badge-a1">A1</span> ` : o.v === "A2" ? `<span class="eval-badge eval-badge-a2">A2</span> ` : `${o.ico} `) +
+      `${o.lbl}</button>`
+    ).join("")}</div>`;
+  }
+  function bindEvalFilter(cb) {
+    $$(".eval-btn").forEach((b) => b.addEventListener("click", () => { filterEval = b.dataset.f; cb(); }));
+  }
+
   /* --------------------------------------------------------------- ROUTER */
   let route = { view: "home", id: null, tab: "conteudo" };
   function parseHash() {
@@ -360,14 +381,15 @@
         </div>
       </section>
 
-      <h2 class="section-title">Módulos do curso</h2>
+      <h2 class="section-title">Módulos do curso ${evalFilterBar()}</h2>
       <div class="grid grid-mods" id="modGrid"></div>
 
       <h2 class="section-title" style="margin-top:34px">Conquistas</h2>
       <div class="ach-grid" id="achGrid"></div>
     `;
+    bindEvalFilter(() => viewHome());
     const grid = $("#modGrid");
-    MODS.forEach((m) => {
+    filteredMods().forEach((m) => {
       const p = moduleProgress(m.id);
       const card = document.createElement("div");
       card.className = "mod-card pop";
@@ -637,15 +659,21 @@
 
   /* ------------------------------------------------------- VIEW: SIMULADO */
   function viewSimulado() {
+    const mods = filteredMods();
+    const totalQ = mods.reduce((n, m) => n + m.quiz.length, 0);
     main.innerHTML = `
-      <div class="page-head fade-in"><h1>🎯 Simulado Geral</h1>
-        <div class="muted" style="max-width:70ch">Uma seleção aleatória de questões de todos os módulos. Ótimo para testar seu conhecimento geral. Pronto?</div></div>
+      <div class="page-head fade-in">
+        <h1>🎯 Simulado Geral</h1>
+        <div class="muted" style="max-width:70ch;margin-bottom:12px">Uma seleção aleatória de questões. Ótimo para testar seu conhecimento geral. Pronto?</div>
+        ${evalFilterBar()}
+      </div>
       <div id="simHost" class="fade-in"></div>`;
+    bindEvalFilter(() => viewSimulado());
     const host = $("#simHost");
-    const SIZE = Math.min(15, COURSE.totals?.quiz || 15);
+    const SIZE = Math.min(15, totalQ);
     function build() {
       const pool = [];
-      MODS.forEach((m) => m.quiz.forEach((q) => pool.push({ q, mod: m.title })));
+      mods.forEach((m) => m.quiz.forEach((q) => pool.push({ q, mod: m.title })));
       shuffle(pool);
       return pool.slice(0, SIZE).map((x) => ({ question: `*(${x.mod})* ${x.q.question}`, options: x.q.options, answer: x.q.answer, explanation: x.q.explanation }));
     }
@@ -664,12 +692,18 @@
 
   /* ---------------------------------------------------- VIEW: CARDS GERAIS */
   function viewCards() {
+    const mods = filteredMods();
+    const totalFc = mods.reduce((n, m) => n + m.flashcards.length, 0);
     main.innerHTML = `
-      <div class="page-head fade-in"><h1>🎴 Flashcards Gerais</h1>
-        <div class="muted">Todos os ${COURSE.totals?.flashcards || 0} flashcards do curso, embaralhados. Vire, teste-se e marque os que já domina.</div></div>
+      <div class="page-head fade-in">
+        <h1>🎴 Flashcards Gerais</h1>
+        <div class="muted" style="margin-bottom:12px">${totalFc} flashcards · vire, teste-se e marque os que já domina.</div>
+        ${evalFilterBar()}
+      </div>
       <div id="cardsHost" class="fade-in"></div>`;
+    bindEvalFilter(() => viewCards());
     const all = [];
-    MODS.forEach((m) => m.flashcards.forEach((c, idx) => all.push(Object.assign({ _k: idx, _mod: m.id }, c))));
+    mods.forEach((m) => m.flashcards.forEach((c, idx) => all.push(Object.assign({ _k: idx, _mod: m.id }, c))));
     shuffle(all);
     // usa um "módulo virtual" para escopo de gravação por módulo de origem
     const host = $("#cardsHost");

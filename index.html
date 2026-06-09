@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aspectos Teóricos da Computação · Estudo Interativo</title>
+  <meta name="description" content="Site interativo de estudos: linguagens formais, autômatos, expressões regulares e grafos. Flashcards, quiz, exercícios e gamificação." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+</head>
+<body>
+  <!-- Confetti / efeitos -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <!-- Topbar -->
+  <header id="topbar">
+    <button id="menuBtn" class="icon-btn" aria-label="Menu" title="Menu">☰</button>
+    <a class="brand" href="#home">
+      <span class="brand-logo">🤖</span>
+      <span class="brand-text">
+        <strong>Aspectos Teóricos</strong>
+        <small>da Computação</small>
+      </span>
+    </a>
+
+    <div class="hud">
+      <div class="hud-level" id="hudLevel" title="Seu nível">
+        <span class="hud-level-badge" id="hudLevelNum">1</span>
+        <div class="hud-xpwrap">
+          <div class="hud-xptext"><span id="hudXp">0</span> XP · Nível <span id="hudLevelText">1</span></div>
+          <div class="xpbar"><div class="xpbar-fill" id="hudXpFill"></div></div>
+        </div>
+      </div>
+      <div class="hud-chip" id="hudPoints" title="Pontos acumulados">⭐ <span id="hudPointsNum">0</span></div>
+      <div class="hud-chip" id="hudStreak" title="Sequência de dias estudando">🔥 <span id="hudStreakNum">0</span></div>
+      <button class="icon-btn" id="soundBtn" title="Ativar/desativar sons">🔊</button>
+      <button class="icon-btn" id="resetBtn" title="Zerar progresso">↺</button>
+    </div>
+  </header>
+
+  <div id="shell">
+    <!-- Sidebar -->
+    <nav id="sidebar" aria-label="Navegação dos módulos"></nav>
+    <div id="backdrop"></div>
+
+    <!-- Conteúdo principal -->
+    <main id="main" tabindex="-1"></main>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Bibliotecas (vendoradas para uso offline) -->
+  <script src="js/vendor/marked.min.js"></script>
+  <script src="js/vendor/mermaid.min.js"></script>
+  <!-- Dados do curso (auto-gerado) -->
+  <script src="js/content-data.js"></script>
+  <!-- Aplicação -->
+  <script src="js/app.js"></script>
+</body>
+</html>

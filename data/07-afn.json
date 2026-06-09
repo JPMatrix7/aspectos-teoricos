@@ -1,0 +1,178 @@
+{
+  "id": "07-afn",
+  "module": 7,
+  "title": "Autômato Finito Não Determinístico (AFN)",
+  "icon": "🔀",
+  "summary": "Define o Autômato Finito Não-Determinístico (AFN) com função de transição δ: Q×Σ → 2^Q, onde cada transição pode levar a um conjunto de estados. Demonstra que, apesar da aparente maior expressividade, o AFN é equivalente em poder computacional ao AFD.",
+  "tags": ["AFN","AFND","não-determinismo","função-de-transição","conjunto-de-estados","autômatos"],
+  "keyPoints": [
+    "O AFN é definido pela 5-tupla M = (Σ, Q, δ, q₀, F), igual ao AFD, mas com δ: Q×Σ → 2^Q.",
+    "A função de transição do AFN tem como codomínio o conjunto das partes de Q (2^Q), permitindo que cada par (estado, símbolo) leve a um conjunto de estados.",
+    "A função programa estendida δ*: 2^Q × Σ* → 2^Q é definida indutivamente: δ*(P, ε) = P e δ*(P, aw) = δ*(∪_{q∈P} δ(q,a), w).",
+    "Uma palavra é aceita se δ*({q₀}, w) ∩ F ≠ ∅, ou seja, se existe pelo menos um caminho que leva a um estado final.",
+    "Uma palavra é rejeitada se todos os estados alternativos atingidos são não-finais, ou se a função é indefinida para algum argumento.",
+    "O não-determinismo pode ser visto como uma multiplicação da unidade de controle: cada alternativa é processada em paralelo e de forma independente.",
+    "Todo AFN pode ser simulado por um AFD — a Classe dos AFDs é equivalente à Classe dos AFNs (Teorema de Equivalência).",
+    "O AFN não aumenta o poder computacional do autômato finito, mas pode simplificar significativamente a representação de linguagens."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é um AFN?",
+      "back": "Autômato Finito Não-Determinístico: M = (Σ, Q, δ, q₀, F), onde a função de transição δ: Q×Σ → 2^Q pode mapear um par (estado, símbolo) para um conjunto de estados."
+    },
+    {
+      "front": "Qual o tipo da função de transição do AFN?",
+      "back": "δ: Q × Σ → 2^Q — função parcial que, dado um estado e um símbolo, retorna um subconjunto (possivelmente vazio) de Q."
+    },
+    {
+      "front": "O que é 2^Q?",
+      "back": "O conjunto das partes (conjunto potência) de Q; é o codomínio da função de transição do AFN. Contém todos os subconjuntos possíveis de Q."
+    },
+    {
+      "front": "Como é definida a função programa estendida δ* do AFN?",
+      "back": "δ*: 2^Q × Σ* → 2^Q, com: δ*(P, ε) = P e δ*(P, aw) = δ*(∪_{q∈P} δ(q,a), w)."
+    },
+    {
+      "front": "Quando o AFN aceita uma palavra w?",
+      "back": "Quando δ*({q₀}, w) ∩ F ≠ ∅ — ou seja, se existe pelo menos um estado final entre os estados atingidos após processar w."
+    },
+    {
+      "front": "Quando o AFN rejeita uma palavra w?",
+      "back": "Quando δ*({q₀}, w) ∩ F = ∅ (todos os estados atingidos são não-finais) ou quando δ*({q₀}, w) é indefinida."
+    },
+    {
+      "front": "Qual a linguagem aceita pelo AFN M?",
+      "back": "L(M) = ACEITA(M) = { w | δ*({q₀}, w) ∩ F ≠ ∅ }"
+    },
+    {
+      "front": "O AFN é mais poderoso que o AFD?",
+      "back": "Não. Pelo Teorema de Equivalência, a Classe dos AFDs é equivalente à Classe dos AFNs — qualquer AFN pode ser simulado por um AFD."
+    },
+    {
+      "front": "Como interpretar o não-determinismo intuitivamente?",
+      "back": "Como uma multiplicação da unidade de controle: uma cópia independente para cada alternativa, processando em paralelo sem compartilhar recursos."
+    },
+    {
+      "front": "O que ocorre quando δ é indefinida para (q, a) no AFN?",
+      "back": "O processamento por aquele caminho termina (rejeita), pois a função programa é parcial — nem toda combinação (estado, símbolo) precisa ter imagem definida."
+    },
+    {
+      "front": "Como é a transição estendida δ*({q₁,…,qₙ}, a)?",
+      "back": "δ({q₁,…,qₙ}, a) = δ(q₁,a) ∪ δ(q₂,a) ∪ … ∪ δ(qₙ,a) — união das transições de cada estado do conjunto."
+    },
+    {
+      "front": "Diferença principal entre AFD e AFN na função de transição",
+      "back": "AFD: δ: Q×Σ → Q (um único estado destino). AFN: δ: Q×Σ → 2^Q (um conjunto de estados destino, possivelmente vazio)."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Qual é o codomínio da função de transição de um AFN?",
+      "options": [
+        "Q (um único estado)",
+        "2^Q (conjunto das partes de Q)",
+        "Σ (alfabeto de entrada)",
+        "Q × Σ (pares estado-símbolo)"
+      ],
+      "answer": 1,
+      "explanation": "Na definição do AFN, δ: Q×Σ → 2^Q, portanto o codomínio é 2^Q — o conjunto de todos os subconjuntos de Q."
+    },
+    {
+      "question": "Uma palavra w é aceita por um AFN M quando:",
+      "options": [
+        "δ*({q₀}, w) ⊆ F (todos os estados atingidos são finais)",
+        "δ*({q₀}, w) ∩ F ≠ ∅ (pelo menos um estado final é atingido)",
+        "δ*({q₀}, w) = F (exatamente os estados finais são atingidos)",
+        "δ*({q₀}, w) = ∅ (nenhum estado é atingido)"
+      ],
+      "answer": 1,
+      "explanation": "L(M) = ACEITA(M) = { w | δ*({q₀}, w) ∩ F ≠ ∅ }. Basta que exista pelo menos um estado final no conjunto de estados atingidos."
+    },
+    {
+      "question": "Qual das seguintes afirmações sobre a relação entre AFD e AFN é CORRETA?",
+      "options": [
+        "O AFN reconhece mais linguagens que o AFD",
+        "O AFD reconhece mais linguagens que o AFN",
+        "AFD e AFN são equivalentes em poder computacional",
+        "O AFN não pode ser convertido em AFD"
+      ],
+      "answer": 2,
+      "explanation": "Pelo Teorema de Equivalência, a Classe dos AFDs é equivalente à Classe dos AFNs. Qualquer AFN pode ser simulado por um AFD."
+    },
+    {
+      "question": "No AFN do exemplo L₅ = {w | w possui aa ou bb como subpalavra}, qual transição garante o reconhecimento de 'aa'?",
+      "options": [
+        "O ciclo q₀ → q₀ com a,b",
+        "O caminho q₀ → q₁ → qf via duas leituras de 'a'",
+        "O caminho q₀ → q₂ → qf via duas leituras de 'b'",
+        "A transição qf → qf com a,b"
+      ],
+      "answer": 1,
+      "explanation": "O caminho q₀ →(a) q₁ →(a) qf garante a ocorrência de 'aa'. O caminho q₀ →(b) q₂ →(b) qf garante 'bb'. O ciclo em q₀ permite varrer toda a entrada."
+    },
+    {
+      "question": "O que significa δ*(P, ε) = P na definição da função programa estendida?",
+      "options": [
+        "Ao ler a palavra vazia, o autômato vai para o estado inicial",
+        "Ao processar a palavra vazia, o conjunto de estados permanece igual a P",
+        "A palavra vazia é sempre rejeitada",
+        "P deve ser sempre igual a {q₀}"
+      ],
+      "answer": 1,
+      "explanation": "δ*(P, ε) = P é o caso base da definição indutiva: processar a palavra vazia não altera o conjunto de estados correntes."
+    },
+    {
+      "question": "No AFN L₆ = {w | w possui aaa como sufixo}, qual sequência de estados reconhece a palavra 'baaa'?",
+      "options": [
+        "q₀ → q₀ → q₁ → q₂ → qf",
+        "q₀ → q₁ → q₁ → q₁ → qf",
+        "q₀ → q₀ → q₀ → qf",
+        "q₀ → q₂ → q₂ → qf"
+      ],
+      "answer": 0,
+      "explanation": "Lendo 'b': q₀→q₀ (ciclo). Lendo primeiro 'a': q₀→q₁ (não-determinístico). Lendo segundo 'a': q₁→q₂. Lendo terceiro 'a': q₂→qf (estado final)."
+    },
+    {
+      "question": "O que ocorre quando δ(q, a) é indefinida para algum estado q no AFN?",
+      "options": [
+        "O autômato aceita imediatamente",
+        "O autômato vai para o estado inicial",
+        "Aquele caminho de computação é encerrado (rejeita por esse caminho)",
+        "O autômato entra em loop infinito"
+      ],
+      "answer": 2,
+      "explanation": "A função de transição do AFN é parcial. Quando δ(q, a) é indefinida, aquele caminho específico de computação termina sem aceitar. Os demais caminhos continuam."
+    },
+    {
+      "question": "Como é calculada a transição estendida δ*({q₁, q₂}, a)?",
+      "options": [
+        "δ(q₁, a) ∩ δ(q₂, a)",
+        "δ(q₁, a) ∪ δ(q₂, a)",
+        "δ(q₁, a) − δ(q₂, a)",
+        "δ(q₁, a) × δ(q₂, a)"
+      ],
+      "answer": 1,
+      "explanation": "δ*({q₁, q₂}, a) = δ(q₁, a) ∪ δ(q₂, a). A transição estendida une os resultados de aplicar δ a cada estado do conjunto."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Reconhecimento de aa ou bb como subpalavra",
+      "prompt": "Dado o AFN M₅ = ({a,b}, {q₀,q₁,q₂,qf}, δ₅, q₀, {qf}) com a tabela de transição abaixo, simule a computação da palavra w = 'abba' e determine se ela é aceita.\n\nδ₅ | a         | b\nq₀ | {q₀,q₁}  | {q₀,q₂}\nq₁ | {qf}      | —\nq₂ | —         | {qf}\nqf | {qf}      | {qf}",
+      "solution": "Partindo de {q₀}, aplica-se δ* passo a passo:\n\n1. δ*({q₀}, 'abba')\n   Lê 'a': δ(q₀, a) = {q₀,q₁} → conjunto: {q₀, q₁}\n\n2. Lê 'b': δ(q₀,b) ∪ δ(q₁,b) = {q₀,q₂} ∪ ∅ = {q₀, q₂}\n   (δ(q₁,b) é indefinida, contribui com ∅)\n\n3. Lê 'b': δ(q₀,b) ∪ δ(q₂,b) = {q₀,q₂} ∪ {qf} = {q₀, q₂, qf}\n\n4. Lê 'a': δ(q₀,a) ∪ δ(q₂,a) ∪ δ(qf,a) = {q₀,q₁} ∪ ∅ ∪ {qf} = {q₀, q₁, qf}\n   (δ(q₂,a) é indefinida)\n\nEstado final atingido: {q₀, q₁, qf}.\n{q₀,q₁,qf} ∩ {qf} = {qf} ≠ ∅ → ACEITA.",
+      "answer": "A palavra 'abba' é ACEITA, pois contém 'bb' como subpalavra (atingindo qf após ler os dois 'b' consecutivos)."
+    },
+    {
+      "title": "Exercício 2 — Reconhecimento de aaa como sufixo",
+      "prompt": "Dado o AFN M₆ = ({a,b}, {q₀,q₁,q₂,qf}, δ₆, q₀, {qf}) para L₆ = {w | w possui aaa como sufixo}, construa a tabela de transição e simule a computação de w = 'baaa'.",
+      "solution": "Tabela de transição (inferida do diagrama):\n\nδ₆ | a           | b\nq₀ | {q₀, q₁}   | {q₀}\nq₁ | {q₂}        | —\nq₂ | {qf}        | —\nqf | —            | —\n\nSimulação de 'baaa' partindo de {q₀}:\n\n1. Lê 'b': δ(q₀,b) = {q₀} → {q₀}\n2. Lê 'a': δ(q₀,a) = {q₀,q₁} → {q₀, q₁}\n3. Lê 'a': δ(q₀,a) ∪ δ(q₁,a) = {q₀,q₁} ∪ {q₂} = {q₀, q₁, q₂}\n4. Lê 'a': δ(q₀,a) ∪ δ(q₁,a) ∪ δ(q₂,a) = {q₀,q₁} ∪ {q₂} ∪ {qf} = {q₀,q₁,q₂,qf}\n\nResultado: {q₀,q₁,q₂,qf} ∩ {qf} = {qf} ≠ ∅ → ACEITA.",
+      "answer": "A palavra 'baaa' é ACEITA, pois termina com o sufixo 'aaa'."
+    },
+    {
+      "title": "Exercício 3 — Rejeição no AFN",
+      "prompt": "Usando o AFN M₅ (aa ou bb como subpalavra), simule a computação de w = 'ab' e determine se é aceita ou rejeitada.",
+      "solution": "Partindo de {q₀}:\n\n1. Lê 'a': δ(q₀,a) = {q₀,q₁} → {q₀, q₁}\n2. Lê 'b': δ(q₀,b) ∪ δ(q₁,b) = {q₀,q₂} ∪ ∅ = {q₀, q₂}\n   (δ(q₁,b) é indefinida)\n\nEstados finais atingidos: {q₀, q₂} ∩ {qf} = ∅ → REJEITA.",
+      "answer": "A palavra 'ab' é REJEITADA, pois não contém 'aa' nem 'bb' como subpalavra."
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "id": "04-gramaticas",
+  "module": 4,
+  "title": "Gramáticas",
+  "icon": "📜",
+  "summary": "Gramática (de Chomsky / irrestrita) G = (V, T, P, S) como formalismo finito que, por meio de regras de produção e da relação de derivação ⇒, gera linguagens (eventualmente) infinitas: L(G) = { w ∈ T* | S ⇒* w }. Inclui exemplos completos com derivação passo a passo (números naturais e palavra duplicada ww) e o conceito de gramáticas equivalentes.",
+  "tags": ["gramáticas", "produções", "derivação", "não-terminais", "terminais", "Chomsky", "linguagens-formais"],
+  "keyPoints": [
+    "Uma gramática é um formalismo FINITO (conjunto finito de regras) usado para especificar linguagens eventualmente INFINITAS, como o conjunto de todos os programas de uma linguagem de programação.",
+    "Gramática é, basicamente, um conjunto finito de regras que, aplicadas sucessivamente, geram palavras; o conjunto de todas as palavras geradas define a linguagem.",
+    "Formalmente, uma Gramática (de Chomsky / Irrestrita) é G = (V, T, P, S): V são os símbolos variáveis/não-terminais (finito), T os terminais (finito, disjunto de V), P as produções e S ∈ V o símbolo inicial.",
+    "Uma regra de produção (α, β) é escrita α → β; a forma abreviada α → β₁ | β₂ | … | βₙ reúne várias produções de mesmo lado esquerdo α.",
+    "Derivação é a aplicação de uma regra de produção (substituição de uma subpalavra); a relação de derivação ⇒ tem domínio em (V∪T)⁺ e codomínio em (V∪T)*.",
+    "Os fechos da relação de derivação são ⇒* (zero ou mais passos, transitivo e reflexivo), ⇒⁺ (um ou mais passos, transitivo) e ⇒ⁱ (exatamente i passos).",
+    "A Linguagem Gerada por G é L(G) = GERA(G) = { w ∈ T* | S ⇒* w }: as palavras de símbolos terminais deriváveis a partir do símbolo inicial S.",
+    "A gramática dos números naturais usa V={N,D}, T={0,1,…,9}, P={N→D, N→DN, D→0|1|…|9} e distingue zeros à esquerda (123 ≠ 0123); 243 é derivado em exatamente 6 passos (N ⇒⁶ 243).",
+    "A gramática da palavra duplicada gera { ww | w é palavra de {a,b}* } usando marcadores X, Y e variáveis A, B, F que transportam e copiam símbolos.",
+    "Duas gramáticas G₁ e G₂ são Equivalentes se, e somente se, GERA(G₁) = GERA(G₂)."
+  ],
+  "flashcards": [
+    { "front": "O que é uma gramática (motivação)?", "back": "Um formalismo que permite especificar de forma FINITA linguagens (eventualmente) INFINITAS, como o conjunto de todos os programas de uma linguagem de programação." },
+    { "front": "Gramática é, basicamente, o quê?", "back": "Um conjunto FINITO de regras que, aplicadas sucessivamente, geram palavras; o conjunto de todas as palavras geradas define a linguagem." },
+    { "front": "Qual é a definição formal de Gramática (de Chomsky / Irrestrita)?", "back": "G = (V, T, P, S), onde V = variáveis/não-terminais (finito), T = terminais (finito, disjunto de V), P = produções e S = símbolo inicial (S ∈ V)." },
+    { "front": "O que é V em G = (V, T, P, S)?", "back": "O conjunto FINITO de símbolos variáveis (ou não-terminais)." },
+    { "front": "O que é T em G = (V, T, P, S)?", "back": "O conjunto FINITO de símbolos terminais, disjunto de V." },
+    { "front": "O que é P em G = (V, T, P, S)?", "back": "As Produções: a relação finita (V∪T)⁺ → (V∪T)*; cada par da relação é uma regra de produção (produção)." },
+    { "front": "O que é S em G = (V, T, P, S)?", "back": "O símbolo inicial (ou variável inicial): um elemento distinguido de V." },
+    { "front": "Como se escreve uma regra de produção e sua forma abreviada?", "back": "O par (α, β) escreve-se α → β. A forma abreviada de α → β₁, α → β₂, …, α → βₙ é α → β₁ | β₂ | … | βₙ." },
+    { "front": "O que é derivação?", "back": "A aplicação de uma regra de produção, ou seja, a substituição de uma subpalavra de acordo com uma regra de produção. É denotada por ⇒." },
+    { "front": "Quais são o domínio e o codomínio da relação de derivação ⇒?", "back": "Domínio em (V∪T)⁺ e codomínio em (V∪T)*; o par ⟨α, β⟩ é escrito de forma infixada α ⇒ β." },
+    { "front": "O que significam ⇒*, ⇒⁺ e ⇒ⁱ?", "back": "⇒* = fecho transitivo e reflexivo (zero ou mais passos); ⇒⁺ = fecho transitivo (um ou mais passos); ⇒ⁱ = exatamente i passos de derivação (i natural)." },
+    { "front": "Como se define a Linguagem Gerada L(G)?", "back": "L(G) = GERA(G) = { w ∈ T* | S ⇒* w }: as palavras de símbolos terminais deriváveis a partir do símbolo inicial S." },
+    { "front": "Qual é a gramática dos números naturais apresentada?", "back": "G = (V, T, P, N) com V = {N, D}, T = {0,1,2,…,9}, P = {N → D, N → DN, D → 0 | 1 | … | 9}. Distingue zeros à esquerda (123 ≠ 0123)." },
+    { "front": "Em quantos passos a gramática dos naturais deriva 243?", "back": "Em exatamente 6 passos: N ⇒ DN ⇒ 2N ⇒ 2DN ⇒ 24N ⇒ 24D ⇒ 243, logo N ⇒⁶ 243 (e também ⇒* e ⇒⁺)." },
+    { "front": "Que linguagem gera a gramática da palavra duplicada?", "back": "{ ww | w é palavra de {a,b}* }, ou seja, toda palavra formada por uma cadeia w sobre {a,b} concatenada consigo mesma." },
+    { "front": "Quando duas gramáticas são equivalentes?", "back": "G₁ e G₂ são Gramáticas Equivalentes se, e somente se, GERA(G₁) = GERA(G₂) (geram a mesma linguagem)." },
+    { "front": "Quais as convenções de notação para símbolos e palavras?", "back": "A, B, C, …, S, T = variáveis; a, b, c, …, s, t = terminais; u, v, w, x, y, z = palavras de terminais; α, β, … = palavras de variáveis ou terminais." }
+  ],
+  "quiz": [
+    {
+      "question": "Qual é a principal motivação para usar gramáticas?",
+      "options": [
+        "Especificar de forma finita linguagens que podem ser infinitas",
+        "Listar explicitamente todas as palavras de uma linguagem",
+        "Substituir completamente os autômatos finitos",
+        "Definir apenas linguagens finitas"
+      ],
+      "answer": 0,
+      "explanation": "O slide motiva a gramática como formalismo que especifica de forma FINITA linguagens (eventualmente) INFINITAS, já que listar todos os programas (palavras) de uma linguagem como Pascal seria um conjunto infinito."
+    },
+    {
+      "question": "Na definição G = (V, T, P, S), o que é V?",
+      "options": [
+        "O conjunto finito de símbolos terminais",
+        "O conjunto finito de símbolos variáveis (não-terminais)",
+        "O conjunto das produções",
+        "O símbolo inicial"
+      ],
+      "answer": 1,
+      "explanation": "V é o conjunto finito de símbolos variáveis ou não-terminais. T são os terminais, P as produções e S o símbolo inicial."
+    },
+    {
+      "question": "Sobre o conjunto T de terminais, qual afirmação é correta?",
+      "options": [
+        "É infinito e contém V",
+        "É finito e disjunto de V",
+        "É igual a V",
+        "Contém o símbolo inicial S"
+      ],
+      "answer": 1,
+      "explanation": "O slide define T como um conjunto FINITO de símbolos terminais, DISJUNTO de V (não compartilham símbolos)."
+    },
+    {
+      "question": "O símbolo → em uma gramática representa:",
+      "options": [
+        "A relação de derivação em vários passos",
+        "Uma regra de produção (par (α, β) escrito α → β)",
+        "A pertinência de uma palavra à linguagem",
+        "A concatenação de palavras"
+      ],
+      "answer": 1,
+      "explanation": "A representação de uma regra de produção (α, β) é escrita de forma infixada como α → β. A derivação (em um passo) usa o símbolo ⇒."
+    },
+    {
+      "question": "Qual é o significado de ⇒* (estrela)?",
+      "options": [
+        "Exatamente um passo de derivação",
+        "Fecho transitivo e reflexivo: zero ou mais passos de derivação",
+        "Fecho transitivo: um ou mais passos de derivação",
+        "Nenhum passo de derivação"
+      ],
+      "answer": 1,
+      "explanation": "⇒* é o fecho transitivo E reflexivo da relação de derivação, correspondendo a ZERO ou mais passos sucessivos. (⇒⁺ é um ou mais; ⇒ⁱ é exatamente i passos.)"
+    },
+    {
+      "question": "A Linguagem Gerada L(G) é definida como:",
+      "options": [
+        "{ w ∈ V* | S ⇒* w }",
+        "{ w ∈ T* | S ⇒* w }",
+        "{ w ∈ (V∪T)* | S → w }",
+        "{ w ∈ T⁺ | w ⇒* S }"
+      ],
+      "answer": 1,
+      "explanation": "L(G) = GERA(G) = { w ∈ T* | S ⇒* w }: palavras formadas apenas por símbolos TERMINAIS que são deriváveis a partir do símbolo inicial S."
+    },
+    {
+      "question": "Na gramática dos números naturais, qual é o conjunto de produções P?",
+      "options": [
+        "{ N → D, N → DN, D → 0 | 1 | … | 9 }",
+        "{ N → DD, D → N, D → 0 | … | 9 }",
+        "{ D → N, D → DN, N → 0 | … | 9 }",
+        "{ N → 0 | 1 | … | 9 }"
+      ],
+      "answer": 0,
+      "explanation": "A gramática usa P = { N → D, N → DN, D → 0 | 1 | … | 9 }, com V = {N, D} e T = {0,1,…,9}."
+    },
+    {
+      "question": "Por que a gramática dos naturais 'distingue os zeros à esquerda'?",
+      "options": [
+        "Porque 123 e 0123 são geradas como a mesma palavra",
+        "Porque 123 e 0123 são palavras distintas (não há regra que descarte o zero inicial)",
+        "Porque o zero não pode ser gerado pela gramática",
+        "Porque D não gera o dígito 0"
+      ],
+      "answer": 1,
+      "explanation": "O slide observa que se distinguem os zeros à esquerda: 123 ≠ 0123, pois a gramática gera ambas como cadeias diferentes (não há normalização que elimine o zero inicial)."
+    },
+    {
+      "question": "Em quantos passos exatos a derivação gera 243 na gramática dos naturais?",
+      "options": [
+        "3",
+        "4",
+        "6",
+        "9"
+      ],
+      "answer": 2,
+      "explanation": "A derivação é N ⇒ DN ⇒ 2N ⇒ 2DN ⇒ 24N ⇒ 24D ⇒ 243: exatamente 6 passos, por isso N ⇒⁶ 243."
+    },
+    {
+      "question": "Qual linguagem é gerada pela gramática da palavra duplicada G = ({S,X,Y,A,B,F},{a,b},P,S)?",
+      "options": [
+        "{ w | w é palavra de {a,b}* }",
+        "{ wwᴿ | w é palavra de {a,b}* } (palíndromos)",
+        "{ ww | w é palavra de {a,b}* }",
+        "{ aⁿbⁿ | n ≥ 0 }"
+      ],
+      "answer": 2,
+      "explanation": "O slide indica que essa gramática gera { ww | w é palavra de {a,b}* }, isto é, cadeias formadas pela duplicação (concatenação consigo mesma) de uma palavra w sobre {a,b}."
+    },
+    {
+      "question": "Duas gramáticas G₁ e G₂ são equivalentes quando:",
+      "options": [
+        "Têm o mesmo conjunto de produções P",
+        "Têm o mesmo símbolo inicial S",
+        "GERA(G₁) = GERA(G₂), isto é, geram a mesma linguagem",
+        "Têm o mesmo número de variáveis"
+      ],
+      "answer": 2,
+      "explanation": "Gramáticas Equivalentes são definidas pela igualdade das linguagens geradas: GERA(G₁) = GERA(G₂), independentemente das regras ou símbolos internos."
+    },
+    {
+      "question": "Pelas convenções de notação adotadas, as letras u, v, w, x, y, z representam:",
+      "options": [
+        "Símbolos variáveis",
+        "Símbolos terminais isolados",
+        "Palavras de símbolos terminais",
+        "Palavras de símbolos variáveis ou terminais"
+      ],
+      "answer": 2,
+      "explanation": "Pelas convenções: maiúsculas (A..S,T) = variáveis; minúsculas (a..s,t) = terminais; u, v, w, x, y, z = palavras de terminais; α, β = palavras de variáveis ou terminais."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Derivar 243 (Números Naturais)",
+      "prompt": "Dada a gramática G = (V, T, P, N) com V = {N, D}, T = {0,1,…,9} e P = {N → D, N → DN, D → 0 | 1 | … | 9}, apresente uma derivação completa do número 243 a partir de N, indicando a regra aplicada em cada passo.",
+      "solution": "Partindo do símbolo inicial N e aplicando as produções:\nN ⇒ DN        (N → DN)\n  ⇒ 2N        (D → 2)\n  ⇒ 2DN       (N → DN)\n  ⇒ 24N       (D → 4)\n  ⇒ 24D       (N → D)\n  ⇒ 243       (D → 3)\nSão 6 passos, portanto N ⇒⁶ 243 (e também N ⇒* 243 e N ⇒⁺ 243).",
+      "answer": "N ⇒ DN ⇒ 2N ⇒ 2DN ⇒ 24N ⇒ 24D ⇒ 243 (6 passos; N ⇒⁶ 243)."
+    },
+    {
+      "title": "Exercício 2 — Derivar baba (Palavra Duplicada)",
+      "prompt": "Dada a gramática G = ({S,X,Y,A,B,F},{a,b},P,S) com P = {S → XY; X → XaA | XbB | F; Aa → aA, Ab → bA, AY → Ya; Ba → aB, Bb → bB, BY → Yb; Fa → aF, Fb → bF, FY → ε}, apresente uma derivação de baba indicando a regra de cada passo.",
+      "solution": "Note que baba = ww com w = ba. Uma derivação possível:\nS        ⇒ XY        (S → XY)\n         ⇒ XaAY      (X → XaA)\n         ⇒ XaYa      (AY → Ya)\n         ⇒ XbBaYa    (X → XbB)\n         ⇒ XbaBYa    (Ba → aB)\n         ⇒ XbaYba    (BY → Yb)\n         ⇒ FbaYba    (X → F)\n         ⇒ bFaYba    (Fb → bF)\n         ⇒ baFYba    (Fa → aF)\n         ⇒ baba      (FY → ε)\nOs marcadores X (início) e Y (fim) delimitam a palavra; A e B transportam cada símbolo gerado em X até Y, onde AY → Ya e BY → Yb depositam a cópia, garantindo a duplicação; F e suas regras eliminam os marcadores ao final.",
+      "answer": "S ⇒ XY ⇒ XaAY ⇒ XaYa ⇒ XbBaYa ⇒ XbaBYa ⇒ XbaYba ⇒ FbaYba ⇒ bFaYba ⇒ baFYba ⇒ baba."
+    },
+    {
+      "title": "Exercício 3 — Existe outra derivação de baba?",
+      "prompt": "Ainda na gramática da palavra duplicada, responda: existe mais alguma derivação de baba além da apresentada? Justifique com base na estrutura das produções.",
+      "solution": "Sim. A linguagem é { ww | w ∈ {a,b}* } e baba = (ba)(ba). As regras de 'transporte' das variáveis A e B (Aa → aA, Ab → bA, Ba → aB, Bb → bB) podem ser aplicadas em ORDENS diferentes quando há mais de um símbolo a deslocar, e a alternância entre gerar novos símbolos em X (X → XaA | XbB) e transportá-los até Y pode ser intercalada de mais de uma maneira. Cada ordenação válida desses passos intermediários produz uma sequência de derivação distinta que termina na MESMA palavra baba. Logo, há mais de uma derivação (a gramática admite ordens diferentes de aplicação das regras, embora gere a mesma cadeia).",
+      "answer": "Sim — existem várias derivações de baba, pois os passos de transporte (Aa→aA, Ba→aB, …) e de geração em X podem ser intercalados em ordens diferentes que levam à mesma palavra."
+    },
+    {
+      "title": "Exercício 4 — Identificar os componentes de uma gramática",
+      "prompt": "Para a gramática dos números naturais G = (V, T, P, N), identifique: (a) os símbolos não-terminais; (b) os símbolos terminais; (c) o símbolo inicial; (d) a linguagem gerada L(G).",
+      "solution": "Com base na definição G = (V, T, P, S) e nos dados da gramática:\n(a) Não-terminais (V): N e D.\n(b) Terminais (T): os dígitos 0, 1, 2, …, 9.\n(c) Símbolo inicial: N (elemento distinguido de V, papel de S).\n(d) Linguagem gerada: L(G) = { w ∈ T* | N ⇒* w } = o conjunto dos números naturais escritos como sequências de dígitos (distinguindo zeros à esquerda, p.ex. 123 ≠ 0123).",
+      "answer": "(a) V = {N, D}; (b) T = {0,…,9}; (c) inicial = N; (d) L(G) = números naturais (sequências de dígitos), distinguindo zeros à esquerda."
+    }
+  ]
+}

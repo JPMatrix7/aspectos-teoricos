@@ -1,0 +1,212 @@
+{
+  "id": "08-afn-movimentos-vazios",
+  "module": 8,
+  "title": "AFN com Movimentos Vazios (ε-transições)",
+  "icon": "ε",
+  "summary": "Apresenta o Autômato Finito com Movimentos Vazios (AFNε), onde ε-transições permitem mudar de estado sem consumir símbolo, define o fecho-ε e demonstra a equivalência com AFN e AFD sem aumento do poder de reconhecimento.",
+  "tags": ["AFNε", "movimentos-vazios", "épsilon-transição", "fecho-épsilon", "autômatos", "conversão"],
+  "keyPoints": [
+    "Um movimento vazio (ε-transição) é uma transição que ocorre sem leitura de símbolo algum da fita, interpretada como não-determinismo interno ao autômato.",
+    "A função de transição do AFNε é δ: Q × (Σ ∪ {ε}) → 2^Q, diferindo do AFN por aceitar ε como argumento.",
+    "O fecho-ε de um estado q, δε(q), é o conjunto de todos os estados atingíveis a partir de q exclusivamente por ε-transições (incluindo o próprio q).",
+    "O fecho-ε de um conjunto P de estados é δε(P) = ∪_{q∈P} δε(q).",
+    "A função programa estendida δ* intercala leitura de símbolo com aplicação do fecho-ε: δ*(P, wa) = δε(R), onde R reúne os destinos de cada símbolo a a partir dos estados em δ*(P, w).",
+    "Os movimentos vazios não aumentam o poder computacional: qualquer AFNε pode ser simulado por um AFN (e, por consequência, por um AFD).",
+    "A construção AFNε → AFN é: δ_N(q, a) = δ*({q}, a) e F_N = {q | δε(q) ∩ F ≠ ∅}.",
+    "F_N inclui estados que, via computações vazias, atingem estados finais de F.",
+    "A linguagem aceita por qualquer AFNε é uma Linguagem Regular (Tipo 3).",
+    "Na computação de uma entrada w, aplica-se a função programa para cada símbolo (da esquerda para a direita) intercalando computações vazias; antes de processar a próxima transição, determinam-se todos os demais estados atingíveis exclusivamente por movimentos vazios."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é um movimento vazio (ε-transição)?",
+      "back": "Uma transição que ocorre sem leitura de símbolo algum da fita; é interpretada como um não-determinismo interno ao autômato — excetuando-se por uma eventual mudança de estados, nada mais pode ser observado."
+    },
+    {
+      "front": "Qual a assinatura da função de transição de um AFNε?",
+      "back": "δ: Q × (Σ ∪ {ε}) → 2^Q — aceita ε (além dos símbolos de Σ) como segundo argumento, retornando um subconjunto de estados."
+    },
+    {
+      "front": "O que é o fecho-ε de um estado q, δε(q)?",
+      "back": "O conjunto de todos os estados atingíveis a partir de q exclusivamente por zero ou mais ε-transições. Sempre inclui o próprio q. Definição indutiva: δε(q) = {q} se δ(q,ε) é indefinida; caso contrário, δε(q) = {q} ∪ δ(q,ε) ∪ (∪_{p∈δ(q,ε)} δε(p))."
+    },
+    {
+      "front": "Como se calcula o fecho-ε de um conjunto P de estados?",
+      "back": "δε(P) = ∪_{q∈P} δε(q) — união dos fechos-ε de cada estado em P."
+    },
+    {
+      "front": "Como é definida a função programa estendida δ* para um AFNε?",
+      "back": "δ*: 2^Q × Σ* → 2^Q, indutivamente: δ*(P, ε) = δε(P);  δ*(P, wa) = δε(R), onde R = {r | r ∈ δ(s, a) e s ∈ δ*(P, w)}."
+    },
+    {
+      "front": "Como construir δ_N no AFN equivalente a um AFNε?",
+      "back": "δ_N(q, a) = δ*({q}, a) — para cada estado q e símbolo a, aplica a função programa estendida do AFNε a partir do singleton {q}."
+    },
+    {
+      "front": "Como construir F_N no AFN equivalente a um AFNε?",
+      "back": "F_N = {q ∈ Q | δε(q) ∩ F ≠ ∅} — estados que atingem algum estado final de F exclusivamente por computações vazias."
+    },
+    {
+      "front": "Os movimentos vazios aumentam o poder computacional dos autômatos finitos?",
+      "back": "Não. Qualquer AFNε pode ser simulado por um AFN (e por um AFD); a classe de linguagens reconhecidas permanece a mesma: as linguagens regulares (Tipo 3)."
+    },
+    {
+      "front": "Qual o fecho-ε de q₀ em M₇ (AFNε com δ(q₀,ε)={qf})?",
+      "back": "δε(q₀) = {q₀, qf}. Como δ(q₀,ε) = {qf} e δ(qf,ε) é indefinida, o fecho inclui q₀ e qf."
+    },
+    {
+      "front": "Por que q₀ passa a ser estado final em F_N ao converter M₇?",
+      "back": "Porque δε(q₀) = {q₀, qf} e qf ∈ F, logo δε(q₀) ∩ F ≠ ∅, portanto q₀ ∈ F_N pela definição da construção AFNε → AFN."
+    },
+    {
+      "front": "O que acontece antes de cada leitura de símbolo em um AFNε?",
+      "back": "Calcula-se o fecho-ε do conjunto atual de estados, determinando todos os demais estados atingíveis exclusivamente por movimentos vazios antes de processar o próximo símbolo."
+    },
+    {
+      "front": "Qual a linguagem de M₇ = ({a,b},{q₀,qf},δ₇,q₀,{qf}) com δ₇(q₀,a)={q₀}, δ₇(q₀,ε)={qf}, δ₇(qf,b)={qf}?",
+      "back": "{ aⁱbʲ | i ≥ 0, j ≥ 0 } — cadeias onde todos os a's antecedem todos os b's (ambos podem ser zero)."
+    },
+    {
+      "front": "Qual o fecho-ε de q₀ em M₈, onde δ(q₀,ε)={q₁,q₂,q₄}?",
+      "back": "δε(q₀) = {q₀, q₁, q₂, q₄}. Como q₁, q₂ e q₄ não possuem ε-transições, o fecho não se expande além deles."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "O que diferencia a função de transição de um AFNε da de um AFN?",
+      "options": [
+        "O AFNε aceita ε como símbolo de entrada, permitindo transições sem leitura de símbolo",
+        "O AFNε retorna estados únicos em vez de conjuntos de estados",
+        "O AFNε não possui estados finais",
+        "O AFNε requer que o alfabeto contenha o símbolo ε explicitamente"
+      ],
+      "answer": 0,
+      "explanation": "A função de transição do AFNε é δ: Q × (Σ ∪ {ε}) → 2^Q — o domínio inclui ε, permitindo transições que não consomem símbolo. O AFN tem δ: Q × Σ → 2^Q, sem ε no domínio."
+    },
+    {
+      "question": "Dado δε(q) com δ(q, ε) indefinida, qual é o valor de δε(q)?",
+      "options": [
+        "∅ (conjunto vazio)",
+        "{q} (apenas o próprio estado)",
+        "δ(q, ε)",
+        "Q (todos os estados)"
+      ],
+      "answer": 1,
+      "explanation": "Pela definição indutiva do fecho-ε, se δ(q, ε) é indefinida então δε(q) = {q} — o estado sempre pertence ao seu próprio fecho."
+    },
+    {
+      "question": "Na construção AFNε → AFN, como é definida a função de transição δ_N(q, a)?",
+      "options": [
+        "δ_N(q, a) = δ(q, a)",
+        "δ_N(q, a) = δε(q)",
+        "δ_N(q, a) = δ*({q}, a)",
+        "δ_N(q, a) = δε(δ(q, a))"
+      ],
+      "answer": 2,
+      "explanation": "A construção define δ_N(q, a) = δ*({q}, a), que já incorpora as computações vazias (fecho-ε) antes e após a leitura do símbolo a."
+    },
+    {
+      "question": "Na construção AFNε → AFN, qual estado passa a ser final em F_N?",
+      "options": [
+        "Somente os estados que já pertencem a F",
+        "Todos os estados de Q",
+        "Os estados q tais que δε(q) ∩ F ≠ ∅",
+        "Somente o estado inicial q₀"
+      ],
+      "answer": 2,
+      "explanation": "F_N = {q | δε(q) ∩ F ≠ ∅}: um estado passa a ser final no AFN construído se, via computações vazias, ele pode atingir algum estado final do AFNε original."
+    },
+    {
+      "question": "Os movimentos vazios (ε-transições) ampliam o poder de reconhecimento de linguagens dos autômatos finitos?",
+      "options": [
+        "Sim, permitem reconhecer linguagens sensíveis ao contexto",
+        "Sim, permitem reconhecer linguagens livres de contexto",
+        "Não, qualquer AFNε pode ser simulado por um AFD",
+        "Não se sabe; é um problema em aberto"
+      ],
+      "answer": 2,
+      "explanation": "O teorema demonstrado no módulo afirma que a classe dos AFNε é equivalente à dos AFN, que por sua vez é equivalente à dos AFD. Portanto, ε-transições não aumentam o poder computacional."
+    },
+    {
+      "question": "Qual é o resultado de δ*({q₀}, ε) para qualquer AFNε?",
+      "options": [
+        "∅",
+        "{q₀}",
+        "δε({q₀})",
+        "F"
+      ],
+      "answer": 2,
+      "explanation": "Pela definição da função programa estendida: δ*(P, ε) = δε(P). Para P = {q₀}, δ*({q₀}, ε) = δε({q₀}) — o fecho-ε do estado inicial."
+    },
+    {
+      "question": "Em M₇ com δ₇(q₀, ε) = {qf}, qual é δε(q₀)?",
+      "options": [
+        "{q₀}",
+        "{qf}",
+        "{q₀, qf}",
+        "∅"
+      ],
+      "answer": 2,
+      "explanation": "δε(q₀) = {q₀} ∪ δ(q₀, ε) ∪ δε(qf) = {q₀} ∪ {qf} ∪ {qf} = {q₀, qf}. O próprio estado sempre está incluído no fecho."
+    },
+    {
+      "question": "Qual a linguagem aceita por M₈ = ({a,b,c}, {q₀,...,qf}, δ₈, q₀, {qf})?",
+      "options": [
+        "Cadeias formadas apenas por a's",
+        "Cadeias que possuem como sufixo a, bb ou ccc",
+        "Cadeias que possuem como prefixo a, bb ou ccc",
+        "Cadeias de comprimento múltiplo de 3"
+      ],
+      "answer": 1,
+      "explanation": "M₈ aceita L₈ = {w | w possui como sufixo a ou bb ou ccc}, conforme definido no enunciado do exemplo. O não-determinismo via ε permite verificar todos os três sufixos em paralelo."
+    },
+    {
+      "question": "Na computação de δ*({q₀}, abb) em M₈, qual conjunto de estados é obtido?",
+      "options": [
+        "{q₀, q₁, q₂, q₄}",
+        "{q₀, qf}",
+        "{q₀, q₁, q₂, q₃, q₄, qf}",
+        "{qf}"
+      ],
+      "answer": 2,
+      "explanation": "O cálculo passo a passo resulta em δ*({q₀}, abb) = {q₀, q₁, q₂, q₃, q₄, qf}. Como qf ∈ F está no conjunto resultante, 'abb' é aceita (sufixo 'bb')."
+    },
+    {
+      "question": "O fecho-ε de um conjunto de estados P é calculado como:",
+      "options": [
+        "δε(P) = δ(P, ε)",
+        "δε(P) = ∪_{q∈P} δε(q)",
+        "δε(P) = δε(q₀)",
+        "δε(P) = P ∩ F"
+      ],
+      "answer": 1,
+      "explanation": "Pela definição: δε*(P) = ∪_{q∈P} δε(q) — a união dos fechos-ε de cada estado individual pertencente a P."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Prova da equivalência AFNε-AFN por indução",
+      "prompt": "Demonstre, por indução no tamanho da palavra, que o AFN M_N construído a partir de um AFNε M (pela construção apresentada no teorema) aceita exatamente a mesma linguagem que M.",
+      "solution": "Base (|w| = 0, w = ε):\n- M aceita ε sse q₀ ∈ F ou δε(q₀) ∩ F ≠ ∅.\n- Por construção, q₀ ∈ F_N sse δε(q₀) ∩ F ≠ ∅.\n- Logo M aceita ε sse M_N aceita ε. ✓\n\nPasso indutivo (hipótese: vale para palavras de comprimento n; mostrar para n+1):\n- Hipótese: δ*_N({q₀}, w) = δ*({q₀}, w) para toda palavra w de comprimento n.\n- Para wa (comprimento n+1):\n  δ*_N({q₀}, wa) = ∪_{q ∈ δ*_N({q₀},w)} δ_N(q, a)\n                 = ∪_{q ∈ δ*({q₀},w)} δ*({q}, a)   [pela hip. indutiva e definição de δ_N]\n                 = δ*({q₀}, wa)                      [pela definição de δ* em AFNε]\n- Portanto M_N aceita wa sse δ*_N({q₀},wa) ∩ F_N ≠ ∅ sse δ*({q₀},wa) ∩ F ≠ ∅ sse M aceita wa. □",
+      "answer": "Por indução no comprimento da palavra, δ*_N({q₀}, w) = δ*({q₀}, w) para todo w, e as condições de aceitação coincidem (F_N captura exatamente os estados que atingem F por ε-transições)."
+    },
+    {
+      "title": "Exercício 2 — Construção do AFN equivalente a M₇",
+      "prompt": "Para o AFNε M₇ = ({a,b}, {q₀,qf}, δ₇, q₀, {qf}) com δ₇(q₀,a)={q₀}, δ₇(q₀,ε)={qf}, δ₇(qf,b)={qf}, construa o AFN equivalente M_N usando a construção do teorema. Apresente δ_N, F_N e o diagrama resultante.",
+      "solution": "Passo 1 — Fecho-ε de cada estado:\n- δε(q₀) = {q₀, qf}  [q₀ tem ε→qf; qf não tem ε-transição]\n- δε(qf) = {qf}       [qf não tem ε-transição]\n\nPasso 2 — F_N:\n- F_N = {q | δε(q) ∩ {qf} ≠ ∅}\n- δε(q₀) ∩ {qf} = {qf} ≠ ∅ → q₀ ∈ F_N\n- δε(qf) ∩ {qf} = {qf} ≠ ∅ → qf ∈ F_N\n- F_N = {q₀, qf}\n\nPasso 3 — δ_N(q, a) = δ*({q}, a):\n\nδ_N(q₀, a):\n  s ∈ δε({q₀}) = {q₀,qf}; R = δ(q₀,a) ∪ δ(qf,a) = {q₀} ∪ ∅ = {q₀}\n  δ_N(q₀,a) = δε({q₀}) = {q₀, qf}\n\nδ_N(q₀, b):\n  s ∈ {q₀,qf}; R = δ(q₀,b) ∪ δ(qf,b) = ∅ ∪ {qf} = {qf}\n  δ_N(q₀,b) = δε({qf}) = {qf}\n\nδ_N(qf, a):\n  s ∈ δε({qf}) = {qf}; R = δ(qf,a) = ∅\n  δ_N(qf,a) = ∅ (indefinida)\n\nδ_N(qf, b):\n  s ∈ {qf}; R = δ(qf,b) = {qf}\n  δ_N(qf,b) = δε({qf}) = {qf}\n\nResultado: M_N = ({a,b}, {q₀,qf}, δ_N, q₀, {q₀,qf})\nTabela:\n| δ_N | a          | b    |\n|-----|------------|------|\n|→* q₀| {q₀, qf}  | {qf} |\n|*  qf| —          | {qf} |",
+      "answer": "M_N = ({a,b}, {q₀,qf}, δ_N, q₀, {q₀,qf}) com δ_N(q₀,a)={q₀,qf}, δ_N(q₀,b)={qf}, δ_N(qf,b)={qf}. F_N={q₀,qf} pois ambos atingem qf via ε-fecho."
+    },
+    {
+      "title": "Exercício 3 — Cálculo do fecho-ε em M₈",
+      "prompt": "Para M₈ com δ(q₀,ε) = {q₁,q₂,q₄} e q₁,q₂,q₄ sem ε-transições, calcule δε({q₀}) e verifique o resultado de δ*({q₀}, ε).",
+      "solution": "Cálculo de δε(q₀):\n- Pela definição indutiva: δε(q₀) = {q₀} ∪ δ(q₀,ε) ∪ δε(q₁) ∪ δε(q₂) ∪ δε(q₄)\n- δ(q₀,ε) = {q₁,q₂,q₄}\n- δε(q₁) = {q₁}  [sem ε-transição]\n- δε(q₂) = {q₂}  [sem ε-transição]\n- δε(q₄) = {q₄}  [sem ε-transição]\n- δε(q₀) = {q₀} ∪ {q₁,q₂,q₄} ∪ {q₁} ∪ {q₂} ∪ {q₄} = {q₀,q₁,q₂,q₄}\n\nCálculo de δ*({q₀}, ε):\n- δ*(P, ε) = δε(P) → δ*({q₀}, ε) = δε({q₀}) = {q₀,q₁,q₂,q₄}",
+      "answer": "δε(q₀) = δ*({q₀}, ε) = {q₀, q₁, q₂, q₄} — q₀ e os três estados destinos das ε-transições diretas de q₀."
+    },
+    {
+      "title": "Exercício 4 — Computação completa de 'abb' em M₈",
+      "prompt": "Usando a definição da função programa estendida δ*, compute δ*({q₀}, abb) no AFNε M₈ passo a passo e determine se a cadeia 'abb' é aceita.",
+      "solution": "Passo 1 — δ*({q₀}, ε) = δε({q₀}) = {q₀,q₁,q₂,q₄}  [calculado anteriormente]\n\nPasso 2 — δ*({q₀}, a):\n  R = {r | r ∈ δ(s,a), s ∈ {q₀,q₁,q₂,q₄}}\n  δ(q₀,a)={q₀}; δ(q₁,a)={qf}; δ(q₂,a)=∅; δ(q₄,a)=∅\n  R = {q₀,qf}\n  δ*({q₀},a) = δε({q₀,qf}) = δε(q₀) ∪ δε(qf) = {q₀,q₁,q₂,q₄} ∪ {qf} = {q₀,q₁,q₂,q₄,qf}\n\nPasso 3 — δ*({q₀}, ab):\n  R = {r | r ∈ δ(s,b), s ∈ {q₀,q₁,q₂,q₄,qf}}\n  δ(q₀,b)={q₀}; δ(q₁,b)=∅; δ(q₂,b)={q₃}; δ(q₄,b)=∅; δ(qf,b)=∅\n  R = {q₀,q₃}\n  δ*({q₀},ab) = δε({q₀,q₃}) = δε(q₀) ∪ δε(q₃) = {q₀,q₁,q₂,q₄} ∪ {q₃} = {q₀,q₁,q₂,q₃,q₄}\n\nPasso 4 — δ*({q₀}, abb):\n  R = {r | r ∈ δ(s,b), s ∈ {q₀,q₁,q₂,q₃,q₄}}\n  δ(q₀,b)={q₀}; δ(q₁,b)=∅; δ(q₂,b)={q₃}; δ(q₃,b)={qf}; δ(q₄,b)=∅\n  R = {q₀,q₃,qf}\n  δ*({q₀},abb) = δε({q₀,q₃,qf}) = {q₀,q₁,q₂,q₄} ∪ {q₃} ∪ {qf} = {q₀,q₁,q₂,q₃,q₄,qf}\n\nComo qf ∈ F = {qf} e qf ∈ δ*({q₀},abb), a cadeia 'abb' é ACEITA.",
+      "answer": "δ*({q₀}, abb) = {q₀,q₁,q₂,q₃,q₄,qf}. Como qf ∈ resultado e qf ∈ F, 'abb' é aceita (possui 'bb' como sufixo)."
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "id": "02-introducao-conceitos-basicos",
+  "module": 2,
+  "title": "Introdução e Conceitos Básicos",
+  "icon": "📝",
+  "summary": "Slides do Capítulo 1 – Introdução e Conceitos Básicos do livro Linguagens Formais e Autômatos (P. Blauth Menezes). Aborda a origem histórica da teoria, a distinção entre sintaxe e semântica e a classificação dos três formalismos: Operacional (Reconhecedor), Axiomático (Gerador) e Denotacional (Gerador).",
+  "tags": ["introdução", "sintaxe", "semântica", "formalismos", "conceitos-básicos", "linguagens-formais"],
+  "keyPoints": [
+    "A Teoria das Linguagens Formais foi desenvolvida na década de 1950 com objetivo inicial de estudar linguagens naturais, mas tornou-se fundamental para linguagens artificiais da Computação e Informática.",
+    "Aplicações incluem: análise léxica e sintática, modelagem de circuitos lógicos, sistemas biológicos, animações, hipertextos e linguagens não-lineares (planares, espaciais, n-dimensionais).",
+    "Sintaxe trata das propriedades livres da linguagem — manipula símbolos sem considerar significados (ex.: verificação gramatical de programas).",
+    "Semântica objetiva dar uma interpretação à linguagem — determina o significado ou valor de um programa.",
+    "Um programa sintaticamente válido pode não representar o que o programador esperava; para isso é necessária análise semântica.",
+    "Análise léxica é um tipo especial de análise sintática centrada nas componentes básicas da linguagem — também é ênfase das Linguagens Formais.",
+    "O formalismo Operacional define autômatos/máquinas abstratas com estados, instruções primitivas e função de transição; é um formalismo Reconhecedor. Principais máquinas: Autômato Finito, Autômato com Pilha, Máquina de Turing.",
+    "O formalismo Axiomático associa regras às componentes da linguagem (Gramáticas Regulares, Livres do Contexto, Sensíveis ao Contexto, Irrestritas); é um formalismo Gerador.",
+    "O formalismo Denotacional (Funcional) define um domínio com funções composicionais; restrito às Expressões Regulares; também é um formalismo Gerador.",
+    "Limites entre sintaxe e semântica nem sempre são claros em linguagens naturais, mas em linguagens artificiais a distinção é (em geral) óbvia."
+  ],
+  "flashcards": [
+    {
+      "front": "Quando surgiu a Teoria das Linguagens Formais?",
+      "back": "Na década de 1950. O objetivo inicial era desenvolver teorias relacionadas às linguagens naturais, mas logo se tornou essencial para linguagens artificiais da Computação e Informática."
+    },
+    {
+      "front": "O que é Sintaxe no contexto de linguagens formais?",
+      "back": "Trata das propriedades livres da linguagem — manipula símbolos sem considerar seus correspondentes significados. Exemplo: verificação gramatical de programas."
+    },
+    {
+      "front": "O que é Semântica no contexto de linguagens formais?",
+      "back": "Objetiva dar uma interpretação para a linguagem. Exemplo: o significado ou valor para um determinado programa."
+    },
+    {
+      "front": "O que significa um programa ser 'sintaticamente errado'?",
+      "back": "Simplesmente não é um programa da linguagem — não existe tal noção de programa dentro do sistema formal."
+    },
+    {
+      "front": "O que é formalismo Operacional?",
+      "back": "Define um autômato ou máquina abstrata com estados, instruções primitivas e especificação de como cada instrução modifica cada estado. É um formalismo Reconhecedor — analisa uma entrada para verificar se é 'reconhecida'."
+    },
+    {
+      "front": "Quais são as três principais máquinas do formalismo Operacional?",
+      "back": "Autômato Finito, Autômato com Pilha e Máquina de Turing."
+    },
+    {
+      "front": "O que é formalismo Axiomático?",
+      "back": "Associa regras às componentes da linguagem. As regras permitem afirmar o que será verdadeiro após a ocorrência de cada cláusula. É um formalismo Gerador — verifica se um elemento da linguagem é 'gerado'. Abordagem: Gramáticas (Regulares, Livres do Contexto, Sensíveis ao Contexto, Irrestritas)."
+    },
+    {
+      "front": "O que é formalismo Denotacional (ou Funcional)?",
+      "back": "Define um domínio que caracteriza o conjunto de palavras admissíveis na linguagem, com funções composicionais (horizontalmente). É restrito às Expressões Regulares e também é um formalismo Gerador."
+    },
+    {
+      "front": "Qual é a diferença entre formalismo Gerador e formalismo Reconhecedor?",
+      "back": "Gerador: verifica se um elemento da linguagem é 'gerado' (ou infere as palavras da linguagem). Reconhecedor: analisa uma entrada para verificar se ela é 'reconhecida' pela linguagem. Axiomático e Denotacional são Geradores; Operacional é Reconhecedor."
+    },
+    {
+      "front": "O que é análise léxica e qual sua relação com Linguagens Formais?",
+      "back": "É um tipo especial de análise sintática centrada nas componentes básicas da linguagem (tokens). Por isso também é ênfase das Linguagens Formais, que tratam dos problemas sintáticos das linguagens."
+    },
+    {
+      "front": "Por que uma máquina abstrata deve ser 'suficientemente simples'?",
+      "back": "Para não permitir dúvidas sobre a execução de seu código — sua semântica operacional deve ser inequívoca e formalmente verificável."
+    },
+    {
+      "front": "Quais são os três formalismos para descrição de linguagens formais?",
+      "back": "Operacional, Axiomático e Denotacional (ou Funcional)."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "A Teoria das Linguagens Formais foi desenvolvida na:",
+      "options": [
+        "Década de 1950",
+        "Década de 1940",
+        "Década de 1960",
+        "Década de 1970"
+      ],
+      "answer": 0,
+      "explanation": "Conforme o slide 1.1 Introdução: a Teoria das Linguagens Formais foi desenvolvida na década de 1950."
+    },
+    {
+      "question": "Qual das alternativas define corretamente 'Sintaxe' no contexto das Linguagens Formais?",
+      "options": [
+        "Dá uma interpretação para a linguagem, determinando o significado de um programa.",
+        "Trata das propriedades livres da linguagem, manipulando símbolos sem considerar seus significados.",
+        "Define um domínio de palavras admissíveis por meio de funções composicionais.",
+        "Associa regras às componentes da linguagem para gerar elementos válidos."
+      ],
+      "answer": 1,
+      "explanation": "Segundo os slides (seção 1.1.1): Sintaxe trata das propriedades livres da linguagem, manipulando símbolos sem considerar seus correspondentes significados. Exemplo: verificação gramatical de programas."
+    },
+    {
+      "question": "Um formalismo 'Reconhecedor':",
+      "options": [
+        "Gera as palavras da linguagem por meio de regras ou funções.",
+        "Analisa uma entrada para verificar se ela é 'reconhecida' pela linguagem.",
+        "Define um domínio composto por funções composicionais.",
+        "Associa regras axiomáticas às componentes da linguagem."
+      ],
+      "answer": 1,
+      "explanation": "O formalismo Operacional (autômatos/máquinas abstratas) é dito Reconhecedor porque analisa uma entrada para verificar se ela é 'reconhecida'."
+    },
+    {
+      "question": "O formalismo Axiomático aborda qual tipo de estrutura formal?",
+      "options": [
+        "Expressões Regulares",
+        "Autômatos Finitos",
+        "Gramáticas (Regulares, Livres do Contexto, Sensíveis ao Contexto, Irrestritas)",
+        "Máquinas de Turing"
+      ],
+      "answer": 2,
+      "explanation": "Conforme o slide: a abordagem axiomática é sobre Gramáticas — Regulares, Livres do Contexto, Sensíveis ao Contexto e Irrestritas."
+    },
+    {
+      "question": "O formalismo Denotacional (Funcional) está restrito a:",
+      "options": [
+        "Gramáticas Livres do Contexto",
+        "Autômatos com Pilha",
+        "Expressões Regulares",
+        "Máquinas de Turing"
+      ],
+      "answer": 2,
+      "explanation": "Segundo o slide do formalismo Denotacional: 'Abordagem restrita às Expressões Regulares'."
+    },
+    {
+      "question": "Quais são as três principais máquinas do formalismo Operacional?",
+      "options": [
+        "Gramática Regular, Gramática Livre do Contexto, Gramática Irrestrita",
+        "Autômato Finito, Autômato com Pilha, Máquina de Turing",
+        "Autômato Finito, Expressão Regular, Gramática de Chomsky",
+        "Máquina de Turing, Autômato com Saída, Gramática Sensível ao Contexto"
+      ],
+      "answer": 1,
+      "explanation": "O slide 'Principais máquinas' lista: Autômato Finito, Autômato com Pilha e Máquina de Turing."
+    },
+    {
+      "question": "A análise léxica é classificada como:",
+      "options": [
+        "Um tipo de análise semântica centrada nos valores dos programas.",
+        "Um tipo especial de análise sintática centrada nas componentes básicas da linguagem.",
+        "Um método de análise denotacional restrito às expressões regulares.",
+        "Uma abordagem axiomática baseada em gramáticas irrestritas."
+      ],
+      "answer": 1,
+      "explanation": "Conforme o slide: análise léxica é 'tipo especial de análise sintática, centrada nas componentes básicas da linguagem; portanto, também é ênfase das Linguagens Formais'."
+    },
+    {
+      "question": "Um programa 'sintaticamente errado' em uma linguagem formal significa que:",
+      "options": [
+        "O programa produz resultados incorretos em tempo de execução.",
+        "O programa tem erros semânticos que impedem sua interpretação.",
+        "Simplesmente não é um programa da linguagem — não existe tal noção de programa.",
+        "O programa contém erros de lógica que devem ser corrigidos pelo compilador."
+      ],
+      "answer": 2,
+      "explanation": "Segundo o slide: sintaticamente 'errado' significa que 'não existe tal noção de programa' e que 'simplesmente não é um programa da linguagem'."
+    },
+    {
+      "question": "Qual é a relação entre os formalismos Axiomático e Denotacional quanto à classificação como Gerador/Reconhecedor?",
+      "options": [
+        "Axiomático é Gerador; Denotacional é Reconhecedor.",
+        "Axiomático é Reconhecedor; Denotacional é Gerador.",
+        "Ambos são Reconhecedores.",
+        "Ambos são Geradores."
+      ],
+      "answer": 3,
+      "explanation": "Conforme os slides: tanto o formalismo Axiomático ('verifica se um elemento da linguagem é gerado') quanto o Denotacional ('é simples inferir/gerar as palavras da linguagem') são formalismos Geradores."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Sintaxe vs. Semântica",
+      "prompt": "Explique a diferença entre sintaxe e semântica de uma linguagem de programação. Dê um exemplo de análise sintática e um de análise semântica.",
+      "solution": "Sintaxe trata das propriedades livres da linguagem, manipulando símbolos sem considerar seus correspondentes significados. Semântica objetiva dar uma interpretação para a linguagem.\n\nExemplo sintático: verificação gramatical de programas (ex.: verificar se os parênteses estão balanceados ou se a estrutura do código segue as regras gramaticais da linguagem).\n\nExemplo semântico: determinar o significado ou valor para um determinado programa (ex.: verificar se uma variável foi inicializada antes de seu uso, ou se os tipos são compatíveis em uma expressão).\n\nUm programa sintaticamente válido pode não ser o programa que o programador esperava escrever — para corrigir isso é necessária a análise semântica.",
+      "answer": "Sintaxe: propriedades livres, manipula símbolos sem significado (ex.: verificação gramatical). Semântica: interpretação dos símbolos (ex.: significado de um programa)."
+    },
+    {
+      "title": "Exercício 2 — Classificação dos formalismos",
+      "prompt": "Os formalismos para descrição de linguagens formais são classificados como Gerador ou Reconhecedor. Para cada um dos três formalismos (Operacional, Axiomático, Denotacional), indique: (a) a classificação; (b) o que verifica ou gera; (c) um exemplo de estrutura formal associada.",
+      "solution": "(a) Formalismo Operacional:\n- Classificação: Reconhecedor\n- O que verifica: analisa uma entrada para verificar se ela é 'reconhecida' pela linguagem\n- Estruturas: Autômato Finito, Autômato com Pilha, Máquina de Turing\n\n(b) Formalismo Axiomático:\n- Classificação: Gerador\n- O que verifica/gera: verifica se um elemento da linguagem é 'gerado' por meio de regras associadas às componentes\n- Estruturas: Gramáticas (Regulares, Livres do Contexto, Sensíveis ao Contexto, Irrestritas)\n\n(c) Formalismo Denotacional (Funcional):\n- Classificação: Gerador\n- O que verifica/gera: é simples inferir ('gerar') as palavras da linguagem por meio de funções composicionais\n- Estruturas: Expressões Regulares",
+      "answer": "Operacional → Reconhecedor (autômatos). Axiomático → Gerador (gramáticas). Denotacional → Gerador (expressões regulares)."
+    },
+    {
+      "title": "Exercício 3 — Máquina abstrata no formalismo Operacional",
+      "prompt": "Quais são as características que definem uma máquina abstrata no formalismo Operacional? Por que ela deve ser 'suficientemente simples'?",
+      "solution": "Uma máquina abstrata no formalismo Operacional é definida por três elementos:\n1. Estados\n2. Instruções primitivas\n3. Especificação de como cada instrução modifica cada estado\n\nEla deve ser suficientemente simples para não permitir dúvidas sobre a execução de seu código. Ou seja, a máquina precisa ter uma semântica operacional inequívoca: dado um estado e uma instrução, o próximo estado deve ser determinado sem ambiguidade, tornando a verificação formal possível e rigorosa.",
+      "answer": "Definida por: estados, instruções primitivas e função de transição (como cada instrução modifica cada estado). Deve ser simples para não permitir dúvidas sobre a execução do código."
+    },
+    {
+      "title": "Exercício 4 — Formalismo Denotacional",
+      "prompt": "O que caracteriza o formalismo Denotacional? Qual é o seu escopo (que tipo de linguagens ele descreve) e por que é classificado como Gerador?",
+      "solution": "O formalismo Denotacional (também chamado Funcional) define um domínio que caracteriza o conjunto de palavras admissíveis na linguagem. Suas funções são, em geral, composicionais (horizontalmente): o valor denotado por uma construção é especificado em termos dos valores denotados por suas subcomponentes.\n\nEscopo: a abordagem é restrita às Expressões Regulares.\n\nÉ classificado como Gerador porque é simples inferir ('gerar') as palavras da linguagem a partir de suas definições denotacionais — dado o domínio e as funções composicionais, é possível enumerar ou reconhecer as palavras admissíveis.",
+      "answer": "Formalismo Funcional que define um domínio com funções composicionais; restrito às Expressões Regulares; Gerador porque permite inferir/gerar as palavras da linguagem."
+    }
+  ]
+}

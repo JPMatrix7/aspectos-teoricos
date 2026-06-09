@@ -1,0 +1,209 @@
+{
+  "id": "10-expressoes-regulares",
+  "module": 10,
+  "title": "Expressões Regulares",
+  "icon": "🔤",
+  "summary": "Expressões Regulares (ER) são um formalismo denotacional (gerador) que descreve linguagens regulares por meio de três operações — união (+), concatenação e estrela de Kleene (*) — aplicadas a símbolos, ∅ e ε. Toda ER gera uma linguagem regular (provado construindo-se um AFNε por indução nos operadores) e toda linguagem regular é gerada por alguma ER.",
+  "tags": ["expressões-regulares","operações-regulares","união","concatenação","estrela-de-kleene","linguagem-regular","afnε","construção-de-thompson"],
+  "keyPoints": [
+    "∅, ε e qualquer símbolo x ∈ Σ são expressões regulares (base da indução).",
+    "Se r e s são ER, então (r + s), (rs) e (r*) também são ER (passo da indução).",
+    "A linguagem gerada por uma ER r é denotada GERA(r) ou L(r).",
+    "Precedência: estrela de Kleene (*) > concatenação > união (+); parênteses podem ser omitidos com essa regra.",
+    "Toda ER descreve uma linguagem regular; toda linguagem regular pode ser descrita por alguma ER.",
+    "A prova ER → linguagem regular é feita por indução no número de operadores, construindo um AFNε.",
+    "Para r = ∅: autômato sem estado final. Para r = ε: único estado, inicial e final. Para r = x: dois estados ligados por x.",
+    "Para r = r₁ + r₂: novo q₀ com ε para ambos os autômatos; novo qf recebe ε de ambos os estados finais.",
+    "Para r = r₁r₂: estado final de M₁ ligado via ε ao estado inicial de M₂.",
+    "Para r = r₁*: novo q₀ com ε para q₀₁ e para qf; qf₁ com ε de volta para q₀₁ (loop) e ε para qf."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é uma Expressão Regular?",
+      "back": "Formalismo denotacional (gerador) que descreve linguagens regulares usando ∅, ε, símbolos do alfabeto e as operações de união (+), concatenação e estrela de Kleene (*)."
+    },
+    {
+      "front": "O que ∅ denota como ER?",
+      "back": "A linguagem vazia: ∅."
+    },
+    {
+      "front": "O que ε denota como ER?",
+      "back": "A linguagem { ε }, contendo apenas a cadeia vazia."
+    },
+    {
+      "front": "O que x ∈ Σ denota como ER?",
+      "back": "A linguagem { x }, contendo apenas o símbolo x."
+    },
+    {
+      "front": "O que (r + s) denota?",
+      "back": "A linguagem R ∪ S (união das linguagens denotadas por r e s)."
+    },
+    {
+      "front": "O que (rs) denota?",
+      "back": "A linguagem RS = { uv | u ∈ R e v ∈ S } (concatenação de R com S)."
+    },
+    {
+      "front": "O que (r*) denota?",
+      "back": "A linguagem R* (zero ou mais concatenações de cadeias de R — estrela de Kleene)."
+    },
+    {
+      "front": "Qual a precedência dos operadores de ER?",
+      "back": "1º (maior): estrela de Kleene (*). 2º: concatenação. 3º (menor): união (+)."
+    },
+    {
+      "front": "Que linguagem descreve a ER a*ba*ba*?",
+      "back": "Todas as palavras sobre { a, b } contendo exatamente dois b."
+    },
+    {
+      "front": "Que linguagem descreve a ER (a + b)*(aa + bb)?",
+      "back": "Todas as palavras sobre { a, b } que terminam com aa ou bb."
+    },
+    {
+      "front": "Que linguagem descreve a ER (a + ε)(b + ba)*?",
+      "back": "Todas as palavras sobre { a, b } que não possuem dois a consecutivos."
+    },
+    {
+      "front": "Como se constrói um AFNε para r = r₁ + r₂?",
+      "back": "Novo estado inicial q₀ com ε para q₀₁ e q₀₂; novo estado final qf com ε vindo de qf₁ e qf₂."
+    },
+    {
+      "front": "Como se constrói um AFNε para r = r₁r₂?",
+      "back": "Estado final de M₁ (qf₁) ligado via ε ao estado inicial de M₂ (q₀₂). O estado inicial é q₀₁ e o estado final é qf₂."
+    },
+    {
+      "front": "Como se constrói um AFNε para r = r₁*?",
+      "back": "Novo q₀ com ε para q₀₁ e para qf; qf₁ com ε de volta para q₀₁ (loop de repetição) e ε para qf (término)."
+    },
+    {
+      "front": "O teorema ER → linguagem regular é provado como?",
+      "back": "Por indução no número de operadores da ER, construindo um AFNε para cada caso base e cada operador."
+    },
+    {
+      "front": "Como se monta o AFNε de a*(aa + bb)?",
+      "back": "Constrói-se das subexpressões para o todo: AFNε de a* (com laço de repetição e ε para saltar zero repetições) concatenado, via ε do seu estado final ao estado inicial da união, ao AFNε de (aa + bb) (novo inicial com ε para os ramos aa e bb, cujos finais convergem por ε a um único estado final)."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Qual das opções a seguir NÃO é uma expressão regular pela definição base (zero operadores)?",
+      "options": ["∅", "ε", "x (x ∈ Σ)", "(r + s)"],
+      "answer": 3,
+      "explanation": "(r + s) é construída no passo de indução — requer que r e s já sejam ER. ∅, ε e x ∈ Σ são os casos base."
+    },
+    {
+      "question": "A ER ba* descreve qual linguagem?",
+      "options": [
+        "Todas as palavras que terminam com b",
+        "Todas as palavras que iniciam por b, seguido por zero ou mais a",
+        "Todas as palavras com pelo menos um b",
+        "Todas as palavras com exatamente um b"
+      ],
+      "answer": 1,
+      "explanation": "ba* significa o símbolo b seguido de zero ou mais ocorrências de a, portanto palavras como b, ba, baa, baaa, …"
+    },
+    {
+      "question": "Qual é a precedência correta dos operadores de expressões regulares (do maior para o menor)?",
+      "options": [
+        "União > Concatenação > Estrela de Kleene",
+        "Concatenação > União > Estrela de Kleene",
+        "Estrela de Kleene > Concatenação > União",
+        "Estrela de Kleene > União > Concatenação"
+      ],
+      "answer": 2,
+      "explanation": "A precedência é: * (maior) > concatenação > + (união, menor). Assim aa* = a(a*) e a + b* = a + (b*)."
+    },
+    {
+      "question": "GERA((a + b)*(aa + bb)) contém qual das seguintes palavras?",
+      "options": ["ab", "ba", "abb", "aba"],
+      "answer": 2,
+      "explanation": "abb termina com bb, que pertence a (aa + bb). As demais — ab, ba, aba — não terminam com aa nem com bb."
+    },
+    {
+      "question": "Na construção ER → AFNε para r = ∅, o autômato M₁ tem:",
+      "options": [
+        "Um estado inicial e um estado final sem transição entre eles",
+        "Um estado que é ao mesmo tempo inicial e final",
+        "Um estado inicial sem nenhum estado final",
+        "Dois estados ligados por transição ε"
+      ],
+      "answer": 2,
+      "explanation": "M₁ = (∅, { q₀ }, δ₁, q₀, ∅): há um único estado q₀ que é inicial, e o conjunto de estados finais é vazio — nenhuma palavra é aceita."
+    },
+    {
+      "question": "Na construção ER → AFNε para r = ε, o autômato M₂ tem:",
+      "options": [
+        "Um estado inicial e um estado final distintos, sem transição",
+        "Um único estado que é ao mesmo tempo inicial e final",
+        "Um estado inicial com transição ε para um estado final",
+        "Nenhum estado"
+      ],
+      "answer": 1,
+      "explanation": "M₂ = (∅, { qf }, δ₂, qf, { qf }): qf é o único estado e é simultaneamente inicial e final, aceitando apenas ε."
+    },
+    {
+      "question": "Na construção para r = r₁r₂, qual é o estado final do autômato composto?",
+      "options": ["qf₁", "q₀₁", "qf₂", "um novo estado qf criado para a concatenação"],
+      "answer": 2,
+      "explanation": "M = (Σ₁ ∪ Σ₂, Q₁ ∪ Q₂, δ, q₀₁, { qf₂ }): o estado inicial é q₀₁ e o único estado final é qf₂, o estado final de M₂."
+    },
+    {
+      "question": "A ER a*ba*ba* descreve qual linguagem?",
+      "options": [
+        "Palavras que iniciam com b",
+        "Palavras contendo pelo menos um b",
+        "Palavras contendo exatamente dois b",
+        "Palavras contendo exatamente um b"
+      ],
+      "answer": 2,
+      "explanation": "a* permite zero ou mais a; os dois b's fixos garantem exatamente dois b; os a* ao redor permitem qualquer quantidade de a antes, entre e depois dos b's."
+    },
+    {
+      "question": "O teorema 'Linguagem Regular → Expressão Regular' afirma que:",
+      "options": [
+        "Toda ER gera uma linguagem regular",
+        "Toda linguagem regular pode ser descrita por alguma ER",
+        "Toda ER pode ser convertida em AFD diretamente",
+        "Toda linguagem sobre Σ possui uma ER"
+      ],
+      "answer": 1,
+      "explanation": "O teorema garante que se L é linguagem regular, existe uma ER r tal que GERA(r) = L. (A prova não é apresentada no módulo.)"
+    },
+    {
+      "question": "Na construção ER → AFNε para r = r₁*, qual das transições abaixo garante que ε ∈ GERA(r₁*)?",
+      "options": [
+        "A transição ε de qf₁ para q₀₁",
+        "A transição ε de q₀ para q₀₁",
+        "A transição ε de q₀ para qf (novo estado final)",
+        "A transição ε de qf₁ para qf"
+      ],
+      "answer": 2,
+      "explanation": "A transição ε de q₀ diretamente para qf permite que o autômato aceite sem processar nenhuma cadeia de M₁, correspondendo à zero repetições (ε ∈ R*)."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — União sem novos estados",
+      "prompt": "No caso r = r₁ + r₂, construir o autômato AFNε sem introduzir os estados q₀ e qf, identificando ('unificando') os estados iniciais e finais de M₁ e M₂. Descreva a construção.",
+      "solution": "Em vez de criar q₀ e qf, unificamos q₀₁ e q₀₂ em um único estado inicial q₀ (que herda todas as transições de ambos), e unificamos qf₁ e qf₂ em um único estado final qf (que herda todas as transições de chegada de ambos).\nFormalmente, define-se um novo autômato M onde:\n- Estado inicial = q₀ (fusão de q₀₁ e q₀₂)\n- Estado final = qf (fusão de qf₁ e qf₂)\n- Transições: toda transição (q, a) → q₀₁ ou (q, a) → q₀₂ em M₁/M₂ torna-se (q, a) → q₀; toda transição de qf₁ ou qf₂ mantém-se a partir de qf.\nCuidado: se q₀₁ = qf₁ (M₁ aceita ε) ou q₀₂ = qf₂ (M₂ aceita ε), o estado unificado q₀/qf deve ser final.",
+      "answer": "Unificar q₀₁ e q₀₂ em um estado inicial q₀ e unificar qf₁ e qf₂ em um estado final qf, redistribuindo as transições correspondentes."
+    },
+    {
+      "title": "Exercício 2 — Kleene sem estado final auxiliar",
+      "prompt": "No caso r = r₁*, construir o autômato AFNε sem introduzir o estado qf — mantendo qf₁ como o estado final e adicionando transição vazia de q₀ para qf₁. Descreva e justifique a construção.",
+      "solution": "Em vez de criar qf, mantemos qf₁ como estado final. O novo estado inicial q₀ recebe:\n- Transição ε para q₀₁ (para iniciar M₁)\n- Transição ε para qf₁ (para aceitar ε — zero repetições de r₁)\nO estado qf₁ já possui a transição ε de volta para q₀₁ (loop de repetição).\nAssim o autômato é M = (Σ₁, Q₁ ∪ { q₀ }, δ, q₀, { qf₁ }).\nCorreção: ε é aceita (q₀ →ε qf₁); uma repetição de r₁ é aceita (q₀ →ε q₀₁ → … → qf₁); múltiplas repetições são aceitas pelo loop qf₁ →ε q₀₁.",
+      "answer": "M = (Σ₁, Q₁ ∪ { q₀ }, δ, q₀, { qf₁ }) com δ(q₀, ε) = { q₀₁, qf₁ } e δ(qf₁, ε) ∋ q₀₁."
+    },
+    {
+      "title": "Exercício 3 — Construção de AFNε para (a + b)*",
+      "prompt": "Construa um AFNε a partir da ER (a + b)* usando o método de indução estrutural apresentado no módulo.",
+      "solution": "Passo 1 — ER a: autômato M_a com q₀a -a-> qfa.\nPasso 2 — ER b: autômato M_b com q₀b -b-> qfb.\nPasso 3 — ER (a + b): união de M_a e M_b.\n  Novo estado inicial q_u com ε para q₀a e q₀b.\n  Novo estado final q_uf recebendo ε de qfa e qfb.\nPasso 4 — ER (a + b)*: estrela de Kleene sobre o autômato da união.\n  Novo estado inicial q₀ com ε para q_u e ε para q_f (novo estado final).\n  qf_union (= q_uf) com ε de volta para q_u (loop) e ε para q_f.\nO autômato resultante tem: q₀ -ε-> q_u -ε-> q₀a -a-> qfa -ε-> q_uf -ε-> q_f; e q₀ -ε-> q_u -ε-> q₀b -b-> qfb -ε-> q_uf; com loop q_uf -ε-> q_u.",
+      "answer": "AFNε com estados { q₀, q_u, q₀a, qfa, q₀b, qfb, q_uf, q_f }, estado inicial q₀, estado final q_f, e transições ε conectando os autômatos intermediários conforme o método de indução."
+    },
+    {
+      "title": "Exercício 4 — Identificação da linguagem gerada",
+      "prompt": "Qual a linguagem gerada pela ER (a + b)*aa(a + b)*? Justifique usando as definições do módulo.",
+      "solution": "(a + b)* denota { a, b }* — todas as palavras sobre { a, b }, inclusive ε.\naa denota a concatenação de { a } com { a } = { aa }.\n(a + b)*aa(a + b)* denota { a, b }* { aa } { a, b }* — o conjunto de todas as palavras que contêm aa como subpalavra em alguma posição.\nExemplos: aa, aaa, baa, aab, baab, aabaa, …\nPalavras que NÃO pertencem: ε, a, b, ab, ba, aba, bab, abba, …",
+      "answer": "GERA((a + b)*aa(a + b)*) = todas as palavras sobre { a, b } que contêm aa como subpalavra."
+    }
+  ]
+}

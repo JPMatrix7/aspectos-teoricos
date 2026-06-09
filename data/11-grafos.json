@@ -1,0 +1,242 @@
+{
+  "id": "11-grafos",
+  "module": 11,
+  "title": "Grafos",
+  "icon": "🕸️",
+  "summary": "Grafos são estruturas matemáticas G = (V(G), E(G), ψ_G) compostas por vértices, arestas e uma função de incidência. Introduzidos historicamente pelo problema das pontes de Königsberg, modelam relações entre entidades e têm centenas de aplicações computacionais, incluindo redes, roteamento e análise de isomorfismo.",
+  "tags": ["grafos", "vértices", "arestas", "grau", "isomorfismo", "euler", "königsberg", "bipartido", "teoria-dos-grafos", "loop", "link", "aresta-múltipla", "grafo-simples", "grafo-planar"],
+  "keyPoints": [
+    "Um grafo G é definido formalmente como uma tripla G = (V(G), E(G), ψ_G), onde V(G) é o conjunto não vazio de vértices, E(G) é o conjunto de arestas e ψ_G é a função de incidência que associa cada aresta a um par de vértices.",
+    "O problema histórico das pontes de Königsberg (7 pontes, 4 regiões de terra) foi o ponto de partida da teoria dos grafos: Euler provou que não existe trajetória que percorra cada ponte exatamente uma vez.",
+    "Uma Trajetória de Euler é um caminho que percorre todas as arestas de um grafo exatamente uma vez sem retraçar nenhum arco.",
+    "Os extremos de uma aresta são ditos incidentes a ela; dois vértices incidentes a uma mesma aresta são adjacentes; duas arestas que compartilham um extremo também são adjacentes.",
+    "Um loop é uma aresta cujos dois extremos são o mesmo vértice; um link é uma aresta com extremos diferentes; arestas múltiplas (paralelas) são links com os mesmos extremos.",
+    "Um grafo é simples se não possui loops nem arestas múltiplas. Em um grafo simples com n vértices, o número de arestas satisfaz m ≤ C(n,2) = n(n−1)/2.",
+    "Dois grafos são isomorfos se existe uma bijeção f: V(G) → V(H) tal que (u,v) ∈ E(G) ⟺ (f(u),f(v)) ∈ E(H). Para provar não isomorfismo, basta exibir uma propriedade estrutural diferente (como a sequência de graus).",
+    "O grafo completo Kₙ é o grafo simples em que todo par de vértices distintos é ligado por uma aresta; existe apenas um Kₙ a menos de isomorfismo.",
+    "Um grafo bipartido tem seus vértices particionados em dois subconjuntos X e Y tal que toda aresta tem um extremo em X e outro em Y; quando todo vértice de X é adjacente a todo vértice de Y, temos o grafo bipartido completo K_{m,n}.",
+    "Um grafo é planar se admite um desenho no plano onde as arestas se intersectam apenas em seus extremos; um mesmo grafo pode ter múltiplas representações gráficas distintas.",
+    "Grafos idênticos têm o mesmo V, E e ψ; grafos isomorfos têm a mesma estrutura mas podem ter vértices com nomes diferentes.",
+    "Aplicações de grafos em computação incluem: redes de comunicação, rotas, circuitos, dependências de tarefas, análise de redes sociais e muitas centenas de outros problemas."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é um grafo G formalmente?",
+      "back": "Uma tripla G = (V(G), E(G), ψ_G), onde V(G) é o conjunto não vazio de vértices, E(G) é o conjunto de arestas (disjunto de V(G)) e ψ_G é a função que associa cada aresta a um par de vértices."
+    },
+    {
+      "front": "O que é uma Trajetória de Euler?",
+      "back": "Um caminho em um grafo que percorre todas as arestas exatamente uma vez, sem retraçar nenhum arco — não é possível no grafo de Königsberg pois todos os 4 vértices têm grau ímpar."
+    },
+    {
+      "front": "O que significa dizer que um vértice e uma aresta são incidentes?",
+      "back": "Os extremos de uma aresta são ditos incidentes com a aresta, e vice-versa: se e une u e v, então e é incidente a u e a v, e u e v são incidentes a e."
+    },
+    {
+      "front": "Quando dois vértices são adjacentes?",
+      "back": "Quando são incidentes a uma mesma aresta, ou seja, existe uma aresta cujos extremos são ambos os vértices."
+    },
+    {
+      "front": "Quando duas arestas são adjacentes?",
+      "back": "Quando compartilham ao menos um extremo em comum."
+    },
+    {
+      "front": "O que é um loop?",
+      "back": "Uma aresta cujos dois extremos são idênticos, ou seja, ψ_G(e) = (u, u). Exemplo: e₃ = (v₃, v₃) no grafo G do módulo."
+    },
+    {
+      "front": "O que é um link?",
+      "back": "Uma aresta com extremos diferentes, ou seja, ψ_G(e) = (u, v) com u ≠ v."
+    },
+    {
+      "front": "O que é uma aresta múltipla (paralela)?",
+      "back": "Dois ou mais links com os mesmos extremos. Exemplo: e₇ e e₈ ambas conectam v₂ a v₅ no grafo G."
+    },
+    {
+      "front": "O que é um grafo simples?",
+      "back": "Um grafo que não possui loops nem arestas múltiplas."
+    },
+    {
+      "front": "Qual é o limite de arestas em um grafo simples com n vértices?",
+      "back": "m ≤ C(n,2) = n(n−1)/2, pois cada aresta corresponde a um par não-ordenado de vértices distintos e não há arestas múltiplas."
+    },
+    {
+      "front": "O que é isomorfismo entre grafos?",
+      "back": "Uma bijeção f: V(G) → V(H) tal que (u,v) ∈ E(G) ⟺ (f(u),f(v)) ∈ E(H). Grafos isomorfos têm a mesma estrutura, diferindo apenas nos nomes dos vértices."
+    },
+    {
+      "front": "O que é o grafo completo Kₙ?",
+      "back": "Grafo simples em que cada par de vértices distintos possui exatamente uma aresta. Existe apenas um Kₙ a menos de isomorfismo."
+    },
+    {
+      "front": "O que é um grafo bipartido?",
+      "back": "Um grafo cujos vértices podem ser particionados em dois subconjuntos X e Y (bipartição) tal que toda aresta tem um extremo em X e outro em Y."
+    },
+    {
+      "front": "O que é o grafo bipartido completo K_{m,n}?",
+      "back": "Grafo bipartido com bipartição (X, Y) onde |X| = m e |Y| = n e cada vértice de X é adjacente a cada vértice de Y. Possui m·n arestas."
+    },
+    {
+      "front": "O que é um grafo planar?",
+      "back": "Um grafo que admite uma representação no plano onde as arestas se intersectam apenas em seus extremos (vértices). Um mesmo grafo pode ter múltiplas representações gráficas."
+    },
+    {
+      "front": "O que é um grafo trivial?",
+      "back": "Um grafo que possui apenas um único vértice."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Qual é a definição formal de um grafo G?",
+      "options": [
+        "G = (V(G), E(G), ψ_G), onde V(G) é o conjunto de vértices, E(G) o conjunto de arestas e ψ_G a função de incidência",
+        "G = (V(G), E(G)), onde V(G) é o conjunto de vértices e E(G) o conjunto de arestas ordenadas",
+        "G = (E(G), ψ_G), onde E(G) é o conjunto de arestas e ψ_G a função de adjacência",
+        "G = (V(G), ψ_G), onde V(G) é o conjunto de vértices e ψ_G o conjunto de arestas"
+      ],
+      "answer": 0,
+      "explanation": "Pela definição formal do módulo, um grafo G é uma tripla G = (V(G), E(G), ψ_G), com V(G) conjunto não vazio de vértices, E(G) conjunto disjunto de V(G) chamado arestas, e ψ_G função que associa cada aresta a um par de vértices."
+    },
+    {
+      "question": "Por que não é possível realizar uma Trajetória de Euler no grafo de Königsberg?",
+      "options": [
+        "Porque o grafo tem arestas múltiplas",
+        "Porque todos os 4 vértices do grafo têm grau ímpar",
+        "Porque o grafo não é conectado",
+        "Porque o grafo tem mais de 6 arestas"
+      ],
+      "answer": 1,
+      "explanation": "Uma Trajetória de Euler existe se e somente se o grafo tem exatamente 0 ou 2 vértices de grau ímpar. O grafo de Königsberg tem 4 vértices todos com grau ímpar (3, 3, 5, 3), tornando a trajetória impossível."
+    },
+    {
+      "question": "No grafo G do Exemplo₁, as arestas e₇ = (v₂, v₅) e e₈ = (v₂, v₅) são chamadas de:",
+      "options": [
+        "Loops",
+        "Links simples",
+        "Arestas múltiplas (paralelas)",
+        "Arestas incidentes"
+      ],
+      "answer": 2,
+      "explanation": "Arestas múltiplas (ou paralelas) são links (arestas com extremos diferentes) que possuem os mesmos extremos. e₇ e e₈ têm ambas os extremos v₂ e v₅, portanto são arestas múltiplas."
+    },
+    {
+      "question": "Qual das seguintes afirmativas sobre grafos simples está CORRETA?",
+      "options": [
+        "Um grafo simples pode ter loops, mas não arestas múltiplas",
+        "Um grafo simples não pode ter loops nem arestas múltiplas",
+        "Um grafo simples pode ter arestas múltiplas, mas não loops",
+        "Um grafo simples é sempre um grafo trivial"
+      ],
+      "answer": 1,
+      "explanation": "Por definição, um grafo é simples se não possuir loops (arestas com extremos idênticos) e nem arestas múltiplas (links com mesmos extremos)."
+    },
+    {
+      "question": "Se G é um grafo simples com n vértices, quantas arestas ele pode ter no máximo?",
+      "options": [
+        "n²",
+        "2n",
+        "n(n−1)/2",
+        "n(n+1)/2"
+      ],
+      "answer": 2,
+      "explanation": "Em um grafo simples, cada aresta corresponde a um par não-ordenado de vértices distintos. O número de pares distintos de n vértices é C(n,2) = n(n−1)/2. Logo m ≤ n(n−1)/2."
+    },
+    {
+      "question": "Dois vértices u e v são ditos adjacentes quando:",
+      "options": [
+        "Pertencem ao mesmo componente do grafo",
+        "São incidentes a uma mesma aresta",
+        "Têm o mesmo grau no grafo",
+        "Estão na mesma partição de um grafo bipartido"
+      ],
+      "answer": 1,
+      "explanation": "Pela definição do módulo, dois vértices são adjacentes quando são incidentes a uma mesma aresta, ou seja, quando existe uma aresta que os conecta diretamente."
+    },
+    {
+      "question": "O que é necessário para provar que dois grafos são isomorfos?",
+      "options": [
+        "Mostrar que têm o mesmo número de vértices",
+        "Mostrar que têm o mesmo número de arestas",
+        "Exibir uma bijeção f: V(G) → V(H) tal que (u,v) ∈ E(G) ⟺ (f(u),f(v)) ∈ E(H)",
+        "Mostrar que as sequências de graus são iguais"
+      ],
+      "answer": 2,
+      "explanation": "Por definição, um isomorfismo é uma bijeção f entre os conjuntos de vértices que preserva adjacência. Ter o mesmo número de vértices, arestas ou sequência de graus são condições necessárias, mas não suficientes."
+    },
+    {
+      "question": "O grafo completo K₄ possui quantas arestas?",
+      "options": [
+        "4",
+        "6",
+        "8",
+        "12"
+      ],
+      "answer": 1,
+      "explanation": "K₄ é um grafo simples com 4 vértices em que todo par de vértices distintos é conectado. O número de arestas é C(4,2) = 4·3/2 = 6."
+    },
+    {
+      "question": "Qual é a característica fundamental de um grafo bipartido?",
+      "options": [
+        "Todos os vértices têm o mesmo grau",
+        "O conjunto de vértices pode ser particionado em dois subconjuntos X e Y, com toda aresta tendo um extremo em X e outro em Y",
+        "O grafo não possui ciclos",
+        "Cada par de vértices está conectado por exatamente dois caminhos"
+      ],
+      "answer": 1,
+      "explanation": "Um grafo bipartido tem bipartição (X, Y): V(G) = X ∪ Y com X ∩ Y = ∅, e toda aresta do grafo tem um extremo em X e outro em Y. Arestas entre vértices do mesmo subconjunto não existem."
+    },
+    {
+      "question": "O que é um grafo planar?",
+      "options": [
+        "Um grafo cujos vértices estão dispostos em um plano cartesiano",
+        "Um grafo que admite uma representação onde as arestas se intersectam apenas em seus extremos",
+        "Um grafo em que todas as arestas são horizontais",
+        "Um grafo bipartido com representação retangular"
+      ],
+      "answer": 1,
+      "explanation": "Grafos planares são aqueles que possuem alguma representação gráfica onde as arestas se intersectam somente nos vértices (seus extremos). Um mesmo grafo pode ter múltiplas representações, algumas com cruzamentos e outras sem."
+    },
+    {
+      "question": "No grafo H do Exemplo₂, a aresta b = (u, u) é classificada como:",
+      "options": [
+        "Link",
+        "Aresta múltipla",
+        "Loop",
+        "Aresta de corte"
+      ],
+      "answer": 2,
+      "explanation": "Um loop é uma aresta cujos dois extremos são idênticos. A aresta b = (u, u) tem ambos os extremos iguais ao vértice u, sendo portanto um loop."
+    },
+    {
+      "question": "Para mostrar que dois grafos NÃO são isomorfos, qual estratégia é suficiente?",
+      "options": [
+        "Tentar todas as bijeções possíveis entre seus vértices",
+        "Exibir uma propriedade estrutural que um possui e o outro não (como sequências de grau distintas)",
+        "Verificar que os grafos têm desenhos diferentes",
+        "Mostrar que os conjuntos de vértices têm nomes diferentes"
+      ],
+      "answer": 1,
+      "explanation": "Basta exibir um invariante de isomorfismo que difere entre os grafos. A sequência de graus ordenada é uma invariante útil: se as sequências forem distintas, os grafos não podem ser isomorfos. Outras invariantes incluem número de loops, número de arestas múltiplas e estrutura de componentes."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Limite de arestas em grafo simples",
+      "prompt": "Mostre que se G é um grafo simples com n vértices, então m ≤ C(n,2) = n(n−1)/2.",
+      "solution": "Em um grafo simples, por definição não há loops nem arestas múltiplas.\nPortanto, cada aresta de G corresponde a um par não-ordenado {u, v} de vértices distintos.\nO número total de pares não-ordenados de vértices distintos que podem ser formados com n vértices é:\n  C(n,2) = n! / (2! · (n−2)!) = n(n−1)/2\nComo cada aresta usa exatamente um par distinto, e não há pares repetidos (sem arestas múltiplas) nem pares idênticos (sem loops), o número de arestas m é no máximo o número de pares disponíveis.\nPortanto: m ≤ C(n,2) = n(n−1)/2.",
+      "answer": "m ≤ C(n,2) = n(n−1)/2"
+    },
+    {
+      "title": "Exercício 2 — Verificação de isomorfismo (Exemplo do módulo)",
+      "prompt": "Os grafos G com V(G) = {v₁, v₂, v₃, v₄, v₅} (com loop em v₃, arestas múltiplas entre v₂ e v₅, e v₁ isolado) e H com V(H) = {u, v, w, x, y} (com loop em u, arestas múltiplas entre w e x, conforme Exemplo₂) são isomorfos? Justifique.",
+      "solution": "Para verificar isomorfismo, comparamos as sequências de grau de ambos os grafos.\n\nGrafo G — arestas: e₁=(v₁,v₂), e₂=(v₂,v₃), e₃=(v₃,v₃)[loop], e₄=(v₃,v₄), e₅=(v₂,v₄), e₆=(v₄,v₅), e₇=(v₂,v₅), e₈=(v₂,v₅)[paralela a e₇]\nGraus (loop conta 2 vezes):\n  d(v₁) = 1  (apenas e₁)\n  d(v₂) = 1+1+1+1+1 = 5  (e₁, e₂, e₅, e₇, e₈)\n  d(v₃) = 1+2+1 = 4  (e₂, e₃ conta 2×, e₄)\n  d(v₄) = 1+1+1 = 3  (e₄, e₅, e₆)\n  d(v₅) = 1+1+1 = 3  (e₆, e₇, e₈)\nSequência de grau de G ordenada: [1, 3, 3, 4, 5]\n\nGrafo H — arestas: a=(u,v), b=(u,u)[loop], c=(v,w), d=(w,x), e=(v,x), f=(w,x)[paralela a d], g=(u,x), h=(x,y)\nGraus:\n  d(u) = 1+2+1+1 = 5  (a, b conta 2×, g)\n  d(v) = 1+1+1 = 3  (a, c, e)\n  d(w) = 1+1+1 = 3  (c, d, f)\n  d(x) = 1+1+1+1+1 = 5  (d, e, f, g, h)\n  d(y) = 1  (h)\nSequência de grau de H ordenada: [1, 3, 3, 5, 5]\n\nAs sequências de grau são DIFERENTES: G tem [1,3,3,4,5] e H tem [1,3,3,5,5].\nPortanto, G e H NÃO são isomorfos.",
+      "answer": "Não são isomorfos. A sequência de grau de G é [1,3,3,4,5] e a de H é [1,3,3,5,5] — distintas, o que é suficiente para concluir que não existe isomorfismo entre eles."
+    },
+    {
+      "title": "Exercício 3 — Exercícios Finais: provar não isomorfismo",
+      "prompt": "Mostre que os grafos G (vértices A,B,C,D,E com arestas múltiplas entre B e C, loop em D) e H (vértices P,Q,R,S,T com arestas múltiplas entre P e Q, loop em T) não são isomorfos.",
+      "solution": "Estratégia: calcular a sequência de grau de cada grafo e comparar.\n\nGrafo G — arestas: A–B, A–C, B–C, B–C (múltipla), C–D, D–E, E–C, D–D (loop)\nGraus:\n  d(A) = 2  (A–B, A–C)\n  d(B) = 3  (A–B, B–C, B–C)\n  d(C) = 4  (A–C, B–C, B–C, C–D, E–C) = 5 ao contar todas as incidências\n  Recalculando com as arestas listadas: A–B, A–C, B–C, B–C (×2 = 2 arestas), C–D, D–E, E–C, D–D (loop)\n  d(A)=2, d(B)=1+2=3, d(C)=1+2+1+1=5, d(D)=1+1+2=4, d(E)=1+1=2\n  Sequência G: [2, 2, 3, 4, 5]\n\nGrafo H — arestas: P–Q, P–Q (×2 múltipla), P–R, Q–R, R–S, S–T, T–R, T–T (loop)\n  d(P)=2+1=3, d(Q)=2+1=3, d(R)=1+1+1+1=4, d(S)=1+1=2, d(T)=1+1+2=4\n  Sequência H: [2, 3, 3, 4, 4]\n\nSequências diferentes ([2,2,3,4,5] ≠ [2,3,3,4,4]), portanto G e H não são isomorfos.\n\nNota: se as sequências coincidissem, seria necessário verificar mais critérios estruturais (vizinhança, posição relativa do loop em relação às arestas múltiplas, etc.).",
+      "answer": "G e H não são isomorfos pois suas sequências de grau são distintas. A dica fundamental é verificar se o vértice com loop é adjacente ao vértice(s) com arestas múltiplas — essa relação estrutural difere entre G e H."
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "id": "05-automato-finito",
+  "module": 5,
+  "title": "Autômato Finito",
+  "icon": "🤖",
+  "summary": "Introduz o autômato finito (determinístico) como sistema de estados finitos: sua máquina (fita, controle e função de transição), a definição formal M = (Σ, Q, δ, q₀, F), o diagrama e a tabela de estados, a computação/aceitação de palavras e a função programa estendida δ*.",
+  "tags": ["autômato-finito", "estados", "transições", "AFD", "função-de-transição", "linguagem-regular", "diagrama-de-estados"],
+  "keyPoints": [
+    "Um sistema de estados finitos é um modelo matemático com entradas e saídas discretas e um número finito e predefinido de estados; o estado guarda apenas a informação do passado necessária para a próxima ação.",
+    "O autômato finito determinístico é uma máquina formada por fita (entrada, somente leitura, da esquerda para a direita), unidade de controle (controle finito) e programa (função de transição parcial).",
+    "Formalmente, um AFD é M = (Σ, Q, δ, q₀, F): alfabeto de entrada Σ, conjunto finito de estados Q, função de transição δ: Q × Σ → Q, estado inicial q₀ e conjunto de estados finais F.",
+    "A função de transição δ(p, a) = q depende do estado corrente p e do símbolo lido a e determina o novo estado q; pode ser dada por diagrama de estados ou por tabela de dupla entrada.",
+    "No diagrama, o estado inicial recebe uma seta de entrada e o estado final é desenhado com círculo duplo; transições paralelas (mesmo origem e destino) podem ter os rótulos unidos por vírgula.",
+    "A computação é a aplicação sucessiva de δ, símbolo a símbolo, até a parada; o autômato finito sempre pára, pois toda palavra é finita e não há possibilidade de ciclo infinito.",
+    "A entrada é aceita se, após processar o último símbolo, o autômato está em um estado final; é rejeitada se termina em estado não-final ou se o programa é indefinido para o par (estado, símbolo).",
+    "A função programa estendida δ*: Q × Σ* → Q é definida indutivamente por δ*(q, ε) = q e δ*(q, aw) = δ*(δ(q, a), w); o reconhecimento parte de q₀ e aceita w quando δ*(q₀, w) ∈ F.",
+    "Todo autômato finito pode ser visto como um grafo finito direto especial (com arcos paralelos, rótulos repetidos, nodo inicial e nodos finais distinguidos), herdando resultados da Teoria dos Grafos."
+  ],
+  "flashcards": [
+    { "front": "Definição formal de um Autômato Finito Determinístico (AFD)", "back": "M = (Σ, Q, δ, q₀, F), onde Σ é o alfabeto de entrada, Q é o conjunto finito de estados, δ é a função de transição (programa), q₀ é o estado inicial e F é o conjunto de estados finais." },
+    { "front": "O que é Σ no AFD?", "back": "Σ é o alfabeto (de símbolos) de entrada do autômato." },
+    { "front": "O que é Q no AFD?", "back": "Q é o conjunto de estados possíveis do autômato (finito)." },
+    { "front": "O que é δ (delta) no AFD e qual seu tipo?", "back": "δ é a função programa ou função de transição, uma função parcial δ: Q × Σ → Q. A transição δ(p, a) = q significa: estando no estado p e lendo o símbolo a, vai-se para o estado q." },
+    { "front": "O que são q₀ e F no AFD?", "back": "q₀ é o estado inicial (elemento distinguido de Q) e F é o conjunto de estados finais (subconjunto de Q)." },
+    { "front": "Como o estado inicial e o estado final são representados no diagrama de estados?", "back": "O estado inicial recebe uma seta de entrada (vinda de lugar nenhum); o estado final é desenhado com um círculo duplo (borda mais grossa)." },
+    { "front": "Quais são as três partes da máquina de um autômato finito?", "back": "Fita (dispositivo de entrada, dividida em células, somente leitura), Unidade de Controle (reflete o estado corrente, com cabeça de leitura que move para a direita) e Programa / Função de Transição (comanda as leituras e define o estado)." },
+    { "front": "A fita do autômato finito pode ser gravada?", "back": "Não. A fita é finita, dividida em células com um símbolo cada (do alfabeto de entrada); não é possível gravar sobre ela (não há memória auxiliar) e a palavra a ser processada ocupa toda a fita." },
+    { "front": "Por que um autômato finito sempre pára?", "back": "Porque qualquer palavra é finita e um novo símbolo é lido a cada aplicação da função programa, de modo que não existe a possibilidade de ciclo (loop) infinito." },
+    { "front": "Quando uma palavra é aceita e quando é rejeitada por um AFD?", "back": "É aceita quando, após processar o último símbolo, o autômato assume um estado final. É rejeitada quando termina em estado não-final ou quando o programa é indefinido para o argumento (estado e símbolo)." },
+    { "front": "Definição da função programa estendida δ*", "back": "δ*: Q × Σ* → Q, definida indutivamente por δ*(q, ε) = q e δ*(q, aw) = δ*(δ(q, a), w). Estende δ de símbolos para palavras." },
+    { "front": "Quais formas equivalentes existem para representar a função de transição?", "back": "O diagrama de estados (arco rotulado de p para q significa δ(p, a) = q) e a tabela de transição (tabela de dupla entrada: estados nas linhas, símbolos nas colunas)." },
+    { "front": "O que significam q₁ e q₂ no autômato M₁ que reconhece 'aa ou bb como subpalavra'?", "back": "q₁ memoriza que o símbolo anterior foi 'a' e q₂ memoriza que o símbolo anterior foi 'b'. Ao identificar aa ou bb, vai-se ao estado final q_f, que varre o sufixo restante." },
+    { "front": "Quais são os três tipos de autômato finito e como se relacionam?", "back": "Determinístico, não-determinístico e com movimentos vazios. Os três tipos são equivalentes em termos de poder computacional." },
+    { "front": "Por que o autômato finito não usa memória de trabalho?", "back": "Porque ele não possui memória de trabalho para armazenar informações passadas; para isso deve-se usar o conceito de estado." }
+  ],
+  "quiz": [
+    {
+      "question": "Na definição formal M = (Σ, Q, δ, q₀, F), o que representa δ?",
+      "options": ["O alfabeto de entrada", "A função de transição (programa) δ: Q × Σ → Q", "O conjunto de estados finais", "O estado inicial"],
+      "answer": 1,
+      "explanation": "δ é a função programa ou função de transição, uma função parcial δ: Q × Σ → Q, em que δ(p, a) = q dá o novo estado a partir do estado corrente p e do símbolo lido a."
+    },
+    {
+      "question": "Qual componente do AFD é o 'elemento distinguido de Q' que indica onde a computação começa?",
+      "options": ["F", "Σ", "q₀", "δ"],
+      "answer": 2,
+      "explanation": "q₀ é o estado inicial, um elemento distinguido do conjunto de estados Q; F é o conjunto de estados finais."
+    },
+    {
+      "question": "No diagrama de estados, como se representa um estado final (de aceitação)?",
+      "options": ["Com uma seta de entrada vinda de lugar nenhum", "Com um círculo duplo (borda mais grossa)", "Com um laço rotulado por todos os símbolos", "Com um quadrado em vez de círculo"],
+      "answer": 1,
+      "explanation": "O estado final é desenhado com círculo duplo; a seta de entrada é a notação do estado inicial."
+    },
+    {
+      "question": "Por que se afirma que um autômato finito sempre pára?",
+      "options": ["Porque pode gravar na fita e apagar laços", "Porque toda palavra é finita e um símbolo é lido a cada aplicação de δ, sem ciclo infinito", "Porque possui memória de trabalho ilimitada", "Porque o não-determinismo impede repetições"],
+      "answer": 1,
+      "explanation": "Como qualquer palavra é finita e um novo símbolo é lido a cada aplicação da função programa, não existe possibilidade de ciclo (loop) infinito; logo o processamento sempre termina."
+    },
+    {
+      "question": "Quando um AFD REJEITA uma palavra?",
+      "options": ["Somente quando lê o símbolo ε", "Quando termina em estado não-final OU quando δ é indefinida para o par (estado, símbolo)", "Apenas quando a fita está vazia", "Quando passa por dois estados finais"],
+      "answer": 1,
+      "explanation": "A rejeição ocorre de duas formas: após processar o último símbolo o autômato está em estado não-final, ou o programa (δ) é indefinido para o argumento (estado e símbolo)."
+    },
+    {
+      "question": "A função programa estendida δ* tem qual assinatura e caso base?",
+      "options": ["δ*: Q × Σ → Q, com δ*(q, a) = q", "δ*: Q × Σ* → Q, com δ*(q, ε) = q", "δ*: Σ* → Q, com δ*(ε) = q₀", "δ*: Q × Q → Σ, com δ*(q, q) = ε"],
+      "answer": 1,
+      "explanation": "δ* estende δ para palavras: δ*: Q × Σ* → Q, com caso base δ*(q, ε) = q e passo indutivo δ*(q, aw) = δ*(δ(q, a), w)."
+    },
+    {
+      "question": "Considere M₁ com δ₁: δ(q₀,a)=q₁, δ(q₁,b)=q₂, δ(q₂,a)=q₁, δ(q₁,a)=q_f, e q_f final. A palavra 'abaa' é:",
+      "options": ["Rejeitada, pois termina em q₂", "Aceita, pois δ*(q₀, abaa) = q_f ∈ F", "Rejeitada, pois δ é indefinida em algum passo", "Aceita, mas termina em q₀"],
+      "answer": 1,
+      "explanation": "Aplicando δ*: q₀ -a-> q₁ -b-> q₂ -a-> q₁ -a-> q_f. Como q_f é estado final, δ*(q₀, abaa) = q_f ∈ F e 'abaa' é aceita (contém 'aa' como subpalavra)."
+    },
+    {
+      "question": "Qual é o tipo correto da função de transição δ de um AFD?",
+      "options": ["Função total δ: Σ × Σ → Q", "Função parcial δ: Q × Σ → Q", "Função δ: Q → Σ*", "Relação δ ⊆ Q × Q"],
+      "answer": 1,
+      "explanation": "No AFD, δ é uma função parcial de Q × Σ em Q; por ser parcial, pode não estar definida para alguns pares (estado, símbolo), o que leva à rejeição."
+    },
+    {
+      "question": "Sobre a fita de um autômato finito, é CORRETO afirmar que:",
+      "options": ["É infinita e pode ser gravada livremente", "É finita, cada célula guarda um símbolo do alfabeto e não pode ser gravada", "Serve como memória de trabalho auxiliar", "A cabeça de leitura pode mover-se para os dois lados"],
+      "answer": 1,
+      "explanation": "A fita é finita, dividida em células com um símbolo cada (do alfabeto de entrada), não pode ser gravada (sem memória auxiliar) e a cabeça move-se exclusivamente para a direita, partindo da célula mais à esquerda."
+    },
+    {
+      "question": "Por que um autômato finito é considerado um grafo finito direto especial?",
+      "options": ["Porque não possui estados finais", "Porque admite arcos paralelos, rótulos repetidos, um nodo inicial e nodos finais distinguidos", "Porque seus arcos não têm direção", "Porque cada nodo tem exatamente um arco de saída por símbolo e nenhum laço"],
+      "answer": 1,
+      "explanation": "O autômato pode ter arcos paralelos (mesmos nodos origem/destino), arcos com a mesma etiqueta, um nodo distinguido (estado inicial) e um conjunto de nodos distinguidos (estados finais); por isso é um grafo finito direto especial que herda resultados da Teoria dos Grafos."
+    },
+    {
+      "question": "No autômato M₁ que reconhece L₁ = {w | w possui aa ou bb como subpalavra}, o que o estado q₂ memoriza?",
+      "options": ["Que já foi identificado aa", "Que o símbolo anterior é 'b'", "Que o símbolo anterior é 'a'", "Que a entrada acabou"],
+      "answer": 1,
+      "explanation": "Em M₁, q₁ significa 'símbolo anterior é a' e q₂ significa 'símbolo anterior é b'. Ao ler outro 'b' em q₂, identifica-se 'bb' e vai-se ao estado final q_f."
+    },
+    {
+      "question": "Em um diagrama de estados, duas transições δ(p,a)=q e δ(p,b)=q (mesmo origem e destino) podem ser desenhadas como:",
+      "options": ["Um único arco rotulado 'a,b'", "Um laço em p rotulado 'ε'", "Dois nodos finais", "Um arco de q para p rotulado 'ab'"],
+      "answer": 0,
+      "explanation": "Transições paralelas (mesmo estado de origem e destino) podem ser representadas por dois arcos separados (um 'a' e um 'b') ou por um único arco com os rótulos unidos por vírgula, 'a,b'."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Construir o AFD para 'aa ou bb como subpalavra' (M₁)",
+      "prompt": "Seja L₁ = { w | w possui aa ou bb como subpalavra } sobre Σ = {a, b}. Apresente o autômato finito M₁ = (Σ, Q, δ₁, q₀, F) que reconhece L₁, dando a tabela de transição δ₁ e o significado de cada estado.",
+      "solution": "Estados: Q = {q₀, q₁, q₂, q_f}, com q₀ inicial e F = {q_f}.\nSignificado: q₀ = início (nenhum símbolo memorizado); q₁ = 'símbolo anterior é a'; q₂ = 'símbolo anterior é b'; q_f = já identificou aa ou bb (varre o sufixo).\nTabela de transição δ₁:\n| δ₁ | a   | b   |\n| q₀ | q₁  | q₂  |\n| q₁ | q_f | q₂  |\n| q₂ | q₁  | q_f |\n| q_f| q_f | q_f |\nIdeia: ao ler 'a' parte-se para q₁ (anterior a); se vier outro 'a' (q₁ lendo a) tem-se 'aa' e vai-se a q_f. Analogamente para 'b' com q₂ e 'bb'. Em q_f qualquer símbolo mantém q_f.",
+      "answer": "M₁ = ({a,b}, {q₀,q₁,q₂,q_f}, δ₁, q₀, {q_f}), com δ₁ dada pela tabela acima; q_f é o único estado final."
+    },
+    {
+      "title": "Exercício 2 — Computar δ*(q₀, abaa) em M₁",
+      "prompt": "Para o autômato M₁ do exercício anterior, calcule δ*(q₀, abaa) usando a definição da função programa estendida e diga se a palavra 'abaa' é aceita.",
+      "solution": "Aplicando δ*(q, aw) = δ*(δ(q,a), w) e δ*(q, ε) = q:\nδ*(q₀, abaa)\n= δ*(δ(q₀,a), baa) = δ*(q₁, baa)\n= δ*(δ(q₁,b), aa) = δ*(q₂, aa)\n= δ*(δ(q₂,a), a)  = δ*(q₁, a)\n= δ*(δ(q₁,a), ε)  = δ*(q_f, ε)\n= q_f\nComo o resultado é q_f e q_f ∈ F, a palavra é aceita (de fato 'abaa' contém 'aa' como subpalavra).",
+      "answer": "δ*(q₀, abaa) = q_f ∈ F, logo 'abaa' é ACEITA."
+    },
+    {
+      "title": "Exercício 3 — Traçar a computação de M₁ sobre 'abba'",
+      "prompt": "Mostre a sequência de estados percorrida por M₁ ao processar a palavra 'abba', símbolo a símbolo, e conclua se ela é aceita ou rejeitada.",
+      "solution": "Partindo de q₀ e lendo da esquerda para a direita:\nPasso 0: estado q₀, lê 'a' → q₁\nPasso 1: estado q₁, lê 'b' → q₂\nPasso 2: estado q₂, lê 'b' → q_f\nPasso 3: estado q_f, lê 'a' → q_f\nSequência: q₀ → q₁ → q₂ → q_f → q_f. Após o último símbolo o autômato está em q_f.",
+      "answer": "Sequência q₀ → q₁ → q₂ → q_f → q_f; termina em q_f (final), logo 'abba' é ACEITA (contém 'bb')."
+    }
+  ]
+}

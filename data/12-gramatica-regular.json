@@ -1,0 +1,238 @@
+{
+  "id": "12-gramatica-regular",
+  "module": 12,
+  "title": "Gramática Regular",
+  "icon": "📐",
+  "summary": "A gramática regular (seção 3.7) é um formalismo gerador de linguagens regulares definido por restrições nas regras de produção — as gramáticas lineares (à direita, à esquerda e suas versões unitárias). As quatro formas são equivalentes entre si, e a gramática regular é equivalente a autômato finito e expressão regular: GR ↔ Linguagem Regular ↔ Autômato Finito.",
+  "tags": ["gramática-regular", "produções", "linguagem-regular", "gramática-linear", "hierarquia-de-chomsky", "tipo-3"],
+  "keyPoints": [
+    "Uma gramática regular (GR) é definida como uma gramática linear; é o formalismo gerador equivalente a autômato finito e expressão regular para descrever linguagens regulares.",
+    "Existem quatro gramáticas lineares: Linear à Direita (GLD, A → wB ou A → w), Linear à Esquerda (GLE, A → Bw ou A → w), Linear Unitária à Direita (GLUD = GLD com |w| ≤ 1) e Linear Unitária à Esquerda (GLUE = GLE com |w| ≤ 1).",
+    "O lado direito de uma produção linear tem no máximo uma variável, que sempre antecede (linear à esquerda) ou sucede (linear à direita) uma subpalavra eventualmente vazia de terminais.",
+    "Teorema da equivalência: uma linguagem L é gerada por uma GLD se e somente se é gerada por uma GLE, por uma GLUD e por uma GLUE — as quatro formas geram exatamente as mesmas linguagens.",
+    "A linguagem gerada por G é L(G) = GERA(G) = { w ∈ T* | S ⇒⁺ w }, o conjunto das palavras de terminais deriváveis a partir do símbolo inicial S em uma ou mais etapas.",
+    "Misturar produções lineares à direita e à esquerda na mesma gramática (A → wB e A → Bw, |w| ≥ 1) não caracteriza gramática regular e pode gerar linguagens não-regulares, como { aⁿbⁿ | n ∈ ℕ }.",
+    "Teorema GR → Linguagem Regular: dada uma GLUD, constrói-se um AFNε M com Σ = T, Q = V ∪ {q_f}, q₀ = S e F = {q_f}, que simula as derivações de G, de modo que ACEITA(M) = GERA(G).",
+    "Na conversão GLUD → AFNε, as produções viram transições: A → ε e A → a vão para q_f; A → B vira δ(A,ε) = B; A → aB vira δ(A,a) = B.",
+    "Teorema Linguagem Regular → GR: a partir de um AFD M = (Σ, Q, δ, q₀, F) constrói-se uma GR com V = Q ∪ {S}, T = Σ, e produções S → q₀, q_f → ε (para cada estado final) e q_i → a q_k para cada transição δ(q_i, a) = q_k.",
+    "As três representações são equivalentes: Gramática Regular ↔ Linguagem Regular ↔ Autômato Finito (e também ↔ Expressão Regular)."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é uma Gramática Regular (GR)?",
+      "back": "Uma gramática linear, isto é, uma gramática G = (V, T, P, S) cujas produções obedecem às restrições das formas lineares (à direita, à esquerda ou unitárias). É um formalismo gerador de linguagens regulares."
+    },
+    {
+      "front": "Qual a forma das produções de uma Gramática Linear à Direita (GLD)?",
+      "back": "A → wB   ou   A → w, onde A e B são variáveis e w ∈ T* é uma subpalavra de terminais. A variável (no máximo uma) sucede os terminais."
+    },
+    {
+      "front": "Qual a forma das produções de uma Gramática Linear à Esquerda (GLE)?",
+      "back": "A → Bw   ou   A → w, onde A e B são variáveis e w ∈ T*. A variável (no máximo uma) antecede os terminais."
+    },
+    {
+      "front": "O que distingue uma gramática linear UNITÁRIA (GLUD / GLUE)?",
+      "back": "É como a gramática linear à direita (GLUD) ou à esquerda (GLUE), com a restrição adicional | w | ≤ 1 — ou seja, no máximo um terminal no lado direito da produção."
+    },
+    {
+      "front": "O que diz o Teorema da Equivalência das Gramáticas Lineares?",
+      "back": "Para uma linguagem L: L é gerada por uma GLD sse é gerada por uma GLE sse por uma GLUD sse por uma GLUE. As quatro formas lineares são formalismos equivalentes (geram as mesmas linguagens)."
+    },
+    {
+      "front": "Como se define a Linguagem Gerada L(G)?",
+      "back": "Para G = (V, T, P, S), L(G) = GERA(G) = { w ∈ T* | S ⇒⁺ w }: o conjunto de todas as palavras de terminais deriváveis de S em uma ou mais etapas de derivação."
+    },
+    {
+      "front": "Por que combinar produções lineares à direita E à esquerda não dá uma gramática regular?",
+      "back": "Porque produções simultâneas do tipo A → wB e A → Bw (com |w| ≥ 1) podem gerar uma linguagem que não é regular (ex.: { aⁿbⁿ | n ∈ ℕ }). Tais gramáticas não são gramáticas regulares."
+    },
+    {
+      "front": "No teorema GR → Linguagem Regular, como se define o AFNε M a partir de uma GLUD G = (V, T, P, S)?",
+      "back": "M = (Σ, Q, δ, q₀, F) com Σ = T, Q = V ∪ { q_f } (q_f ∉ V), F = { q_f } e q₀ = S. As transições são geradas a partir das produções de G."
+    },
+    {
+      "front": "Como uma produção é traduzida em transição na conversão GLUD → AFNε?",
+      "back": "A → ε gera δ(A, ε) = q_f; A → a gera δ(A, a) = q_f; A → B gera δ(A, ε) = B; A → aB gera δ(A, a) = B."
+    },
+    {
+      "front": "No teorema Linguagem Regular → GR, como se define a gramática a partir de um AFD M = (Σ, Q, δ, q₀, F)?",
+      "back": "G = (V, T, P, S) com V = Q ∪ { S } (S ∉ Q) e T = Σ. Produções: S → q₀; q_f → ε (para cada estado final q_f); e q_i → a q_k para cada transição δ(q_i, a) = q_k."
+    },
+    {
+      "front": "O que significa o símbolo ⇒⁺ em S ⇒⁺ w?",
+      "back": "Indica que w é derivável a partir de S em UMA ou mais etapas de derivação (fecho transitivo da relação de derivação ⇒)."
+    },
+    {
+      "front": "Qual a relação de equivalência geral estabelecida neste módulo?",
+      "back": "Gramática Regular ↔ Linguagem Regular ↔ Autômato Finito (e ↔ Expressão Regular): os formalismos descrevem exatamente a mesma classe de linguagens, as linguagens regulares."
+    },
+    {
+      "front": "Que estratégia de prova é usada nos dois teoremas de equivalência (GR ↔ AF)?",
+      "back": "Indução. Em GR → LR, indução no número de derivações (M simula as derivações de G). Em LR → GR, indução no tamanho da palavra (a derivação simula a função programa estendida δ*)."
+    },
+    {
+      "front": "Como fica a GLD para a expressão regular a(ba)*?",
+      "back": "G = ({ S, A }, { a, b }, P, S) com S → aA e A → baA | ε."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Qual é a definição de Gramática Regular dada no módulo?",
+      "options": [
+        "Uma gramática cujas produções são todas da forma A → BC ou A → a",
+        "Uma gramática linear",
+        "Uma gramática sem restrições nas regras de produção",
+        "Uma gramática que gera apenas a linguagem vazia"
+      ],
+      "answer": 1,
+      "explanation": "O slide define explicitamente: 'Def: Gramática Regular (GR) — G é uma gramática linear.' É justamente a restrição às formas lineares que caracteriza a GR."
+    },
+    {
+      "question": "Uma produção da forma A → wB (com a variável à direita dos terminais) caracteriza qual tipo de gramática linear?",
+      "options": [
+        "Linear à Esquerda (GLE)",
+        "Linear à Direita (GLD)",
+        "Livre de contexto pura",
+        "Sensível ao contexto"
+      ],
+      "answer": 1,
+      "explanation": "Na Gramática Linear à Direita as produções têm a forma A → wB ou A → w: a (única) variável SUCEDE os terminais, ficando à direita."
+    },
+    {
+      "question": "O que a restrição '| w | ≤ 1' acrescenta a uma gramática linear, transformando-a em unitária?",
+      "options": [
+        "Permite no máximo uma variável no lado esquerdo",
+        "Exige que a gramática gere apenas uma palavra",
+        "Limita a subpalavra de terminais a no máximo um símbolo no lado direito",
+        "Proíbe o uso de ε em qualquer produção"
+      ],
+      "answer": 2,
+      "explanation": "Nas formas Unitárias (GLUD/GLUE), além de serem lineares à direita ou à esquerda, vale | w | ≤ 1: o lado direito tem no máximo um terminal (além da eventual variável)."
+    },
+    {
+      "question": "Segundo o Teorema da Equivalência das Gramáticas Lineares, o que é verdadeiro?",
+      "options": [
+        "GLD gera estritamente mais linguagens que GLE",
+        "GLUD e GLUE geram linguagens não-regulares que GLD não gera",
+        "As quatro formas (GLD, GLE, GLUD, GLUE) geram exatamente as mesmas linguagens",
+        "Apenas a GLUD é equivalente a autômatos finitos"
+      ],
+      "answer": 2,
+      "explanation": "O teorema afirma que L é gerada por uma GLD sse por uma GLE sse por uma GLUD sse por uma GLUE — as quatro são formalismos equivalentes."
+    },
+    {
+      "question": "A linguagem gerada por uma gramática G é definida como:",
+      "options": [
+        "L(G) = { w ∈ T* | S ⇒⁺ w }",
+        "L(G) = { w ∈ V* | S → w }",
+        "L(G) = { w ∈ T* | w ⇒ S }",
+        "L(G) = { w ∈ Σ* | S = w }"
+      ],
+      "answer": 0,
+      "explanation": "Pela definição de Linguagem Gerada: L(G) = GERA(G) = { w ∈ T* | S ⇒⁺ w } — palavras de terminais deriváveis de S em uma ou mais etapas."
+    },
+    {
+      "question": "Por que produções simultaneamente do tipo A → wB e A → Bw (com |w| ≥ 1) NÃO caracterizam uma gramática regular?",
+      "options": [
+        "Porque violam a definição de alfabeto",
+        "Porque a linguagem gerada poderá não ser regular (ex.: { aⁿbⁿ | n ∈ ℕ })",
+        "Porque sempre geram a linguagem vazia",
+        "Porque exigem mais de uma variável no lado esquerdo"
+      ],
+      "answer": 1,
+      "explanation": "O slide de observação alerta que misturar linearidade à direita e à esquerda pode gerar linguagens não-regulares, como { aⁿbⁿ | n ∈ ℕ }; logo não é uma gramática regular."
+    },
+    {
+      "question": "Na construção do AFNε a partir de uma GLUD G = (V, T, P, S), como ficam q₀ e F?",
+      "options": [
+        "q₀ = q_f e F = V",
+        "q₀ = S e F = { q_f }, com Q = V ∪ { q_f }",
+        "q₀ = T e F = Σ",
+        "q₀ = ε e F = ∅"
+      ],
+      "answer": 1,
+      "explanation": "O slide define M = (Σ, Q, δ, q₀, F) com Σ = T, Q = V ∪ { q_f }, F = { q_f } e q₀ = S (estado inicial é o símbolo inicial da gramática)."
+    },
+    {
+      "question": "Na conversão GLUD → AFNε, a produção A → aB gera qual transição?",
+      "options": [
+        "δ(A, ε) = B",
+        "δ(A, a) = q_f",
+        "δ(A, a) = B",
+        "δ(B, a) = A"
+      ],
+      "answer": 2,
+      "explanation": "Pela tabela de tradução: A → aB gera δ(A, a) = B (consome o terminal a e move da variável A para a variável B)."
+    },
+    {
+      "question": "Na conversão de um AFD para gramática regular, qual produção corresponde à transição δ(q_i, a) = q_k?",
+      "options": [
+        "q_i → a q_k",
+        "q_k → a q_i",
+        "S → q_i",
+        "q_i → ε"
+      ],
+      "answer": 0,
+      "explanation": "A tabela transição → produção associa δ(q_i, a) = q_k à produção q_i → a q_k; além disso há S → q₀ e q_f → ε para cada estado final."
+    },
+    {
+      "question": "Na construção da GR a partir de um AFD, qual produção é gerada para CADA estado final q_f?",
+      "options": [
+        "S → q_f",
+        "q_f → ε",
+        "q_f → a q_f",
+        "q_f → S"
+      ],
+      "answer": 1,
+      "explanation": "Para indicar aceitação, cada estado final q_f recebe a produção q_f → ε (junto com a produção inicial S → q₀)."
+    },
+    {
+      "question": "Qual técnica de prova é usada no teorema 'Linguagem Regular → Gramática Regular'?",
+      "options": [
+        "Indução no número de variáveis da gramática",
+        "Indução no tamanho da palavra (a derivação simula a função programa estendida δ*)",
+        "Redução ao absurdo sobre o alfabeto",
+        "Diagonalização de Cantor"
+      ],
+      "answer": 1,
+      "explanation": "A prova é por indução no tamanho da palavra w ∈ Σ*, mostrando que a derivação da GLUD simula a função programa estendida δ* do AFD, com GERA(G) = ACEITA(M)."
+    },
+    {
+      "question": "Considerando o exemplo de conversão de AFD em GR em que q₀, q₁ e q₂ são todos finais e as transições são δ(q₀,a)=q₀, δ(q₀,b)=q₁, δ(q₁,b)=q₁, δ(q₁,c)=q₂, δ(q₂,c)=q₂, qual linguagem é descrita?",
+      "options": [
+        "(a + b + c)*",
+        "a* b* c*",
+        "{ aⁿbⁿcⁿ | n ∈ ℕ }",
+        "abc"
+      ],
+      "answer": 1,
+      "explanation": "Os a's só fecham em q₀, depois b's em q₁ e c's em q₂, com todos os estados finais, descrevendo a* b* c* (cada bloco pode ser vazio)."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Gramática simultaneamente nas quatro formas lineares",
+      "prompt": "É possível uma gramática que seja, simultaneamente, linear à direita, linear à esquerda, linear unitária à direita e linear unitária à esquerda? Dê um exemplo.",
+      "solution": "Sim. Basta que toda produção tenha o lado direito formado apenas por UM único terminal ou por ε (sem qualquer variável no lado direito).\nNesse caso, w ∈ T com |w| ≤ 1, e como não há variável, não importa se ela 'antecede' ou 'sucede' os terminais — as quatro restrições (GLD, GLE, GLUD, GLUE) ficam satisfeitas ao mesmo tempo.\nExemplo sobre Σ = { a }: G = ({ S }, { a }, P, S) com S → a | ε.\nEssa gramática gera L = { ε, a } e cada produção é, ao mesmo tempo, linear unitária à direita e à esquerda.",
+      "answer": "Sim. Ex.: S → a | ε (lado direito sempre um terminal ou ε, sem variável) é GLD, GLE, GLUD e GLUE simultaneamente."
+    },
+    {
+      "title": "Exercício 2 — Gramática Regular para a(ba)*",
+      "prompt": "Apresente gramáticas regulares que gerem a linguagem denotada pela expressão regular a(ba)*, nas quatro formas lineares.",
+      "solution": "Linear à Direita: G = ({ S, A }, { a, b }, P, S)\n  S → aA\n  A → baA | ε\nLinear à Esquerda: G = ({ S }, { a, b }, P, S)\n  S → Sba | a\nLinear Unitária à Direita: G = ({ S, A, B }, { a, b }, P, S)\n  S → aA\n  A → bB | ε\n  B → aA\nLinear Unitária à Esquerda: G = ({ S, A }, { a, b }, P, S)\n  S → Aa | a\n  A → Sb\nVerificação (GLD): S ⇒ aA ⇒ a (ε) = a; S ⇒ aA ⇒ a·baA ⇒ a·ba·ε = aba; etc., gerando a, aba, ababa, … = a(ba)*.",
+      "answer": "Ex. (GLD): S → aA, A → baA | ε. As demais formas estão na resolução; todas geram a(ba)*."
+    },
+    {
+      "title": "Exercício 3 — Gramática mista (direita e esquerda) que gera { aⁿbⁿ | n ∈ ℕ }",
+      "prompt": "Mostre que é possível desenvolver uma gramática, com produções lineares à direita e à esquerda, que gera { aⁿbⁿ | n ∈ ℕ }. Por que isso ilustra que tal gramática não é regular?",
+      "solution": "Gramática: G = ({ S }, { a, b }, P, S) com\n  S → aSb | ε\nNa produção S → aSb, o terminal a ANTECEDE a variável S (estilo linear à esquerda) e o terminal b a SUCEDE (estilo linear à direita) — portanto há terminais dos dois lados da variável, misturando as formas.\nDerivação: S ⇒ aSb ⇒ aaSbb ⇒ … ⇒ aⁿSbⁿ ⇒ aⁿbⁿ (aplicando S → ε no final), e com n=0: S ⇒ ε.\nLogo L(G) = { aⁿbⁿ | n ∈ ℕ }.\nEssa linguagem é NÃO-regular (resultado clássico via Lema do Bombeamento para linguagens regulares). Como o lado direito de uma produção regular admite no máximo uma variável e os terminais só de um lado dela, S → aSb viola a forma linear pura; por isso a gramática não é regular e consegue ultrapassar a classe das linguagens regulares.",
+      "answer": "G: S → aSb | ε gera { aⁿbⁿ | n ∈ ℕ }. A produção S → aSb tem terminais dos dois lados da variável (mistura direita+esquerda), não é forma linear pura e gera linguagem não-regular."
+    },
+    {
+      "title": "Exercício 4 — Construção de AFNε a partir de uma GR",
+      "prompt": "Dada G = ({ S, A, B }, { a, b }, P, S) com S → aA, A → bB | ε e B → aA, construa o AFNε equivalente (estados, transições e diagrama).",
+      "solution": "Aplicando a tabela produção → transição (Σ = T = { a, b }, Q = V ∪ { q_f }, q₀ = S, F = { q_f }):\n  S → aA  ⟹  δ(S, a) = A\n  A → bB  ⟹  δ(A, b) = B\n  A → ε   ⟹  δ(A, ε) = q_f\n  B → aA  ⟹  δ(B, a) = A\nAFNε: M = ({ a, b }, { S, A, B, q_f }, δ, S, { q_f }).\nTabela de transição:\n  → S : a→{A}, b→∅, ε→∅\n    A : a→∅, b→{B}, ε→{q_f}\n    B : a→{A}, b→∅, ε→∅\n  * q_f: todas ∅\nLeitura: de S por a vai a A; de A por b vai a B e por ε aceita (q_f); de B por a volta a A.",
+      "answer": "M = ({a,b}, {S,A,B,q_f}, δ, S, {q_f}) com δ(S,a)=A, δ(A,b)=B, δ(A,ε)=q_f, δ(B,a)=A."
+    }
+  ]
+}

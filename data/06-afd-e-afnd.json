@@ -1,0 +1,226 @@
+{
+  "id": "06-afd-e-afnd",
+  "module": 6,
+  "title": "Conversão de AFND para AFD",
+  "icon": "🔄",
+  "summary": "Apresenta o conceito de Autômato Finito Não Determinístico (AFND) e demonstra o algoritmo de construção de subconjuntos para convertê-lo em um Autômato Finito Determinístico (AFD) equivalente, com exemplo motivador (múltiplos de 4 em binário) e dois exercícios resolvidos.",
+  "tags": ["AFD", "AFND", "conversão", "determinização", "construção-de-subconjuntos", "tabela-de-transição", "autômatos"],
+  "keyPoints": [
+    "Um AFND possui pelo menos um símbolo de entrada que, a partir de um estado, possui várias transições de saída para outros estados.",
+    "Todo AFND tem um AFD equivalente que reconhece exatamente a mesma linguagem.",
+    "O algoritmo de construção de subconjuntos cria estados do AFD que correspondem a subconjuntos dos estados do AFND.",
+    "O estado inicial do AFD é o subconjunto contendo apenas o estado inicial do AFND.",
+    "Um estado do AFD é final se e somente se o subconjunto correspondente contém pelo menos um estado final do AFND.",
+    "A construção se encerra quando nenhum novo subconjunto é gerado ao calcular as transições.",
+    "O estado morto (∅) representa o subconjunto vazio; ele não surge quando o estado inicial possui laço em todos os símbolos do alfabeto.",
+    "Uma cadeia binária representa um múltiplo de 4 se e somente se termina com '00', o que motivou o exemplo do módulo.",
+    "No exemplo do módulo, o AFND tem 3 estados (A inicial, B, C final) e o AFD resultante também tem 3 estados (e0, e1, e2).",
+    "O estado {A,B,C} é o estado final do AFD pois contém C, que é o único estado final do AFND original."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é um AFND?",
+      "back": "Um Autômato Finito Não Determinístico é um autômato em que pelo menos um símbolo de entrada possui várias transições de saída a partir de um mesmo estado."
+    },
+    {
+      "front": "O que é o algoritmo de construção de subconjuntos?",
+      "back": "É o método de conversão de AFND para AFD onde cada estado do AFD representa um subconjunto dos estados do AFND. A tabela de transição é construída incrementalmente até que nenhum novo subconjunto seja gerado."
+    },
+    {
+      "front": "Como definir o estado inicial do AFD na conversão?",
+      "back": "O estado inicial do AFD é o subconjunto contendo apenas o estado inicial do AFND, denotado como {q0} ou {estado_inicial}."
+    },
+    {
+      "front": "Como identificar os estados finais do AFD na conversão?",
+      "back": "São finais todos os subconjuntos (estados do AFD) que contêm pelo menos um estado final do AFND original."
+    },
+    {
+      "front": "O que é o estado morto (∅) em um AFD construído por subconjuntos?",
+      "back": "É o estado correspondente ao subconjunto vazio. É um estado não-final e todas as suas transições apontam para si mesmo. Ele não aparece quando o estado inicial do AFND tem laço em todos os símbolos."
+    },
+    {
+      "front": "Quando o processo de construção de subconjuntos termina?",
+      "back": "Quando todos os subconjuntos gerados nas colunas de transição já foram analisados como linhas da tabela, ou seja, nenhum novo subconjunto aparece."
+    },
+    {
+      "front": "No exemplo do módulo, quais são os estados e transições do AFND?",
+      "back": "A (inicial), B e C (final). Transições: A→A com 0 e com 1 (laço 0,1) e A→B com 0 — o não-determinismo está em A com símbolo 0, que leva a A ou B; B→C com 0."
+    },
+    {
+      "front": "No exemplo do módulo, quais são os estados do AFD resultante?",
+      "back": "e0 = {A} (inicial), e1 = {A,B}, e2 = {A,B,C} (final). Tabela: e0→e1 com 0, e0→e0 com 1; e1→e2 com 0, e1→e0 com 1; e2→e2 com 0, e2→e0 com 1."
+    },
+    {
+      "front": "Por que uma cadeia binária é múltiplo de 4 se termina com '00'?",
+      "back": "Porque em binário, um número com os dois últimos dígitos iguais a zero é divisível por 4 (equivale a multiplicar por 4 = 2²). Os exemplos do slide são: 100 (4), 1000 (8), 1100 (12), 10000 (16)."
+    },
+    {
+      "front": "O que acontece com a transição de {A,B} com símbolo 0?",
+      "back": "De A com 0 → {A,B}; de B com 0 → {C}. A união é {A,B,C}. Portanto δ({A,B}, 0) = {A,B,C}."
+    },
+    {
+      "front": "O que acontece com a transição de {A,B} com símbolo 1?",
+      "back": "De A com 1 → {A}; de B com 1 → ∅ (não existe transição). A união é {A}. Portanto δ({A,B}, 1) = {A}."
+    },
+    {
+      "front": "Por que {A,B,C} é um estado final no AFD do exemplo?",
+      "back": "Porque {A,B,C} contém o estado C, que é o único estado final do AFND original."
+    },
+    {
+      "front": "No Exercício 1 (alfabeto {a,b}), onde está o não-determinismo do AFND?",
+      "back": "Em δ(q1, a) = {q1, q2}: o estado inicial q1 tem laço em 'a' e também transita para q2 com 'a'. (q1 também tem laço em 'b'; q2 vai a q3 com 'a' e com 'b'; q3 vai a q4 com 'a'; q4 é final com laço em 'a' e 'b'.)"
+    },
+    {
+      "front": "No Exercício 2 (alfabeto {0,1}), quais são os estados iniciais/finais e o não-determinismo?",
+      "back": "q0 é inicial; q3 e q4 são finais. Não-determinismo: δ(q0,0)={q0,q1}, δ(q1,0)={q2,q3} e δ(q2,0)={q0,q2}. Também δ(q1,1)={q4} e δ(q2,1)={q4}."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "O que caracteriza um Autômato Finito Não Determinístico (AFND)?",
+      "options": [
+        "Ausência de estado inicial",
+        "Pelo menos um símbolo de entrada pode levar a múltiplos estados a partir de um mesmo estado",
+        "Presença de movimentos vazios (ε) obrigatórios",
+        "Impossibilidade de ter estados finais"
+      ],
+      "answer": 1,
+      "explanation": "Um AFND é definido pela existência de pelo menos um símbolo de entrada que possui várias transições de saída para outros estados a partir de um mesmo estado."
+    },
+    {
+      "question": "No algoritmo de construção de subconjuntos, como é definido o estado inicial do AFD?",
+      "options": [
+        "Um novo estado criado arbitrariamente",
+        "O conjunto de todos os estados do AFND",
+        "O subconjunto contendo apenas o estado inicial do AFND",
+        "O subconjunto dos estados finais do AFND"
+      ],
+      "answer": 2,
+      "explanation": "O estado inicial do AFD é definido como o subconjunto {q0}, onde q0 é o estado inicial do AFND."
+    },
+    {
+      "question": "No exemplo do módulo (AFND para múltiplos de 4), qual é o estado final do AFD resultante?",
+      "options": [
+        "e0",
+        "e1",
+        "e2",
+        "Nenhum dos estados"
+      ],
+      "answer": 2,
+      "explanation": "O estado e2 corresponde ao subconjunto {A,B,C} que contém o estado C — o único estado final do AFND original. Todo subconjunto que contém um estado final do AFND torna-se um estado final do AFD."
+    },
+    {
+      "question": "Qual a condição para que um estado do AFD (construído por subconjuntos) seja um estado final?",
+      "options": [
+        "O subconjunto deve conter todos os estados do AFND",
+        "O subconjunto deve ser unitário",
+        "O subconjunto deve conter pelo menos um estado final do AFND",
+        "O subconjunto deve ser o maior gerado"
+      ],
+      "answer": 2,
+      "explanation": "Um estado do AFD é final se e somente se o subconjunto correspondente contém pelo menos um estado final do AFND original."
+    },
+    {
+      "question": "No exemplo do módulo, qual é a transição δ(e0, 0) no AFD resultante?",
+      "options": [
+        "e0",
+        "e1",
+        "e2",
+        "∅"
+      ],
+      "answer": 1,
+      "explanation": "e0 corresponde a {A}. Com símbolo 0, A pode ir para A ou B, portanto δ({A}, 0) = {A,B} = e1."
+    },
+    {
+      "question": "O processo de construção de subconjuntos termina quando:",
+      "options": [
+        "Todos os estados do AFND foram incluídos em algum subconjunto",
+        "Não há mais novos subconjuntos a analisar",
+        "O número de estados do AFD supera o número de estados do AFND",
+        "Um estado final é alcançado"
+      ],
+      "answer": 1,
+      "explanation": "O processo termina quando todos os subconjuntos gerados nas colunas de transição já foram analisados como linhas da tabela — ou seja, nenhum novo subconjunto é gerado."
+    },
+    {
+      "question": "No AFD do exemplo do módulo, a transição δ(e2, 0) é:",
+      "options": [
+        "e0",
+        "e1",
+        "e2",
+        "∅"
+      ],
+      "answer": 2,
+      "explanation": "e2 = {A,B,C}. Com símbolo 0: A→{A,B}, B→{C}, C→∅. União = {A,B,C} = e2. Portanto δ(e2, 0) = e2 (laço)."
+    },
+    {
+      "question": "Um número binário é múltiplo de 4 quando:",
+      "options": [
+        "Começa com o dígito 1",
+        "Os dois últimos dígitos são zeros",
+        "Possui número par de dígitos",
+        "Termina com o dígito 1"
+      ],
+      "answer": 1,
+      "explanation": "Segundo o slide, uma representação binária de um número inteiro é múltiplo de 4 se os dois últimos dígitos são zeros. Exemplos: 100 (4), 1000 (8), 1100 (12)."
+    },
+    {
+      "question": "No Exercício 1 (AFND sobre {a,b} com q1 inicial e q4 final), qual é a transição não-determinística do estado inicial?",
+      "options": [
+        "δ(q1, a) = {q1, q2}",
+        "δ(q1, b) = {q1, q2}",
+        "δ(q1, a) = {q2, q4}",
+        "δ(q1, a) = {q4}"
+      ],
+      "answer": 0,
+      "explanation": "No diagrama, q1 tem um laço com 'a' e também uma transição com 'a' para q2; logo δ(q1, a) = {q1, q2}. Com 'b', q1 só tem o laço: δ(q1, b) = {q1}."
+    },
+    {
+      "question": "Ainda no Exercício 1, por que o AFD resultante não possui estado morto (∅)?",
+      "options": [
+        "Porque q4 é absorvente",
+        "Porque o estado inicial q1 tem laço em 'a' e em 'b', então q1 permanece em todo subconjunto alcançável",
+        "Porque o AFND já era determinístico",
+        "Porque todos os estados são finais"
+      ],
+      "answer": 1,
+      "explanation": "Como q1 tem laço tanto em 'a' quanto em 'b', toda transição preserva q1 no conjunto; nenhum subconjunto alcançável fica vazio, então o estado morto ∅ nunca é gerado."
+    },
+    {
+      "question": "No Exercício 2 (AFND sobre {0,1}), quais são os estados finais do AFND segundo o diagrama?",
+      "options": [
+        "Apenas q4",
+        "q3 e q4",
+        "q0 e q4",
+        "q2 e q3"
+      ],
+      "answer": 1,
+      "explanation": "No diagrama do Exercício 2, q3 e q4 aparecem com círculo duplo (vermelho), sendo ambos estados finais; q0 é o estado inicial e q1, q2 são intermediários."
+    },
+    {
+      "question": "No Exercício 2, qual é o resultado de δ({q0,q1}, 0) na construção de subconjuntos?",
+      "options": [
+        "{q0, q1}",
+        "{q0, q1, q2}",
+        "{q0, q1, q2, q3}",
+        "{q2, q3}"
+      ],
+      "answer": 2,
+      "explanation": "δ(q0,0)={q0,q1} e δ(q1,0)={q2,q3}; a união é {q0,q1,q2,q3}. Como contém q3 (final), esse subconjunto é um estado final do AFD."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Conversão AFND para AFD (alfabeto {a,b}, estados q1..q4)",
+      "prompt": "Converta o AFND para AFD. Estados: {q1, q2, q3, q4}; Alfabeto: {a, b}; Estado inicial: q1; Estado final: q4. Transições do diagrama: q1→q1 com a (laço); q1→q1 com b (laço); q1→q2 com a; q2→q3 com a; q2→q3 com b; q3→q4 com a; q4→q4 com a (laço); q4→q4 com b (laço).",
+      "solution": "AFND — tabela de transições (não-determinismo em δ(q1,a)):\n| δ   | a       | b    |\n| →q1 | {q1,q2} | {q1} |\n| q2  | {q3}    | {q3} |\n| q3  | {q4}    | ∅    |\n| *q4 | {q4}    | {q4} |\n\nConstrução de subconjuntos (início {q1}). Como q1 tem laço em a e b, todo subconjunto alcançável contém q1 e não há estado morto ∅:\n\n{q1} --a--> {q1,q2}; {q1} --b--> {q1}\n{q1,q2} --a--> {q1,q2,q3}; {q1,q2} --b--> {q1,q3}\n{q1,q2,q3} --a--> {q1,q2,q3,q4}; {q1,q2,q3} --b--> {q1,q3}\n{q1,q3} --a--> {q1,q2,q4}; {q1,q3} --b--> {q1}\n{q1,q2,q3,q4} --a--> {q1,q2,q3,q4}; {q1,q2,q3,q4} --b--> {q1,q3,q4}\n{q1,q2,q4} --a--> {q1,q2,q3,q4}; {q1,q2,q4} --b--> {q1,q3,q4}\n{q1,q3,q4} --a--> {q1,q2,q4}; {q1,q3,q4} --b--> {q1,q4}\n{q1,q4} --a--> {q1,q2,q4}; {q1,q4} --b--> {q1,q4}\n\nEstados finais (contêm q4): {q1,q2,q3,q4}, {q1,q2,q4}, {q1,q3,q4}, {q1,q4}\n\nRenomeação:\ne0 = {q1} (inicial)\ne1 = {q1,q2}\ne2 = {q1,q2,q3}\ne3 = {q1,q3}\ne4 = {q1,q2,q3,q4} (final)\ne5 = {q1,q2,q4} (final)\ne6 = {q1,q3,q4} (final)\ne7 = {q1,q4} (final)\n\nTabela do AFD:\n| δ   | a  | b  |\n| →e0 | e1 | e0 |\n| e1  | e2 | e3 |\n| e2  | e4 | e3 |\n| e3  | e5 | e0 |\n| *e4 | e4 | e6 |\n| *e5 | e4 | e6 |\n| *e6 | e5 | e7 |\n| *e7 | e5 | e7 |",
+      "answer": "AFD com 8 estados (e0 a e7), sem estado morto. Estados finais: e4 ({q1,q2,q3,q4}), e5 ({q1,q2,q4}), e6 ({q1,q3,q4}) e e7 ({q1,q4}). Linguagem: cadeias sobre {a,b} que contêm a subcadeia a(a|b)a, isto é, 'aaa' ou 'aba'."
+    },
+    {
+      "title": "Exercício 2 — Conversão AFND para AFD (alfabeto {0,1}, estados q0..q4)",
+      "prompt": "Converta o AFND para AFD. Estados: {q0, q1, q2, q3, q4}; Alfabeto: {0, 1}; Estado inicial: q0; Estados finais: q3 e q4. Transições do diagrama: q0→q0 com 0,1 (laço); q0→q1 com 0; q1→q2 com 0; q1→q3 com 0; q1→q4 com 1; q2→q2 com 0 (laço); q2→q0 com 0; q2→q4 com 1. (q3 e q4 não têm transições de saída.)",
+      "solution": "AFND — tabela de transições:\n| δ   | 0          | 1    |\n| →q0 | {q0,q1}    | {q0} |\n| q1  | {q2,q3}    | {q4} |\n| q2  | {q0,q2}    | {q4} |\n| *q3 | ∅          | ∅    |\n| *q4 | ∅          | ∅    |\n\nConstrução de subconjuntos (início {q0}):\n\n{q0} --0--> {q0,q1}; {q0} --1--> {q0}\n{q0,q1} --0--> {q0,q1,q2,q3}; {q0,q1} --1--> {q0,q4}\n{q0,q1,q2,q3} --0--> {q0,q1,q2,q3}; {q0,q1,q2,q3} --1--> {q0,q4}\n{q0,q4} --0--> {q0,q1}; {q0,q4} --1--> {q0}\n\nDetalhe: {q0,q1} com 0 = {q0,q1} ∪ {q2,q3} = {q0,q1,q2,q3}. {q0,q1,q2,q3} com 0 = {q0,q1} ∪ {q2,q3} ∪ {q0,q2} = {q0,q1,q2,q3} (laço); com 1 = {q0} ∪ {q4} ∪ {q4} = {q0,q4}.\n\nEstados finais (contêm q3 ou q4): {q0,q1,q2,q3} e {q0,q4}\n\nRenomeação:\ne0 = {q0} (inicial)\ne1 = {q0,q1}\ne2 = {q0,q1,q2,q3} (final — contém q3)\ne3 = {q0,q4} (final — contém q4)\n\nTabela do AFD:\n| δ   | 0  | 1  |\n| →e0 | e1 | e0 |\n| e1  | e2 | e3 |\n| *e2 | e2 | e3 |\n| *e3 | e1 | e0 |",
+      "answer": "AFD com 4 estados (e0 a e3). Estados finais: e2 ({q0,q1,q2,q3}) e e3 ({q0,q4}). Não há estado morto, pois q0 tem laço em 0 e 1 e permanece em todo subconjunto alcançável."
+    }
+  ]
+}

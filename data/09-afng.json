@@ -1,0 +1,242 @@
+{
+  "id": "09-afng",
+  "module": 9,
+  "title": "Autômato Finito Não Determinístico Generalizado (AFNG)",
+  "icon": "🔄",
+  "summary": "O AFNG estende o AFN permitindo expressões regulares como rótulos de transição; é usado como estrutura intermediária na conversão de autômatos finitos em expressões regulares via eliminação incremental de estados (state ripping).",
+  "tags": [
+    "AFNG",
+    "GNFA",
+    "generalizado",
+    "expressões-regulares",
+    "conversão",
+    "ripping",
+    "autômatos"
+  ],
+  "keyPoints": [
+    "AFNG é um AFN cujas setas de transição podem ter quaisquer expressões regulares como rótulo, não apenas símbolos do alfabeto ou ε.",
+    "O AFNG lê blocos de símbolos da entrada de uma vez, consumindo a cadeia descrita pela expressão regular sobre a seta percorrida.",
+    "Todo AFNG tem exatamente um estado inicial (sem setas de entrada) e um estado de aceitação (sem setas de saída), e eles são distintos.",
+    "Conversão AFD → AFNG: adicionar novos estados s e f com transições ε, unir rótulos paralelos com ∪ e acrescentar transições ∅ entre pares sem transição (que podem ser omitidas).",
+    "Conversão AFNG → ER: remover estados internos um a um (state ripping) até restar apenas s e f; o rótulo da única seta s→f é a expressão regular.",
+    "Fórmula de state ripping: δ'(qi,qj) = (R1)(R2)*(R3) ∪ (R4), onde R1=δ(qi,qsai), R2=δ(qsai,qsai), R3=δ(qsai,qj), R4=δ(qi,qj).",
+    "Algoritmo CONVERT(G): se k=2 retorna o rótulo s→f; se k>2 remove um estado interno (qsai≠inicial,≠aceita) e chama CONVERT no novo AFNG com k−1 estados.",
+    "Lema 1.60: toda linguagem regular é descrita por uma expressão regular, provado via construção de AFNG e state ripping.",
+    "A função de transição do AFNG tem assinatura δ: (Q−{qaceita}) × (Q−{qinício}) → R, onde R é o conjunto de todas as expressões regulares sobre Σ.",
+    "Exemplo do material: o AFD com estado 1 (laço a, b→2) e estado 2 de aceitação (laço a,b) é convertido em a*b(a∪b)* via state ripping de 2 e depois de 1."
+  ],
+  "flashcards": [
+    {
+      "front": "O que é um AFNG?",
+      "back": "Autômato Finito Não-determinístico Generalizado: extensão do AFN em que as setas de transição podem ter quaisquer expressões regulares como rótulo, ao invés de apenas símbolos do alfabeto ou ε."
+    },
+    {
+      "front": "Como o AFNG processa a entrada?",
+      "back": "O AFNG lê blocos de símbolos de uma vez; ao percorrer uma seta rotulada com a expressão regular R, ele consome um segmento da entrada que pertence à linguagem de R. Aceita se termina num estado de aceitação ao final da entrada."
+    },
+    {
+      "front": "Quais são as restrições estruturais do estado inicial de um AFNG?",
+      "back": "O estado inicial tem setas indo para todos os outros estados, mas nenhuma seta de entrada vinda de qualquer outro estado."
+    },
+    {
+      "front": "Quais são as restrições estruturais do estado de aceitação de um AFNG?",
+      "back": "O estado de aceitação tem setas vindas de todos os outros estados, mas nenhuma seta de saída para qualquer outro estado; além disso, é diferente do estado inicial."
+    },
+    {
+      "front": "Qual é a fórmula de state ripping?",
+      "back": "Ao remover qsai: δ'(qi,qj) = (R1)(R2)*(R3) ∪ (R4), onde R1=δ(qi,qsai), R2=δ(qsai,qsai), R3=δ(qsai,qj), R4=δ(qi,qj)."
+    },
+    {
+      "front": "Qual é a definição formal da função de transição do AFNG?",
+      "back": "δ: (Q − {qaceita}) × (Q − {qinício}) → R, onde R é o conjunto de todas as expressões regulares sobre Σ. A origem nunca é o estado de aceitação e o destino nunca é o estado inicial."
+    },
+    {
+      "front": "Qual é o caso base do algoritmo CONVERT(G)?",
+      "back": "Se k = 2 (apenas estado inicial e estado de aceitação), o CONVERT retorna o rótulo da única seta que vai do estado inicial ao estado de aceitação."
+    },
+    {
+      "front": "Como converter um AFD em AFNG?",
+      "back": "1) Adicionar novo estado inicial s com ε para o antigo inicial; 2) Adicionar novo estado de aceitação f com ε dos antigos finais para ele; 3) Unir rótulos paralelos com ∪; 4) Acrescentar transições ∅ onde não há transição (podem ser omitidas)."
+    },
+    {
+      "front": "O que diz o Lema 1.60?",
+      "back": "Se uma linguagem é regular, então ela é descrita por uma expressão regular. Prova-se convertendo o AFD que a aceita em um AFNG e em seguida em uma expressão regular via state ripping."
+    },
+    {
+      "front": "Ao converter um AFD em AFNG, no que se transforma um laço rotulado 'a,b'?",
+      "back": "Na expressão regular a∪b: rótulos paralelos (múltiplos símbolos numa mesma seta) são substituídos pela união desses rótulos."
+    },
+    {
+      "front": "Qual expressão regular é obtida ao converter o AFD-exemplo do material (estado 1 laço a, b→2; estado 2 final, laço a,b)?",
+      "back": "a*b(a∪b)*. Após state ripping do estado 2 (gerando b(a∪b)*) e depois do estado 1 (gerando a*b(a∪b)*) obtém-se essa expressão."
+    },
+    {
+      "front": "Por que as transições ∅ adicionadas na conversão AFD→AFNG podem ser omitidas?",
+      "back": "Porque as transições rotuladas com ∅ nunca são usadas: a linguagem vazia não contém nenhuma cadeia que possa ser lida para percorrer essa seta."
+    },
+    {
+      "front": "Quantos estados tem o AFNG mínimo possível, e por quê?",
+      "back": "Pelo menos 2 estados (k ≥ 2): o estado inicial e o estado de aceitação, que devem ser distintos por definição."
+    },
+    {
+      "front": "Qual é o esquema de redução de um AFD de 3 estados até a expressão regular?",
+      "back": "AFD de 3 estados → AFNG de 5 estados → AFNG de 4 → AFNG de 3 → AFNG de 2 → expressão regular. Cada passo remove um estado via ripping."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Qual é a principal diferença entre um AFNG e um AFN?",
+      "options": [
+        "O AFNG aceita apenas linguagens finitas, enquanto o AFN aceita linguagens regulares.",
+        "No AFNG, as setas de transição podem ter expressões regulares como rótulo, não apenas símbolos ou ε.",
+        "O AFNG não possui estados de aceitação.",
+        "O AFNG é determinístico, enquanto o AFN é não-determinístico."
+      ],
+      "answer": 1,
+      "explanation": "AFNGs são AFNs nos quais as setas de transição podem ter quaisquer expressões regulares como rótulo, ao invés de somente membros do alfabeto ou ε."
+    },
+    {
+      "question": "Na fórmula de state ripping δ'(qi,qj) = (R1)(R2)*(R3) ∪ (R4), o que representa R2?",
+      "options": [
+        "A transição de qi para qj diretamente.",
+        "A transição de qi para qsai.",
+        "O laço de qsai para si mesmo.",
+        "A transição de qsai para qj."
+      ],
+      "answer": 2,
+      "explanation": "R2 = δ(qsai, qsai) é o rótulo do laço do estado removido (qsai) para si mesmo. O termo (R2)* representa o número arbitrário de voltas nesse laço antes de sair."
+    },
+    {
+      "question": "Qual é o caso base do algoritmo CONVERT(G)?",
+      "options": [
+        "Quando k = 1, retorna ε.",
+        "Quando k = 2, retorna o rótulo da seta do estado inicial ao estado de aceitação.",
+        "Quando k = 3, retorna a união dos rótulos de todas as setas.",
+        "Quando k = 0, retorna ∅."
+      ],
+      "answer": 1,
+      "explanation": "Se k = 2, o AFNG possui uma única seta que vai do estado inicial ao estado de aceitação; o rótulo dessa seta é a expressão regular equivalente."
+    },
+    {
+      "question": "Ao converter um AFD em AFNG, o que fazemos com transições que possuem múltiplos rótulos (ex.: um laço 'a,b')?",
+      "options": [
+        "Duplicamos o estado de destino para cada rótulo.",
+        "Mantemos apenas o primeiro rótulo.",
+        "Substituímos por uma única transição rotulada com a união dos rótulos (ex.: a∪b).",
+        "Removemos essas transições e adicionamos ε."
+      ],
+      "answer": 2,
+      "explanation": "Se alguma transição possui múltiplos rótulos, a substituímos por uma transição rotulada com a união dos rótulos anteriores; assim 'a,b' torna-se a∪b."
+    },
+    {
+      "question": "Qual propriedade o estado de aceitação de um AFNG NÃO possui?",
+      "options": [
+        "Recebe setas vindas de todos os outros estados.",
+        "É diferente do estado inicial.",
+        "Possui setas de saída para outros estados.",
+        "É único no autômato."
+      ],
+      "answer": 2,
+      "explanation": "O estado de aceitação não tem setas indo para qualquer outro estado; ele só recebe setas dos demais estados. Por isso não possui setas de saída."
+    },
+    {
+      "question": "O que o algoritmo CONVERT faz quando k > 2?",
+      "options": [
+        "Retorna ∅ imediatamente.",
+        "Seleciona um estado interno, o remove aplicando state ripping, e chama CONVERT no novo AFNG com k−1 estados.",
+        "Duplica todos os estados e depois une.",
+        "Converte diretamente para expressão regular sem remover estados."
+      ],
+      "answer": 1,
+      "explanation": "Se k > 2, seleciona qualquer estado qsai ≠ q_início e ≠ q_aceita, constrói G' com k−1 estados usando a fórmula de state ripping, e então chama recursivamente CONVERT(G')."
+    },
+    {
+      "question": "Qual é a expressão regular obtida ao converter o AFD-exemplo (estado 1: laço a, transição b→2; estado 2: laço a,b, final)?",
+      "options": [
+        "b*a(a∪b)*",
+        "a*b(a∪b)*",
+        "(a∪b)*b",
+        "a*b*"
+      ],
+      "answer": 1,
+      "explanation": "Após state ripping do estado 2 (gerando b(a∪b)* como nova seta 1→f) e depois do estado 1 (gerando a*b(a∪b)* como seta s→f), a expressão resultante é a*b(a∪b)*."
+    },
+    {
+      "question": "Qual é a assinatura da função de transição δ de um AFNG?",
+      "options": [
+        "δ: Q × Σ → P(Q)",
+        "δ: Q × Σ* → Q",
+        "δ: (Q−{qaceita}) × (Q−{qinício}) → R",
+        "δ: Q × Q → Σ"
+      ],
+      "answer": 2,
+      "explanation": "A função de transição do AFNG tem assinatura δ: (Q−{qaceita}) × (Q−{qinício}) → R, onde R é o conjunto de todas as expressões regulares sobre Σ. Os domínios excluem o estado de aceitação (origem) e o estado inicial (destino)."
+    },
+    {
+      "question": "Para que serve o AFNG no contexto da teoria de linguagens formais?",
+      "options": [
+        "Para aceitar linguagens sensíveis ao contexto.",
+        "Como estrutura intermediária na conversão de autômatos finitos em expressões regulares.",
+        "Para minimizar o número de estados de um AFD.",
+        "Para converter gramáticas em autômatos de pilha."
+      ],
+      "answer": 1,
+      "explanation": "O AFNG é usado como estrutura intermediária: primeiro o AFD é convertido em AFNG, e depois o AFNG é convertido em expressão regular via state ripping, provando o Lema 1.60."
+    },
+    {
+      "question": "Por que um AFNG tem sempre k ≥ 2 estados?",
+      "options": [
+        "Porque precisa de pelo menos um laço.",
+        "Porque o estado inicial e o estado de aceitação devem ser distintos.",
+        "Porque todo alfabeto tem ao menos dois símbolos.",
+        "Porque o AFN equivalente tem dois estados."
+      ],
+      "answer": 1,
+      "explanation": "Como um AFNG possui um estado inicial e um estado de aceitação que devem ser distintos, logo k ≥ 2."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Conversão AFD → AFNG → ER (Exemplo 1 do material)",
+      "prompt": "Dado o AFD com estados {1, 2}, onde 1 é inicial, 2 é de aceitação, δ(1,a)=1, δ(1,b)=2, δ(2,a)=2, δ(2,b)=2: converta-o em AFNG e depois obtenha a expressão regular equivalente.",
+      "solution": "Passo 1 — Gerar o AFNG (estados {s, 1, 2, f}):\n- Adicionar estado s (novo inicial) com seta ε→1\n- Adicionar estado f (novo de aceitação) com seta ε vinda de 2\n- Estado 1: laço a, seta b→2\n- Estado 2: laço a∪b (união dos rótulos a e b do laço 'a,b'), seta ε→f\n- Demais pares recebem ∅ (podem ser omitidos)\n\nPasso 2 — Remover transições vazias (∅): restam s→1:ε, 1→1:a, 1→2:b, 2→2:a∪b, 2→f:ε.\n\nPasso 3 — State ripping do estado 2 (qi=1, qsai=2, qj=f):\nR1=δ(1,2)=b, R2=δ(2,2)=a∪b, R3=δ(2,f)=ε, R4=δ(1,f)=∅\nNovo rótulo: (b)(a∪b)*(ε) ∪ ∅ = b(a∪b)*\nAFNG restante: {s, 1, f} com s→1:ε, 1→1:a, 1→f:b(a∪b)*\n\nPasso 4 — State ripping do estado 1 (qi=s, qsai=1, qj=f):\nR1=δ(s,1)=ε, R2=δ(1,1)=a, R3=δ(1,f)=b(a∪b)*, R4=δ(s,f)=∅\nNovo rótulo: (ε)(a)*(b(a∪b)*) ∪ ∅ = a*b(a∪b)*\nAFNG restante: {s, f} com s→f: a*b(a∪b)*\n\nCaso base (k=2): a expressão regular é o rótulo de s→f.",
+      "answer": "a*b(a∪b)*"
+    },
+    {
+      "title": "Exercício 2 — Aplicação da fórmula de state ripping",
+      "prompt": "Em um AFNG, temos os estados qi, qsai e qj com: δ(qi,qsai)=ab*, δ(qsai,qsai)=a, δ(qsai,qj)=b, δ(qi,qj)=∅. Aplique a fórmula de state ripping para obter o novo rótulo δ'(qi,qj).",
+      "solution": "Identificando os valores:\nR1 = δ(qi,qsai) = ab*\nR2 = δ(qsai,qsai) = a\nR3 = δ(qsai,qj) = b\nR4 = δ(qi,qj) = ∅\n\nAplicando a fórmula:\nδ'(qi,qj) = (R1)(R2)*(R3) ∪ (R4)\n           = (ab*)(a)*(b) ∪ ∅\n           = ab*a*b\n(a união com ∅ é o próprio termo, pois ∅ é o elemento neutro da união.)",
+      "answer": "ab*a*b"
+    },
+    {
+      "title": "Exercício 3 — Verificação da condição de aceitação do AFNG",
+      "prompt": "Um AFNG tem estados {s, q1, f} com δ(s,q1)=a, δ(q1,q1)=b*, δ(q1,f)=a. A cadeia w='abba' é aceita pelo AFNG? Justifique usando a definição formal de aceitação.",
+      "solution": "Para aceitar w='abba', precisamos decompor w = w1w2...wk e encontrar uma sequência q0,q1,...,qk tal que:\n- q0 = s (estado inicial)\n- qk = f (estado de aceitação)\n- Para cada i, wi ∈ L(δ(qi-1, qi))\n\nTentando a decomposição w1='a', w2='bb', w3='a':\n- q0 = s, q1 = q1, q2 = q1, q3 = f\n- w1='a' ∈ L(δ(s,q1)) = L(a) = {a} ✓\n- w2='bb' ∈ L(δ(q1,q1)) = L(b*) = {ε,b,bb,...} ✓\n- w3='a' ∈ L(δ(q1,f)) = L(a) = {a} ✓\n\nA decomposição é válida, portanto w='abba' É aceita pelo AFNG.",
+      "answer": "Sim, 'abba' é aceita com a decomposição w1='a', w2='bb', w3='a' percorrendo os estados s→q1→q1→f."
+    },
+    {
+      "title": "Exercício 4 — AFD de 3 estados (Exemplo 2 do material, slide 39)",
+      "prompt": "Dado o AFD do segundo exemplo, com estados {1, 2, 3}, onde 1 é inicial e 2 e 3 são de aceitação, com δ(1,a)=2, δ(1,b)=3, δ(2,a)=1, δ(2,b)=2, δ(3,a)=2, δ(3,b)=1: descreva como convertê-lo em AFNG e obter a expressão regular via CONVERT(G).",
+      "solution": "Tabela de transição do AFD (→ inicial, * aceitação):\n| δ | a | b |\n| → 1 | 2 | 3 |\n| * 2 | 1 | 2 |\n| * 3 | 2 | 1 |\n\nPasso 1 — Gerar o AFNG (estados {s, 1, 2, 3, f}):\n- s→1: ε\n- 1→2: a, 1→3: b\n- 2→1: a, 2→2: b\n- 3→2: a, 3→1: b\n- Como 2 e 3 são de aceitação no AFD, ambos ganham seta ε→f: 2→f: ε e 3→f: ε\n- Todos os demais pares recebem ∅ (omitidos)\n\nPasso 2 — Aplicar CONVERT(G) repetindo state ripping (k=5 → 2):\nEscolhe-se arbitrariamente os estados internos 1, 2 e 3 (um de cada vez), e para cada par (qi,qj) ainda presente atualiza-se o rótulo com a fórmula\n   δ'(qi,qj) = (R1)(R2)*(R3) ∪ (R4),\ncom R1=δ(qi,qsai), R2=δ(qsai,qsai), R3=δ(qsai,qj), R4=δ(qi,qj).\nQuando o laço do estado removido for ∅, vale (∅)* = ε.\nRepete-se até restarem apenas s e f; o rótulo de s→f é a expressão regular.\n\nObservação: no material (slide 39) é apresentado apenas o AFD deste exemplo; os passos de eliminação não são mostrados. A linguagem reconhecida é a das cadeias sobre {a,b} cujo processamento, a partir de 1, termina em 2 ou 3.",
+      "answer": "A ER é produzida por CONVERT(G): adiciona-se s e f (com ε para 2 e 3, que são finais) e removem-se os estados 1, 2 e 3 um a um pela fórmula (R1)(R2)*(R3)∪(R4) até restar a seta s→f."
+    },
+    {
+      "title": "Atividade 15 — Exercício 1 (a): Converter AFD em AFNG e gerar a ER",
+      "prompt": "Converta o AFD abaixo em AFNG e, aplicando o algoritmo de conversão (eliminação de estados), obtenha a expressão regular equivalente.\n\nAFD (alfabeto {0,1}) — estados: q0 (inicial e final), q1 (final), q2 (de erro). Transições: q0 --0--> q1; q1 --0,1--> q0; q0 --1--> q2; q2 --0,1--> q2 (autolaço).",
+      "solution": "Passo 0 — Construir o AFNG: acrescenta-se o estado inicial s (s --ε--> q0) e o estado de aceitação a; cada estado final (q0 e q1) recebe ε --> a; pares sem transição recebem ∅.\n\nPasso 1 — Remover movimentos com conjuntos vazios (∅). Restam: s --ε--> q0; q0 --0--> q1; q1 --0∪1--> q0; q0 --1--> q2; q2 --0∪1--> q2 (autolaço); q1 --ε--> a; q0 --ε--> a.\n\nPasso 2 — Remover estados de erro: q2 é não-final e sem caminho até a aceitação, logo é descartado (junto com seu autolaço 0∪1). Sobra: s --ε--> q0; q0 --0--> q1; q1 --0∪1--> q0; q1 --ε--> a; q0 --ε--> a.\n\nPasso 3 — Eliminar o estado q1: o ciclo q0 →0→ q1 →(0∪1)→ q0 gera o autolaço 0(0∪1) em q0; mantém-se q0 --ε--> a. Fica: s --ε--> q0; q0 --0(0∪1)--> q0 (autolaço); q0 --ε--> a.\n\nPasso 4 — Eliminar o estado q0: com o autolaço 0(0∪1), a aresta s → q0 → a resulta em s --(0(0∪1)*)*--> a.",
+      "answer": "(0(0∪1)*)*"
+    },
+    {
+      "title": "Atividade 15 — Exercício 1 (b): Converter AFD em AFNG e gerar a ER",
+      "prompt": "Converta o AFD abaixo em AFNG e, aplicando o algoritmo de conversão (eliminação de estados), obtenha a expressão regular equivalente.\n\nAFD (alfabeto {0,1}) — estados: q0 (inicial), q1 (final), q2 (final). Transições: q0 --0,1--> q1; q1 --0,1--> q2; q2 --0,1--> q0.",
+      "solution": "Passo 0 — Construir o AFNG: acrescenta-se o estado inicial s (s --ε--> q0) e o estado de aceitação a; os finais q1 e q2 recebem ε --> a; pares sem transição recebem ∅.\n\nPasso 1 — Remover movimentos com conjuntos vazios (∅). Restam: s --ε--> q0; q0 --0∪1--> q1; q1 --0∪1--> q2; q2 --0∪1--> q0; q1 --ε--> a; q2 --ε--> a.\n\nPasso 2 — Eliminar o estado q1: o caminho q0 →(0∪1)→ q1 →(0∪1)→ q2 gera q0 --(0∪1)(0∪1)--> q2, e q0 →(0∪1)→ q1 →ε→ a gera q0 --(0∪1)--> a. Fica: s --ε--> q0; q0 --(0∪1)(0∪1)--> q2; q2 --0∪1--> q0; q0 --(0∪1)--> a; q2 --ε--> a.\n\nPasso 3 — Eliminar o estado q2: combinando os caminhos, o autolaço de q0 torna-se (0∪1)∪((0∪1)(0∪1)) e mantém-se q0 --ε--> a. Fica: s --ε--> q0; q0 --(0∪1)∪((0∪1)(0∪1))--> q0 (autolaço); q0 --ε--> a.\n\nPasso 4 — Eliminar o estado q0: a aresta única s → a recebe o fecho do autolaço.",
+      "answer": "(0∪1)∪((0∪1)(0∪1))"
+    },
+    {
+      "title": "Atividade 15 — Exercício 1 (c): Converter AFD em AFNG e gerar a ER",
+      "prompt": "Converta o AFD abaixo (alfabeto {a,b}) em AFNG e, aplicando o algoritmo de conversão (eliminação de estados), obtenha a expressão regular equivalente.\n\nAFD — estados: 1 (inicial), 2 (final), 3 (final). Transições: 1 --a--> 2; 2 --a--> 1; 2 --b--> 2 (autolaço); 1 --b--> 3; 3 --b--> 1; 3 --a--> 2.",
+      "solution": "Passo 0 — Construir o AFNG: acrescenta-se o estado inicial S (S --ε--> 1) e o estado de aceitação a; os finais 2 e 3 recebem ε --> a; pares sem transição recebem ∅.\n\nPasso 1 — Remover movimentos com conjuntos vazios (∅). Restam: S --ε--> 1; 1 --a--> 2; 2 --a--> 1; 2 --b--> 2 (autolaço); 1 --b--> 3; 3 --b--> 1; 3 --a--> 2; 2 --ε--> a; 3 --ε--> a.\n\nPasso 2 — Eliminar o estado 1 (conecta {S,2,3} a {2,3}). Resulta sobre {S,2,3,a}: S --a--> 2; S --b--> 3; autolaço em 2 = aa∪b (via 2→a→1→a→2 unido ao b original); 2 --ab--> 3 (via 2→a→1→b→3); 3 --(ba∪a)--> 2 (via 3→b→1→a→2 unido ao a direto 3→a→2); autolaço em 3 = bb (via 3→b→1→b→3); 2 --ε--> a; 3 --ε--> a.\n\nPasso 3 — Eliminar o estado 2 (autolaço aa∪b, fecho (aa∪b)*). Resulta: S --a(aa∪b)*--> a; S --a(aa∪b)*ab∪b--> 3; autolaço em 3 = (ba∪a)(aa∪b)*ab∪bb; 3 --(ba∪a)(aa∪b)*∪ε--> a.\n\nPasso 4 — Eliminar o estado 3 (autolaço (ba∪a)(aa∪b)*ab∪bb, fecho ((ba∪a)(aa∪b)*ab∪bb)*). A aresta final S → a combina o caminho via 3 com o caminho direto S →a(aa∪b)*→ a.",
+      "answer": "(a(aa∪b)*ab∪b)((ba∪a)(aa∪b)*ab∪bb)*((ba∪a)(aa∪b)*∪ε) ∪ a(aa∪b)*"
+    }
+  ]
+}

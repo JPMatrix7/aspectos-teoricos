@@ -1,0 +1,197 @@
+{
+  "id": "03-alfabeto-e-palavras",
+  "module": 3,
+  "title": "Alfabeto e Palavras",
+  "icon": "🔤",
+  "summary": "Conceitos básicos para definir linguagens: alfabeto (conjunto finito de símbolos), palavra/cadeia (sequência finita de símbolos), cadeia vazia ε, concatenação, os conjuntos Σ* e Σ⁺ e o comprimento |w| de uma palavra.",
+  "tags": ["alfabeto", "símbolos", "palavras", "cadeias", "linguagens-formais"],
+  "keyPoints": [
+    "Linguagem é um conceito fundamental em Computação e Informática; para defini-la são necessários um alfabeto e o conceito de palavra (cadeia de caracteres).",
+    "Um alfabeto Σ é um conjunto FINITO de símbolos ou caracteres; o conjunto vazio ∅ é um alfabeto, mas conjuntos infinitos (como ℕ) não são.",
+    "Símbolo ou caractere é uma entidade abstrata básica, não definida formalmente (exemplos: letras e dígitos).",
+    "Palavra (cadeia de caracteres, sentença) sobre um alfabeto é uma sequência finita de símbolos justapostos; ε é a cadeia/palavra vazia.",
+    "Prefixo e sufixo são sequências inicial e final de símbolos da palavra; subpalavra é qualquer sequência de símbolos contíguos.",
+    "A concatenação é uma operação binária por justaposição, com elemento neutro ε (εw = w = wε) e associativa (v(wt) = (vw)t).",
+    "A concatenação sucessiva wⁿ é definida indutivamente: w⁰ = ε e wⁿ = w·wⁿ⁻¹ para n > 0.",
+    "Σ* é o conjunto de todas as palavras sobre Σ (incluindo ε), definido indutivamente; Σ⁺ = Σ* − {ε}.",
+    "O comprimento (tamanho) |w| é o número de símbolos da palavra; é uma função com domínio em Σ* e codomínio em ℕ (|abcb| = 4, |ε| = 0)."
+  ],
+  "flashcards": [
+    { "front": "O que é um alfabeto (Σ)?", "back": "Um conjunto FINITO de símbolos ou caracteres." },
+    { "front": "O conjunto vazio ∅ é um alfabeto?", "back": "Sim. ∅ é um alfabeto (é finito). O slide destaca isso explicitamente." },
+    { "front": "Por que ℕ não é um alfabeto?", "back": "Porque ℕ (números naturais) é um conjunto infinito, e um alfabeto deve ser finito." },
+    { "front": "O que é um símbolo ou caractere?", "back": "Uma entidade abstrata básica, não definida formalmente, que serve de base para as definições (ex.: letras e dígitos)." },
+    { "front": "O que é uma palavra (cadeia de caracteres / sentença)?", "back": "Sobre um alfabeto, é uma sequência finita de símbolos justapostos." },
+    { "front": "O que representa o símbolo ε?", "back": "A cadeia vazia ou palavra vazia (cadeia sem símbolos)." },
+    { "front": "O que são prefixo e sufixo de uma palavra?", "back": "Prefixo é qualquer sequência inicial de símbolos da palavra; sufixo é qualquer sequência final de símbolos da palavra." },
+    { "front": "O que é uma subpalavra?", "back": "Qualquer sequência de símbolos contíguos da palavra. Todo prefixo ou sufixo é uma subpalavra." },
+    { "front": "Quais são todos os prefixos de abcb (sobre {a,b,c})?", "back": "ε, a, ab, abcb." },
+    { "front": "Quais são todos os sufixos de abcb (sobre {a,b,c})?", "back": "ε, b, cb, bcb, abcb." },
+    { "front": "O que é a concatenação de palavras?", "back": "Uma operação binária sobre um conjunto de palavras que associa a cada par de palavras a palavra formada pela justaposição da primeira com a segunda." },
+    { "front": "Quais as propriedades da concatenação?", "back": "Elemento neutro ε (εw = w = wε) e associatividade (v(wt) = (vw)t), permitindo omitir os parênteses (v w t)." },
+    { "front": "Como se define a concatenação sucessiva wⁿ?", "back": "Indutivamente: w⁰ = ε e wⁿ = w·wⁿ⁻¹ para n > 0. Ex.: w³ = www, w¹ = w, a⁵ = aaaaa." },
+    { "front": "O que são Σ* e Σ⁺?", "back": "Σ* é o conjunto de todas as palavras possíveis sobre Σ (inclui ε); Σ⁺ = Σ* − {ε} (todas exceto a palavra vazia)." },
+    { "front": "Como Σ* é definido indutivamente?", "back": "Base: ε ∈ Σ* e, para todo x ∈ Σ, x ∈ Σ*. Passo: se u e v são palavras de Σ*, então uv (concatenação) é palavra de Σ*." },
+    { "front": "O que é o comprimento |w| de uma palavra?", "back": "O número de símbolos que compõem a palavra; é uma função com domínio em Σ* e codomínio em ℕ. Ex.: |abcb| = 4 e |ε| = 0." }
+  ],
+  "quiz": [
+    {
+      "question": "Segundo a definição apresentada, um alfabeto é:",
+      "options": [
+        "Um conjunto finito de símbolos ou caracteres",
+        "Qualquer conjunto de símbolos, finito ou infinito",
+        "Um conjunto infinito de palavras",
+        "Uma sequência finita de símbolos justapostos"
+      ],
+      "answer": 0,
+      "explanation": "Pela definição do slide, alfabeto é um conjunto FINITO de símbolos ou caracteres. A finitude é a propriedade essencial."
+    },
+    {
+      "question": "Qual das alternativas É um alfabeto?",
+      "options": [
+        "ℕ (conjunto dos números naturais)",
+        "{ a, b, aa, ab, ba, bb, aaa, … }",
+        "∅ (conjunto vazio)",
+        "O conjunto de todas as palavras sobre {a, b}"
+      ],
+      "answer": 2,
+      "explanation": "O conjunto vazio ∅ é finito, portanto é um alfabeto (o slide destaca isso). As demais opções são conjuntos infinitos e, por isso, não são alfabetos."
+    },
+    {
+      "question": "O símbolo ε representa:",
+      "options": [
+        "Um alfabeto unitário",
+        "A cadeia (palavra) vazia",
+        "O conjunto de todas as palavras",
+        "O comprimento de uma palavra"
+      ],
+      "answer": 1,
+      "explanation": "ε é a cadeia vazia ou palavra vazia, isto é, a cadeia sem símbolos."
+    },
+    {
+      "question": "Uma palavra (cadeia de caracteres) sobre um alfabeto é definida como:",
+      "options": [
+        "Um conjunto finito de símbolos",
+        "Uma sequência finita de símbolos justapostos",
+        "Qualquer subconjunto do alfabeto",
+        "Uma função de Σ* em ℕ"
+      ],
+      "answer": 1,
+      "explanation": "Palavra (cadeia, sentença) é uma sequência finita de símbolos justapostos sobre o alfabeto."
+    },
+    {
+      "question": "Para a palavra abcb sobre {a,b,c}, quais são TODOS os sufixos?",
+      "options": [
+        "ε, a, ab, abcb",
+        "a, b, c",
+        "ε, b, cb, bcb, abcb",
+        "abcb, bcb, cb, b"
+      ],
+      "answer": 2,
+      "explanation": "Sufixo é qualquer sequência final de símbolos da palavra; incluindo a palavra vazia, os sufixos de abcb são ε, b, cb, bcb, abcb."
+    },
+    {
+      "question": "Qual propriedade da concatenação justifica escrever 'v w t' sem parênteses?",
+      "options": [
+        "Comutatividade",
+        "Elemento neutro",
+        "Associatividade",
+        "Idempotência"
+      ],
+      "answer": 2,
+      "explanation": "A concatenação é associativa: v(wt) = (vw)t, logo os parênteses podem ser omitidos (v w t)."
+    },
+    {
+      "question": "Na concatenação sucessiva, quanto vale w⁰?",
+      "options": [
+        "w",
+        "ε",
+        "ww",
+        "0"
+      ],
+      "answer": 1,
+      "explanation": "A definição indutiva estabelece w⁰ = ε (e wⁿ = w·wⁿ⁻¹ para n > 0)."
+    },
+    {
+      "question": "Qual é a relação entre Σ* e Σ⁺?",
+      "options": [
+        "Σ⁺ = Σ* ∪ {ε}",
+        "Σ* = Σ⁺ − {ε}",
+        "Σ⁺ = Σ* − {ε}",
+        "Σ* = Σ⁺ ∩ {ε}"
+      ],
+      "answer": 2,
+      "explanation": "Σ* contém todas as palavras (inclusive ε) e Σ⁺ = Σ* − {ε}, ou seja, Σ⁺ é Σ* sem a palavra vazia."
+    },
+    {
+      "question": "Sejam v = baaaa e w = bb sobre Σ = {a,b}. Quanto vale vw?",
+      "options": [
+        "bbbaaaa",
+        "baaaabb",
+        "baaaa",
+        "baabb"
+      ],
+      "answer": 1,
+      "explanation": "A concatenação justapõe a primeira com a segunda palavra: vw = baaaa seguido de bb = baaaabb."
+    },
+    {
+      "question": "Qual é o comprimento |abcb|?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "0"
+      ],
+      "answer": 1,
+      "explanation": "O comprimento é o número de símbolos da palavra; abcb tem 4 símbolos, logo |abcb| = 4."
+    },
+    {
+      "question": "O comprimento |w| é descrito como uma função com:",
+      "options": [
+        "Domínio em ℕ e codomínio em Σ*",
+        "Domínio em Σ* e codomínio em ℕ",
+        "Domínio e codomínio em Σ",
+        "Domínio em Σ⁺ e codomínio em Σ*"
+      ],
+      "answer": 1,
+      "explanation": "O slide define |w| como função com domínio em Σ* e codomínio em ℕ (o número de símbolos da palavra)."
+    },
+    {
+      "question": "No alfabeto binário {a,b}, qual analogia é apresentada nos slides?",
+      "options": [
+        "Corresponde ao alfabeto da língua portuguesa",
+        "É o domínio de valores de um bit, análogo à representação interna dos computadores",
+        "Representa todos os números naturais",
+        "É o conjunto de todos os programas em Pascal"
+      ],
+      "answer": 1,
+      "explanation": "O alfabeto binário {a,b} é apresentado como o domínio de valores de um bit, em analogia com a representação interna dos computadores reais; usar poucos símbolos simplifica a teoria."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Identificar alfabetos",
+      "prompt": "Classifique cada conjunto como alfabeto ou não alfabeto, justificando: (a) {0,1}; (b) ∅; (c) ℕ; (d) {a, aa, aaa, …}.",
+      "solution": "Um alfabeto é, por definição, um conjunto FINITO de símbolos.\n(a) {0,1}: alfabeto (finito, 2 símbolos).\n(b) ∅: alfabeto (o conjunto vazio é finito; destacado no slide).\n(c) ℕ: não é alfabeto (conjunto infinito).\n(d) {a, aa, aaa, …}: não é alfabeto (conjunto infinito).",
+      "answer": "São alfabetos: (a) e (b). Não são alfabetos: (c) e (d), por serem infinitos."
+    },
+    {
+      "title": "Exercício 2 — Prefixos, sufixos e comprimento de abcb",
+      "prompt": "Sobre o alfabeto {a,b,c} e a palavra abcb, liste todos os prefixos e todos os sufixos e indique o comprimento |abcb|.",
+      "solution": "Prefixo = sequência inicial de símbolos; sufixo = sequência final.\nPrefixos: ε, a, ab, abcb.\nSufixos: ε, b, cb, bcb, abcb.\nComprimento: |abcb| = 4 (número de símbolos da palavra).",
+      "answer": "Prefixos: ε, a, ab, abcb. Sufixos: ε, b, cb, bcb, abcb. |abcb| = 4."
+    },
+    {
+      "title": "Exercício 3 — Concatenação e concatenação sucessiva",
+      "prompt": "Sejam Σ = {a,b}, v = baaaa e w = bb. Calcule vw, vε e w³.",
+      "solution": "Concatenação = justaposição da primeira com a segunda palavra.\nvw = baaaa seguido de bb = baaaabb.\nvε = v = baaaa, pois ε é o elemento neutro da concatenação.\nConcatenação sucessiva: w³ = www = bb·bb·bb = bbbbbb.",
+      "answer": "vw = baaaabb; vε = baaaa; w³ = bbbbbb."
+    },
+    {
+      "title": "Exercício 4 — Σ* e Σ⁺",
+      "prompt": "Explique a diferença entre Σ* e Σ⁺ e escreva os primeiros elementos de cada um para Σ = {a,b}.",
+      "solution": "Σ* é o conjunto de TODAS as palavras sobre Σ, incluindo a palavra vazia ε. Σ⁺ = Σ* − {ε} é o mesmo conjunto sem a palavra vazia.\nPara Σ = {a,b}:\nΣ* = {ε, a, b, aa, ab, ba, bb, aaa, …}\nΣ⁺ = {a, b, aa, ab, ba, bb, aaa, …}",
+      "answer": "Σ* inclui ε; Σ⁺ = Σ* − {ε} não inclui ε. Σ* = {ε, a, b, aa, ab, ba, bb, …} e Σ⁺ = {a, b, aa, ab, ba, bb, …}."
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "id": "13-automato-com-pilha",
+  "module": 13,
+  "title": "Autômato com Pilha (PDA)",
+  "icon": "📚",
+  "summary": "O Autômato com Pilha (AP/PDA) é um autômato finito não-determinístico acrescido de uma pilha (memória LIFO ilimitada), o que lhe permite reconhecer linguagens não-regulares; os APs não-determinísticos têm exatamente o mesmo poder das gramáticas livres-de-contexto.",
+  "tags": ["autômato-com-pilha", "PDA", "NPDA", "pilha", "livre-de-contexto", "GLC", "não-determinístico"],
+  "keyPoints": [
+    "Um autômato com pilha (AP) é como um autômato finito não-determinístico, porém com um elemento extra: uma pilha que funciona como memória LIFO (o último que entra é o primeiro que sai).",
+    "A pilha fornece memória adicional ilimitada além da quantidade finita disponível no controle de estado, permitindo ao AP reconhecer algumas linguagens não-regulares, como 0ⁿ1ⁿ.",
+    "Todo acesso à pilha é feito no topo: escrever um símbolo é empilhar, remover um símbolo é desempilhar.",
+    "Autômatos com pilha são equivalentes em poder a gramáticas livres-de-contexto; prova-se que uma linguagem é livre-de-contexto mostrando que é gerada por uma GLC ou reconhecida por um AP.",
+    "Diferente dos autômatos finitos, APs determinísticos e não-determinísticos NÃO são equivalentes: os APs não-determinísticos reconhecem mais linguagens.",
+    "São os APs não-determinísticos (NPDA) que são equivalentes às gramáticas livres-de-contexto.",
+    "Formalmente, um AP é uma 6-upla (Q, Σ, Γ, δ, q₀, F): conjunto de estados, alfabeto de entrada, alfabeto de pilha, função de transição, estado inicial e conjunto de estados de aceitação (todos finitos).",
+    "A função de transição é δ: Q × Σ_ε × Γ_ε → P(Q × Γ_ε), onde Σ_ε = Σ∪{ε} e Γ_ε = Γ∪{ε}; o contradomínio é o conjunto das partes, refletindo o não-determinismo.",
+    "A notação de transição 'a, b → c' significa: lendo a da entrada, substitui-se o topo b da pilha por c; qualquer um dentre a, b, c pode ser ε (sem ler entrada, sem desempilhar ou sem empilhar, respectivamente).",
+    "Costuma-se empilhar um marcador de fundo $ no início para reconhecer quando a pilha está vazia (topo = $), e exemplos clássicos reconhecidos por AP são 0ⁿ1ⁿ, aⁱbʲcᵏ (i=j ou i=k) e os palíndromos wwᴿ."
+  ],
+  "flashcards": [
+    { "front": "O que é um autômato com pilha (AP/PDA)?", "back": "É como um autômato finito não-determinístico, mas com um elemento extra: uma pilha. A pilha dá memória adicional (LIFO) além do controle finito, permitindo reconhecer algumas linguagens não-regulares." },
+    { "front": "O que significa a pilha ser LIFO?", "back": "PILHA: o último que entra é o primeiro que sai. Todo o acesso é feito no topo." },
+    { "front": "O que é empilhar e desempilhar?", "back": "Escrever um símbolo na pilha = empilhar o símbolo. Remover um símbolo da pilha = desempilhar o símbolo. Ambas as operações acontecem no topo." },
+    { "front": "Por que um autômato finito não reconhece { 0ⁿ1ⁿ | n ≥ 0 }, mas um AP reconhece?", "back": "O autômato finito tem memória finita e não pode armazenar n arbitrariamente grande. O AP usa a pilha (memória ilimitada) para armazenar o número de 0s já vistos e compará-lo com o número de 1s." },
+    { "front": "Qual a relação entre APs e gramáticas livres-de-contexto?", "back": "Autômatos com pilha são equivalentes em poder a gramáticas livres-de-contexto. Uma linguagem é livre-de-contexto se for gerada por uma GLC ou, equivalentemente, reconhecida por um autômato de pilha." },
+    { "front": "APs determinísticos e não-determinísticos têm o mesmo poder?", "back": "Não. Diferente dos autômatos finitos, eles NÃO são equivalentes: os APs não-determinísticos reconhecem mais linguagens. São os não-determinísticos que equivalem às gramáticas livres-de-contexto." },
+    { "front": "Qual é a definição formal de um autômato com pilha?", "back": "Uma 6-upla (Q, Σ, Γ, δ, q₀, F): Q = estados, Σ = alfabeto de entrada, Γ = alfabeto de pilha, δ = função de transição, q₀ = estado inicial, F = conjunto de estados de aceitação. Todos são conjuntos finitos." },
+    { "front": "Qual é a assinatura da função de transição δ de um AP?", "back": "δ: Q × Σ_ε × Γ_ε → P(Q × Γ_ε), onde Σ_ε = Σ ∪ {ε} e Γ_ε = Γ ∪ {ε}. O contradomínio é o conjunto das partes (potência), pois o AP é não-determinístico." },
+    { "front": "O que significa a notação de transição 'a, b → c'?", "back": "Quando a máquina está lendo a da entrada, ela pode substituir o símbolo b no topo da pilha por um c. Qualquer um dentre a, b e c pode ser ε." },
+    { "front": "Na notação 'a, b → c', o que significa cada parte ser ε?", "back": "Se a = ε: faz a transição sem ler símbolo de entrada. Se b = ε: faz a transição sem ler nem desempilhar símbolo da pilha. Se c = ε: não escreve nenhum símbolo na pilha." },
+    { "front": "Para que serve o marcador de fundo $ na pilha?", "back": "É empilhado no início (ex.: ε, ε → $) para marcar o fundo da pilha; ao reencontrá-lo no topo, o autômato sabe que a pilha 'esvaziou' e pode aceitar (ex.: ε, $ → ε)." },
+    { "front": "Como o AP M₁ reconhece { 0ⁿ1ⁿ | n ≥ 0 }?", "back": "Empilha $; para cada 0 lido empilha um 0 (0, ε → 0); ao ler o primeiro 1 muda de estado desempilhando um 0 (1, 0 → ε) e continua desempilhando um 0 por 1; quando o topo é $, faz ε, $ → ε e aceita." },
+    { "front": "O que significa wᴿ na linguagem { wwᴿ | w ∈ {0,1}* }?", "back": "wᴿ é w escrita de trás para a frente (o reverso/espelho de w). A linguagem é a dos palíndromos de comprimento par sobre {0,1}." },
+    { "front": "Qual o papel do não-determinismo no AP que reconhece { wwᴿ }?", "back": "A transição ε, ε → ε de q₂ para q₃ 'adivinha' o meio da cadeia — o ponto onde w termina e wᴿ começa — sem ler entrada nem alterar a pilha." }
+  ],
+  "quiz": [
+    {
+      "question": "Um autômato com pilha (AP) difere de um autômato finito não-determinístico por possuir:",
+      "options": ["uma fita de saída", "um elemento extra: uma pilha (memória LIFO)", "dois estados iniciais", "uma função de transição determinística"],
+      "answer": 1,
+      "explanation": "Segundo a definição do módulo, o AP é como um AFND porém com um elemento extra: a pilha, que funciona como memória LIFO adicional além do controle finito."
+    },
+    {
+      "question": "Por que um autômato com pilha consegue reconhecer { 0ⁿ1ⁿ | n ≥ 0 }, ao contrário de um autômato finito?",
+      "options": ["porque é determinístico", "porque tem mais estados de aceitação", "porque pode usar a pilha (memória ilimitada) para armazenar o número de 0s já vistos", "porque a linguagem é regular"],
+      "answer": 2,
+      "explanation": "O autômato finito tem memória finita e não armazena n grande; o AP usa a pilha como memória ilimitada para contar os 0s e casá-los com os 1s."
+    },
+    {
+      "question": "Sobre a equivalência de poder, qual afirmação está correta?",
+      "options": ["APs determinísticos e não-determinísticos reconhecem as mesmas linguagens", "APs não-determinísticos são equivalentes a gramáticas livres-de-contexto", "APs reconhecem exatamente as linguagens regulares", "APs são menos poderosos que autômatos finitos"],
+      "answer": 1,
+      "explanation": "O módulo afirma que APs não-determinísticos são equivalentes a gramáticas livres-de-contexto e que, diferentemente dos autômatos finitos, os APs determinísticos e não-determinísticos NÃO são equivalentes (o não-determinístico reconhece mais)."
+    },
+    {
+      "question": "Na 6-upla (Q, Σ, Γ, δ, q₀, F) de um autômato com pilha, o que representa Γ?",
+      "options": ["o conjunto de estados", "o alfabeto de entrada", "o alfabeto de pilha", "o conjunto de estados de aceitação"],
+      "answer": 2,
+      "explanation": "Na definição formal, Q é o conjunto de estados, Σ é o alfabeto de entrada, Γ é o alfabeto de pilha, δ a função de transição, q₀ o estado inicial e F os estados de aceitação."
+    },
+    {
+      "question": "Qual é a assinatura da função de transição de um autômato com pilha?",
+      "options": ["δ: Q × Σ → Q", "δ: Q × Σ_ε × Γ_ε → P(Q × Γ_ε)", "δ: Q × Γ → Q × Γ", "δ: Q × Σ* → Q"],
+      "answer": 1,
+      "explanation": "O módulo define δ: Q × Σ_ε × Γ_ε → P(Q × Γ_ε), com Σ_ε = Σ∪{ε} e Γ_ε = Γ∪{ε}; o contradomínio é o conjunto das partes por causa do não-determinismo."
+    },
+    {
+      "question": "Na notação de transição 'a, b → c', o que ocorre na pilha?",
+      "options": ["empilha-se a e desempilha-se c", "lê-se c da entrada e empilha-se b", "substitui-se o símbolo b no topo da pilha por c", "esvazia-se toda a pilha"],
+      "answer": 2,
+      "explanation": "A notação significa: lendo a da entrada, substitui-se o símbolo b no topo da pilha por um c (desempilha b, empilha c)."
+    },
+    {
+      "question": "Na notação 'a, b → c', se b = ε, isso significa que a máquina:",
+      "options": ["não lê símbolo de entrada", "faz a transição sem ler nem desempilhar qualquer símbolo da pilha", "não escreve nenhum símbolo na pilha", "esvazia a pilha"],
+      "answer": 1,
+      "explanation": "O slide é explícito: se b é ε, a máquina pode fazer a transição sem ler nem desempilhar qualquer símbolo da pilha. (a=ε: sem ler entrada; c=ε: sem empilhar.)"
+    },
+    {
+      "question": "No AP M₁ que reconhece { 0ⁿ1ⁿ | n ≥ 0 }, qual é o efeito da transição '1, 0 → ε'?",
+      "options": ["empilha um 1 ao ler 0", "ao ler um 1, desempilha um 0 da pilha", "ao ler um 0, empilha um 1", "aceita a cadeia imediatamente"],
+      "answer": 1,
+      "explanation": "Conforme a tabela e o diagrama do Exemplo 1, δ(q₂,1,0)={(q₃,ε)}: lendo 1 com topo 0, desempilha o 0 (empilha ε). Assim cada 1 cancela um 0 previamente empilhado."
+    },
+    {
+      "question": "No AP M₃ que reconhece { wwᴿ | w ∈ {0,1}* }, qual é o papel da transição 'ε, ε → ε' de q₂ para q₃?",
+      "options": ["empilhar o marcador de fundo", "casar os símbolos da segunda metade", "adivinhar (não-deterministicamente) o meio da cadeia", "ler o último símbolo da entrada"],
+      "answer": 2,
+      "explanation": "Como w pode ter qualquer comprimento, o AP usa não-determinismo: a transição ε, ε → ε adivinha o ponto médio onde w termina e wᴿ começa, sem ler entrada nem mexer na pilha."
+    },
+    {
+      "question": "Por que a transição inicial costuma empilhar o marcador '$' (ε, ε → $)?",
+      "options": ["para ler o primeiro símbolo da entrada", "para marcar o fundo da pilha e detectar quando ela está vazia", "para tornar o autômato determinístico", "para aceitar a cadeia vazia"],
+      "answer": 1,
+      "explanation": "O $ é empilhado no início para marcar o fundo; quando reaparece no topo, o autômato sabe que a pilha 'esvaziou' e pode aceitar via ε, $ → ε (como em M₁ e M₃)."
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Exercício 1 — Atividade 12: Gramáticas livres-de-contexto",
+      "prompt": "Dê gramáticas livres-de-contexto gerando as seguintes linguagens:\na) O conjunto de cadeias sobre o alfabeto {a, b} com mais a's que b's.\nb) { w#x | wᴿ é uma subcadeia de x, para w, x ∈ {0,1}* }",
+      "solution": "Gabarito oficial da Atividade 12.\n\na) Cadeias com mais a's que b's:\n  S → TaT\n  T → TT | aTb | bTa | a | ε\n  Ideia: T gera cadeias com número IGUAL de a's e b's; o símbolo a no centro de S → TaT garante pelo menos um a a mais.\n\nb) { w#x | wᴿ é subcadeia de x }:\n  S → TX\n  T → 0T0 | 1T1 | #X\n  X → 0X | 1X | ε\n  Ideia: T constrói simultaneamente w (à esquerda do #) e seu reverso wᴿ dentro de x; X gera os símbolos livres (prefixo/sufixo) de x.",
+      "answer": "a) S → TaT ; T → TT | aTb | bTa | a | ε.   b) S → TX ; T → 0T0 | 1T1 | #X ; X → 0X | 1X | ε."
+    },
+    {
+      "title": "Exercício 2 — Atividade 12: Descrição formal de um AP",
+      "prompt": "Dê a descrição formal para o autômato de pilha cujo diagrama é: q₁ (inicial) → q₂ com 'ε, ε → $'; laços em q₂ '0, ε → 0' e '1, ε → 1'; q₂ → q₃ com 'ε, ε → ε'; laços em q₃ '0, 0 → ε' e '1, 1 → ε'; q₃ → q₄ com 'ε, $ → ε'. q₁ e q₄ são de aceitação.",
+      "solution": "Gabarito oficial da Atividade 12. O autômato é a 6-upla (Q, Σ, Γ, δ, q₁, F) com:\n  Q = { q₁, q₂, q₃, q₄ }\n  Σ = { 0, 1 }\n  Γ = { 0, 1, $ }\n  q₁ é o estado inicial.\n  F = { q₁, q₄ } (q₁ e q₄ são os estados de aceitação).\nA função de transição δ é a indicada pelo diagrama: empilha o marcador $, empilha a primeira metade (0→0, 1→1), adivinha o meio em ε, ε → ε, casa a segunda metade desempilhando (0,0→ε e 1,1→ε) e aceita em q₄ com ε, $ → ε. Logo, a máquina reconhece { wwᴿ | w ∈ {0,1}* } (palíndromos de comprimento par).",
+      "answer": "(Q, Σ, Γ, δ, q₁, F) com Q={q₁,q₂,q₃,q₄}, Σ={0,1}, Γ={0,1,$}, q₁ inicial, F={q₁,q₄}; δ conforme o diagrama. Reconhece os palíndromos de comprimento par sobre {0,1}."
+    },
+    {
+      "title": "Exercício 3 — Atividade 12: NPDA de palíndromos ímpares",
+      "prompt": "Projete um Autômato com Pilha não determinístico (NPDA) que reconheça a linguagem de palíndromos de comprimento ímpar sobre o alfabeto {a, b}. Por exemplo: aba, aabaa, bab, etc.",
+      "solution": "Observação: o gabarito oficial da Atividade 12 não fornece a solução desta questão; resolução elaborada a partir da teoria do módulo (análoga ao AP M₃ dos slides).\n\nPalíndromos de comprimento ímpar têm a forma w·c·wᴿ, com w ∈ {a,b}* e um símbolo central c ∈ {a,b}. A diferença para o caso par é que a transição que adivinha o meio CONSOME um símbolo central sem alterar a pilha.\n\nM = ({q₁,q₂,q₃,q₄}, {a,b}, {a,b,$}, δ, q₁, {q₄}), com δ:\n  q₁ → q₂:  ε, ε → $        (empilha marcador de fundo)\n  q₂ → q₂:  a, ε → a   e   b, ε → b     (empilha a primeira metade w)\n  q₂ → q₃:  a, ε → ε   e   b, ε → ε     (lê o símbolo central, sem mexer na pilha)\n  q₃ → q₃:  a, a → ε   e   b, b → ε     (casa a segunda metade wᴿ com o topo)\n  q₃ → q₄:  ε, $ → ε    (pilha vazia ⇒ aceita)\nO não-determinismo escolhe quando ler o símbolo central (o ponto médio da cadeia).",
+      "answer": "M = ({q₁,q₂,q₃,q₄}, {a,b}, {a,b,$}, δ, q₁, {q₄}): empilha $, empilha w em q₂ (a,ε→a / b,ε→b), lê o símbolo central em q₂→q₃ (a,ε→ε / b,ε→ε), casa wᴿ em q₃ (a,a→ε / b,b→ε) e aceita em q₄ com ε,$→ε."
+    },
+    {
+      "title": "Exercício 4 — Simulação no AP M₁ (0ⁿ1ⁿ)",
+      "prompt": "Usando o AP M₁ do módulo (que reconhece { 0ⁿ1ⁿ | n ≥ 0 }), mostre a sequência de configurações da pilha ao processar a cadeia 0011 e diga se ela é aceita.",
+      "solution": "Estados/transições de M₁: q₁→q₂ (ε,ε→$); q₂ laço (0,ε→0); q₂→q₃ (1,0→ε); q₃ laço (1,0→ε); q₃→q₄ (ε,$→ε).\n\nPilha escrita do topo para a base:\n1) q₁, entrada 0011, pilha vazia → ε,ε→$ ⇒ q₂, pilha: $\n2) lê 0 (0,ε→0) ⇒ q₂, pilha: 0 $\n3) lê 0 (0,ε→0) ⇒ q₂, pilha: 0 0 $\n4) lê 1 (1,0→ε) ⇒ q₃, pilha: 0 $   (desempilhou um 0)\n5) lê 1 (1,0→ε) ⇒ q₃, pilha: $    (desempilhou o outro 0)\n6) entrada esgotada, topo = $ ⇒ ε,$→ε ⇒ q₄, pilha vazia.\nq₄ ∈ F ⇒ ACEITA. (Os dois 0s foram empilhados e depois casados com os dois 1s.)",
+      "answer": "Sim, 0011 é aceita: pilha evolui $ → 0$ → 00$ → 0$ → $ → (vazia), terminando em q₄ ∈ F."
+    }
+  ]
+}

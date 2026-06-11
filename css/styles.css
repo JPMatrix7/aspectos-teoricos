@@ -411,6 +411,46 @@ button{font-family:inherit}
 .fade-in{animation:fadeIn .35s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
+/* ============================ SEARCH ============================ */
+.search-wrap{margin-bottom:24px}
+.search-input{
+  width:100%;padding:14px 20px;font-size:18px;font-family:var(--font);
+  background:var(--card-strong);border:1.5px solid var(--border);border-radius:var(--radius);
+  color:var(--txt);outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.search-input:focus{border-color:var(--ind);box-shadow:0 0 0 3px rgba(99,102,241,.22)}
+.search-input::placeholder{color:var(--muted2)}
+.search-summary{margin:0 0 20px;font-size:14px;color:var(--muted)}
+.search-summary b{color:var(--txt)}
+.search-group{margin-bottom:28px}
+.search-group-title{
+  font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted2);
+  font-weight:700;margin:0 0 10px;display:flex;align-items:center;gap:8px;
+}
+.search-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:13px 16px;border-radius:var(--radius-sm);
+  background:var(--card);border:1px solid var(--border);
+  margin-bottom:7px;cursor:pointer;transition:.15s;
+}
+.search-item:hover{background:var(--card-strong);border-color:var(--border-strong);transform:translateX(3px)}
+.search-item-ico{font-size:20px;flex:none;padding-top:2px}
+.search-item-body{flex:1;min-width:0}
+.search-item-title{font-size:14.5px;font-weight:600;margin-bottom:4px}
+.search-item-sub{font-size:13px;color:var(--muted);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-item-mod{font-size:11.5px;color:var(--muted2)}
+.search-item-tags{margin-top:5px}
+.search-item-arr{font-size:20px;color:var(--muted2);flex:none;align-self:center}
+.search-more{font-size:13px;color:var(--muted2);padding:4px 16px 0}
+.search-empty{text-align:center;padding:60px 0;color:var(--muted)}
+.search-empty div{font-size:48px;margin-bottom:12px}
+mark{background:rgba(251,191,36,.22);color:#fbbf24;border-radius:3px;padding:0 2px}
+kbd{
+  display:inline-block;padding:2px 7px;border-radius:6px;font-size:11.5px;
+  font-family:var(--mono);background:var(--card-strong);border:1px solid var(--border-strong);
+  color:var(--muted);vertical-align:middle;
+}
+
 /* ============================ RESPONSIVE ============================ */
 @media (max-width:920px){
   :root{--sidebar-w:268px}

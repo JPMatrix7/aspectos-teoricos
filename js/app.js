@@ -281,6 +281,7 @@
     if (a === "simulado") return { view: "simulado" };
     if (a === "cards") return { view: "cards" };
     if (a === "timeline") return { view: "timeline" };
+    if (a === "search") return { view: "search" };
     return { view: "home" };
   }
   function go(hash) { location.hash = hash; }
@@ -292,6 +293,7 @@
     let h = "";
     h += `<div class="nav-section">Geral</div>`;
     h += navItem("#home", "🏠", "Início", null, route.view === "home");
+    h += navItem("#search", "🔍", "Buscar", null, route.view === "search");
     h += navItem("#timeline", "📅", "Linha do Tempo", null, route.view === "timeline");
     h += navItem("#simulado", "🎯", "Simulado Geral", null, route.view === "simulado");
     h += navItem("#cards", "🎴", "Flashcards Gerais", null, route.view === "cards");
@@ -343,6 +345,7 @@
     if (route.view === "simulado") return viewSimulado();
     if (route.view === "cards") return viewCards();
     if (route.view === "timeline") return viewTimeline();
+    if (route.view === "search") return viewSearch();
     viewHome();
   }
 
@@ -818,6 +821,115 @@
     });
   }
 
+  /* -------------------------------------------------------------- SEARCH */
+  function highlight(text, q) {
+    const s = esc(String(text || ""));
+    if (!q) return s;
+    const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+    return s.replace(re, "<mark>$1</mark>");
+  }
+  function viewSearch() {
+    main.innerHTML = `
+      <div class="page-head fade-in">
+        <h1>🔍 Busca</h1>
+        <div class="muted">Pesquise em módulos, flashcards, quizzes e exercícios. Atalho: <kbd>Ctrl+K</kbd></div>
+      </div>
+      <div class="search-wrap fade-in">
+        <input class="search-input" id="searchInput" type="search"
+          placeholder="Digite um termo… ex: autômato, δ, pilha, gramática"
+          autocomplete="off" spellcheck="false" />
+      </div>
+      <div id="searchResults"></div>`;
+    const input = $("#searchInput");
+    input.focus();
+    let timer;
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => renderSearchResults(input.value.trim(), $("#searchResults")), 180);
+    });
+  }
+  function renderSearchResults(q, container) {
+    if (!q) { container.innerHTML = ""; return; }
+    const term = q.toLowerCase();
+    const modR = [], fcR = [], qzR = [], exR = [];
+    MODS.forEach((m) => {
+      const inMod = m.title.toLowerCase().includes(term) || m.summary.toLowerCase().includes(term) ||
+        m.tags.some((t) => t.toLowerCase().includes(term)) ||
+        m.keyPoints.some((k) => k.toLowerCase().includes(term));
+      if (inMod) {
+        const snippet = m.keyPoints.find((k) => k.toLowerCase().includes(term)) || m.summary;
+        modR.push({ m, snippet: String(snippet).slice(0, 200) });
+      }
+      m.flashcards.forEach((fc, idx) => {
+        if (fc.front.toLowerCase().includes(term) || fc.back.toLowerCase().includes(term))
+          fcR.push({ fc, idx, m });
+      });
+      m.quiz.forEach((qz, idx) => {
+        if (qz.question.toLowerCase().includes(term) || (qz.explanation || "").toLowerCase().includes(term))
+          qzR.push({ qz, idx, m });
+      });
+      m.exercises.forEach((ex, idx) => {
+        if ((ex.title || "").toLowerCase().includes(term) || (ex.prompt || "").toLowerCase().includes(term))
+          exR.push({ ex, idx, m });
+      });
+    });
+    const total = modR.length + fcR.length + qzR.length + exR.length;
+    if (!total) {
+      container.innerHTML = `<div class="search-empty"><div>🔍</div><p>Nenhum resultado para <b>${esc(q)}</b></p><p class="muted">Tente outro termo.</p></div>`;
+      return;
+    }
+    function group(ico, label, items, mapper) {
+      if (!items.length) return "";
+      const shown = items.slice(0, 8);
+      const more = items.length - shown.length;
+      return `<div class="search-group">
+        <h3 class="search-group-title">${ico} ${label} <span class="cnt">${items.length}</span></h3>
+        ${shown.map(mapper).join("")}
+        ${more ? `<div class="search-more">+${more} item${more !== 1 ? "s" : ""} — refine o termo para ver mais.</div>` : ""}
+      </div>`;
+    }
+    let html = `<p class="search-summary">${total} resultado${total !== 1 ? "s" : ""} para <b>${esc(q)}</b></p>`;
+    html += group("📚", "Módulos", modR, ({ m, snippet }) =>
+      `<div class="search-item" data-h="#mod/${m.id}">
+        <span class="search-item-ico">${m.icon}</span>
+        <div class="search-item-body">
+          <div class="search-item-title">${highlight(m.title, q)}</div>
+          <div class="search-item-sub">${highlight(snippet, q)}</div>
+          <div class="search-item-tags">${m.tags.slice(0, 5).map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>
+        </div><span class="search-item-arr">›</span></div>`
+    );
+    html += group("🎴", "Flashcards", fcR, ({ fc, m }) =>
+      `<div class="search-item" data-h="#mod/${m.id}/flashcards">
+        <span class="search-item-ico">🎴</span>
+        <div class="search-item-body">
+          <div class="search-item-title">${highlight(fc.front, q)}</div>
+          <div class="search-item-sub">${highlight(fc.back.slice(0, 180), q)}</div>
+          <div class="search-item-mod">${esc(m.title)}</div>
+        </div><span class="search-item-arr">›</span></div>`
+    );
+    html += group("❓", "Quiz", qzR, ({ qz, m }) =>
+      `<div class="search-item" data-h="#mod/${m.id}/quiz">
+        <span class="search-item-ico">❓</span>
+        <div class="search-item-body">
+          <div class="search-item-title">${highlight(qz.question.slice(0, 160), q)}</div>
+          <div class="search-item-mod">${esc(m.title)}</div>
+        </div><span class="search-item-arr">›</span></div>`
+    );
+    html += group("✍️", "Exercícios", exR, ({ ex, m }) =>
+      `<div class="search-item" data-h="#mod/${m.id}/exercicios">
+        <span class="search-item-ico">✍️</span>
+        <div class="search-item-body">
+          <div class="search-item-title">${highlight(ex.title || "Exercício", q)}</div>
+          <div class="search-item-sub">${highlight((ex.prompt || "").slice(0, 160), q)}</div>
+          <div class="search-item-mod">${esc(m.title)}</div>
+        </div><span class="search-item-arr">›</span></div>`
+    );
+    container.innerHTML = html;
+    $$(".search-item[data-h]", container).forEach((el) =>
+      el.addEventListener("click", () => go(el.dataset.h))
+    );
+  }
+
   /* --------------------------------------------------------------- UTILS */
   function inlineMd(s) {
     // Markdown inline simples e seguro (negrito, itálico, código). Escapa HTML antes.
@@ -836,6 +948,13 @@
   function closeNav() { document.body.classList.remove("nav-open"); }
   $("#menuBtn").addEventListener("click", () => document.body.classList.toggle("nav-open"));
   $("#backdrop").addEventListener("click", closeNav);
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+      e.preventDefault(); go("#search");
+      setTimeout(() => { const inp = $("#searchInput"); if (inp) inp.focus(); }, 80);
+    }
+  });
+  $("#searchBtn").addEventListener("click", () => go("#search"));
   $("#soundBtn").addEventListener("click", () => { S.settings.sound = !S.settings.sound; save(); updateHUD(); if (S.settings.sound) blip("ok"); toast("xp", S.settings.sound ? "🔊" : "🔈", "Som " + (S.settings.sound ? "ativado" : "desativado"), ""); });
   $("#resetBtn").addEventListener("click", () => {
     if (confirm("Zerar TODO o seu progresso (XP, níveis, flashcards, quizzes, conquistas)? Esta ação não pode ser desfeita.")) {

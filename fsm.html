@@ -78,6 +78,43 @@
     width: 13px; height: 13px; border-radius: 3px;
     border: 1px solid rgba(0,0,0,.35); display: inline-block;
   }
+
+  /* ---- Barra de modos (toque) ---- */
+  #touchToggle.on { background: #1a1a40; color: #fff; border-color: #1a1a40; }
+  #touchbar {
+    display: none;
+    flex-wrap: wrap; gap: 8px; align-items: center;
+    margin-bottom: 8px; padding: 8px 10px;
+    background: #f4f4fb; border: 1px solid #d3d3e2; border-radius: 8px;
+  }
+  body.touch-on #touchbar { display: flex; }
+  #touchbar .group { display: flex; gap: 6px; flex-wrap: wrap; }
+  #touchbar .lbl { font-size: 12px; color: #555; margin-right: 2px; }
+  #touchbar button {
+    background: #fff; border: 1px solid #b9b9c9; border-radius: 8px;
+    padding: 9px 12px; font-size: 14px; cursor: pointer; color: #1a1a40;
+    min-height: 42px; min-width: 42px;
+  }
+  #touchbar button.mode.active {
+    background: #1a56db; color: #fff; border-color: #1a56db; font-weight: 600;
+  }
+  #touchbar .sep { width: 1px; height: 28px; background: #cfcfe0; }
+  #touchHint {
+    display: none; font-size: 13px; color: #1a1a40;
+    background: #fffbe6; border: 1px solid #ecd98a; border-radius: 8px;
+    padding: 7px 12px; margin-bottom: 8px;
+  }
+  body.touch-on #touchHint { display: block; }
+
+  /* ---- Responsividade ---- */
+  @media (max-width: 820px) {
+    body { padding: 10px; }
+    h1 { font-size: 17px; }
+    .toolbar button, .export-bar { font-size: 13px; }
+    .toolbar button { padding: 9px 12px; min-height: 42px; }
+    #canvas { height: 60vh; min-height: 360px; }
+    .help { font-size: 13px; padding: 12px 14px; }
+  }
 </style>
 </head>
 <body>
@@ -95,7 +132,26 @@
     <button id="colRed" class="color-btn" title="Vermelho" data-color="#e02424"><span class="swatch" style="background:#e02424"></span>Vermelho</button>
     <button id="colBlue" class="color-btn" title="Azul" data-color="#1a56db"><span class="swatch" style="background:#1a56db"></span>Azul</button>
     <span class="sep"></span>
+    <button id="touchToggle" title="Ativar/desativar comandos por toque">📱 Modo toque</button>
     <button id="btnClear">Limpar tudo</button>
+  </div>
+
+  <div id="touchHint"></div>
+  <div id="touchbar">
+    <span class="lbl">Ferramenta:</span>
+    <div class="group">
+      <button id="mMove" class="mode active" data-mode="move" title="Selecionar e mover">👆 Mover</button>
+      <button id="mState" class="mode" data-mode="state" title="Tocar no vazio cria um estado">⊕ Estado</button>
+      <button id="mArrow" class="mode" data-mode="arrow" title="Tocar origem e depois destino cria uma seta">⟶ Seta</button>
+      <button id="mDelete" class="mode" data-mode="delete" title="Tocar num objeto apaga">🗑 Apagar</button>
+    </div>
+    <span class="sep"></span>
+    <span class="lbl">No selecionado:</span>
+    <div class="group">
+      <button id="aAccept" title="Alternar estado de aceitação">◎ Aceitação</button>
+      <button id="aStart" title="Alternar seta de início">→| Inicial</button>
+      <button id="aLabel" title="Editar rótulo (abre teclado)">✎ Rótulo</button>
+    </div>
   </div>
 
   <div class="export-bar">
@@ -128,6 +184,9 @@
       <li><b>Mover em grupo:</b> com vários selecionados, arraste qualquer um deles para mover o conjunto inteiro</li>
       <li><b>Setas/estados coloridos:</b> escolha <b>Preto</b>, <b>Vermelho</b> ou <b>Azul</b> na barra. Aplica ao que estiver selecionado e passa a valer para os próximos que você criar. A cor é mantida ao copiar/colar e na exportação (PNG/SVG/LaTeX)</li>
       <li><b>Quadro branco maior</b></li>
+      <li><b>Modo toque (celular/tablet):</b> ative em <span class="k">📱 Modo toque</span> (liga sozinho em telas pequenas). Escolha a ferramenta na barra:
+        <b>👆 Mover</b> (arrastar), <b>⊕ Estado</b> (tocar no vazio cria), <b>⟶ Seta</b> (toca origem, depois destino),
+        <b>🗑 Apagar</b> (toca o objeto). Com algo selecionado: <b>◎ Aceitação</b>, <b>→| Inicial</b> e <b>✎ Rótulo</b> (abre o teclado).</li>
     </ul>
     <p class="credit">Feito por <b>João Pedro</b> · Inspirado no
       <a href="https://madebyevan.com/fsm/" target="_blank" rel="noopener">FSM Designer</a>
@@ -1221,6 +1280,173 @@ function textToXML(text) {
     else result += '&#' + c + ';';
   }
   return result;
+}
+
+/* ===================== Modo toque (celular/tablet) ===================== */
+var touchEnabled = false;
+var touchMode = 'move';
+var arrowFrom = null;
+var tStart = null, tObj = null, tMoved = false, tDragging = false;
+
+var modeHints = {
+  move:   '👆 Mover: arraste para mover ou curvar. Toque para selecionar; arraste no vazio para selecionar vários.',
+  state:  '⊕ Estado: toque no quadro branco para criar um estado.',
+  arrow:  '⟶ Seta: toque na origem e depois no destino. Tocar a mesma bolinha cria um autolaço.',
+  delete: '🗑 Apagar: toque num estado ou seta para apagá-lo.'
+};
+
+var hintEl = document.getElementById('touchHint');
+var hintTimer = null;
+function setHint(t) { hintEl.textContent = t; }
+function flashHint(t) {
+  setHint(t);
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(function() { setHint(modeHints[touchMode]); }, 2500);
+}
+
+function setTouchMode(m) {
+  touchMode = m;
+  arrowFrom = null;
+  var btns = document.querySelectorAll('#touchbar .mode');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', btns[i].getAttribute('data-mode') === m);
+  }
+  setHint(modeHints[m]);
+}
+
+function enableTouch(on) {
+  touchEnabled = on;
+  document.body.classList.toggle('touch-on', on);
+  var tg = document.getElementById('touchToggle');
+  tg.classList.toggle('on', on);
+  tg.textContent = on ? '📱 Modo toque: ligado' : '📱 Modo toque';
+  if (on) setTouchMode(touchMode);
+}
+
+/* Ações sobre a seleção (botões da barra de toque) */
+function toggleAcceptTouch() {
+  var changed = false;
+  for (var i = 0; i < selectedObjects.length; i++) {
+    if (selectedObjects[i] instanceof Node) { selectedObjects[i].isAcceptState = !selectedObjects[i].isAcceptState; changed = true; }
+  }
+  if (!changed) flashHint('Selecione um estado primeiro (ferramenta 👆 Mover).');
+  else draw();
+}
+function findStartLink(node) {
+  for (var i = 0; i < links.length; i++) {
+    if (links[i] instanceof StartLink && links[i].node === node) return i;
+  }
+  return -1;
+}
+function toggleStartTouch() {
+  var node = (selectedObjects.length === 1 && selectedObjects[0] instanceof Node) ? selectedObjects[0] : null;
+  if (!node) { flashHint('Selecione um estado primeiro (ferramenta 👆 Mover).'); return; }
+  var idx = findStartLink(node);
+  if (idx >= 0) { links.splice(idx, 1); }
+  else { var s = new StartLink(node, { x: node.x - 80, y: node.y }); s.color = lastColor; links.push(s); }
+  draw();
+}
+function editLabelTouch() {
+  var sel = (selectedObjects.length === 1) ? selectedObjects[0] : null;
+  if (!sel || !('text' in sel)) { flashHint('Selecione um único objeto para editar o rótulo.'); return; }
+  var t = window.prompt('Rótulo (use q_0 para subscrito, \\beta para letra grega):', sel.text);
+  if (t !== null) { sel.text = t; draw(); }
+}
+
+/* Coordenada relativa ao canvas a partir de um toque */
+function getTouchPos(t) {
+  var r = canvas.getBoundingClientRect();
+  return { x: t.clientX - r.left, y: t.clientY - r.top };
+}
+
+canvas.addEventListener('touchstart', function(e) {
+  if (!touchEnabled) return;
+  if (e.touches.length !== 1) return;
+  e.preventDefault();
+  var p = getTouchPos(e.touches[0]);
+  tStart = p; tMoved = false; tDragging = false;
+  tObj = pickObject(p.x, p.y);
+  if (touchMode === 'move') {
+    if (tObj) {
+      if (!isSelected(tObj)) { setSingleSelection(tObj); objectIsBeingEdited = false; }
+      movingObject = true; prepareMove(p); tDragging = true;
+    } else {
+      clearSelection(); selecting = true; selectStart = p; selectEnd = p;
+    }
+    draw();
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', function(e) {
+  if (!touchEnabled) return;
+  if (e.touches.length !== 1) return;
+  e.preventDefault();
+  var p = getTouchPos(e.touches[0]);
+  if (tStart && (Math.abs(p.x - tStart.x) > 8 || Math.abs(p.y - tStart.y) > 8)) tMoved = true;
+  if (tDragging && movingObject) { moveSelection(p); draw(); }
+  else if (selecting) { selectEnd = p; updateBoxSelection(); draw(); }
+}, { passive: false });
+
+canvas.addEventListener('touchend', function(e) {
+  if (!touchEnabled) return;
+  e.preventDefault();
+  movingObject = false;
+  var wasSelecting = selecting; selecting = false;
+  if (tDragging) { tDragging = false; tStart = null; draw(); return; }
+  if (wasSelecting) { selectStart = selectEnd = null; tStart = null; draw(); return; }
+  if (tMoved) { tStart = null; return; }
+  // foi um toque simples (tap)
+  var p = tStart; tStart = null;
+  if (!p) return;
+  var obj = pickObject(p.x, p.y);
+  if (touchMode === 'state') {
+    if (!obj) {
+      var n = new Node(p.x, p.y); n.color = lastColor; nodes.push(n);
+      setSingleSelection(n); flashHint('Estado criado. Use ✎ Rótulo para nomear.');
+    } else { setSingleSelection(obj); }
+    draw();
+  } else if (touchMode === 'arrow') {
+    if (obj instanceof Node) {
+      if (!arrowFrom) {
+        arrowFrom = obj; setSingleSelection(obj);
+        setHint('Origem escolhida — toque no destino (ou na mesma bolinha p/ autolaço).');
+      } else {
+        var l;
+        if (obj === arrowFrom) { l = new SelfLink(obj); l.anchorAngle = -Math.PI / 2; }
+        else { l = new Link(arrowFrom, obj); l.perpendicularPart = 0; }
+        l.color = lastColor; links.push(l); setSingleSelection(l); arrowFrom = null;
+        setHint(modeHints.arrow);
+      }
+      draw();
+    } else { arrowFrom = null; clearSelection(); setHint(modeHints.arrow); draw(); }
+  } else if (touchMode === 'delete') {
+    if (obj) { setSingleSelection(obj); deleteSelection(); draw(); }
+    else flashHint('Nada para apagar aqui.');
+  } else { // move: tap seleciona / desseleciona
+    setSingleSelection(obj); objectIsBeingEdited = false; draw();
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchcancel', function() {
+  tDragging = false; selecting = false; movingObject = false; tStart = null;
+}, { passive: false });
+
+/* Ligação dos botões do modo toque */
+document.getElementById('touchToggle').onclick = function() { enableTouch(!touchEnabled); };
+(function() {
+  var modeBtns = document.querySelectorAll('#touchbar .mode');
+  for (var i = 0; i < modeBtns.length; i++) {
+    modeBtns[i].onclick = function() { setTouchMode(this.getAttribute('data-mode')); };
+  }
+})();
+document.getElementById('aAccept').onclick = toggleAcceptTouch;
+document.getElementById('aStart').onclick = toggleStartTouch;
+document.getElementById('aLabel').onclick = editLabelTouch;
+
+/* Liga sozinho em dispositivos de toque ou telas pequenas */
+function isTouchDevice() { return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0); }
+if (isTouchDevice() || window.matchMedia('(max-width: 820px)').matches) {
+  enableTouch(true);
 }
 
 /* ===================== Inicialização ===================== */

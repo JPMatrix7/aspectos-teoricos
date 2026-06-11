@@ -560,6 +560,16 @@ function selectObject(x, y) {
   }
   return null;
 }
+/* Escolhe o objeto sob o cursor dando PREFERÊNCIA ao que já está selecionado.
+   Resolve sobreposição: ao criar uma seta em cima de outra, a nova fica
+   selecionada e continua sendo o alvo do arraste (em vez de pegar a antiga). */
+function pickObject(x, y) {
+  for (var i = 0; i < selectedObjects.length; i++) {
+    var o = selectedObjects[i];
+    if (o && o.containsPoint && o.containsPoint(x, y)) return o;
+  }
+  return selectObject(x, y);
+}
 
 /* ===================== Estado de edição (cursor texto) ===================== */
 var objectIsBeingEdited = false;
@@ -583,7 +593,7 @@ canvas.addEventListener('dblclick', function(e) {
 
 canvas.addEventListener('mousedown', function(e) {
   var mouse = crossBrowserRelativeMousePos(e);
-  var obj = selectObject(mouse.x, mouse.y);
+  var obj = pickObject(mouse.x, mouse.y);
   movingObject = false;
   originalClick = mouse;
 

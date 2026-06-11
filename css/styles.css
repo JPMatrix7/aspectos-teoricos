@@ -79,6 +79,15 @@ button{font-family:inherit}
   display:grid;place-items:center;transition:.15s;
 }
 .icon-btn:hover{background:var(--card-strong);border-color:var(--border-strong);transform:translateY(-1px)}
+.fsm-btn{
+  display:flex;align-items:center;gap:7px;flex:none;
+  height:40px;padding:0 13px;border-radius:12px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--txt);font-size:13px;font-weight:700;line-height:1;
+  text-decoration:none;white-space:nowrap;transition:.15s;
+}
+.fsm-btn:hover{background:var(--card-strong);border-color:var(--border-strong);transform:translateY(-1px)}
+.fsm-btn .fsm-icon{font-size:17px;line-height:1}
 #menuBtn{display:none}
 
 /* ============================ SHELL ============================ */
@@ -463,6 +472,9 @@ kbd{
   body.nav-open #backdrop{display:block;position:fixed;inset:var(--topbar-h) 0 0;background:rgba(0,0,0,.5);z-index:44}
   .hud-xpwrap{width:120px}
   .brand-text small{display:none}
+  /* na falta de espaço, o botão do designer vira só o ícone ⚙️ */
+  .fsm-btn .fsm-label{display:none}
+  .fsm-btn{padding:0 10px}
 }
 /* ── Tablet pequeno / celular grande ── */
 @media (max-width:640px){
@@ -484,4 +496,6 @@ kbd{
   #hudStreak{display:none}
   .hud-level-badge{width:30px;height:30px;font-size:12px}
   .icon-btn{width:34px;height:34px;font-size:15px}
+  .fsm-btn{height:34px;padding:0 8px}
+  .fsm-btn .fsm-icon{font-size:15px}
 }

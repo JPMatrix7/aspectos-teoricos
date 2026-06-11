@@ -67,6 +67,11 @@
     width: 100%; height: 120px; margin-top: 8px; display: none;
     font-family: monospace; font-size: 12px;
   }
+  .color-btn { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch {
+    width: 13px; height: 13px; border-radius: 3px;
+    border: 1px solid rgba(0,0,0,.35); display: inline-block;
+  }
 </style>
 </head>
 <body>
@@ -78,6 +83,11 @@
     <button id="btnCopy">Copiar (Ctrl+C)</button>
     <button id="btnPaste">Colar (Ctrl+V)</button>
     <button id="btnDelete">Apagar seleção (Del)</button>
+    <span class="sep"></span>
+    <span style="font-size:13px;">Cor:</span>
+    <button id="colBlack" class="color-btn" title="Preto" data-color="#000000"><span class="swatch" style="background:#000"></span>Preto</button>
+    <button id="colRed" class="color-btn" title="Vermelho" data-color="#e02424"><span class="swatch" style="background:#e02424"></span>Vermelho</button>
+    <button id="colBlue" class="color-btn" title="Azul" data-color="#1a56db"><span class="swatch" style="background:#1a56db"></span>Azul</button>
     <span class="sep"></span>
     <button id="btnClear">Limpar tudo</button>
   </div>
@@ -110,6 +120,7 @@
       <li><b>Selecionar vários:</b> arraste uma caixa no espaço vazio para selecionar tudo dentro dela (ou <span class="k">Ctrl+A</span>)</li>
       <li><b>Copiar e colar:</b> <span class="k">Ctrl+C</span> / <span class="k">Ctrl+V</span> — duplica tudo o que você selecionou, no mesmo quadro</li>
       <li><b>Mover em grupo:</b> com vários selecionados, arraste qualquer um deles para mover o conjunto inteiro</li>
+      <li><b>Setas/estados coloridos:</b> escolha <b>Preto</b>, <b>Vermelho</b> ou <b>Azul</b> na barra. Aplica ao que estiver selecionado e passa a valer para os próximos que você criar. A cor é mantida ao copiar/colar e na exportação (PNG/SVG/LaTeX)</li>
       <li><b>Quadro branco maior</b></li>
     </ul>
   </div>
@@ -170,6 +181,7 @@ function Node(x, y) {
   this.mouseOffsetY = 0;
   this.isAcceptState = false;
   this.text = '';
+  this.color = '#000000';
 }
 Node.prototype.setMouseStart = function(x, y) {
   this.mouseOffsetX = this.x - x;
@@ -208,6 +220,7 @@ function Link(a, b) {
   this.nodeA = a;
   this.nodeB = b;
   this.text = '';
+  this.color = '#000000';
   this.lineAngleAdjust = 0;
   this.parallelPart = 0.5;
   this.perpendicularPart = 0;
@@ -323,6 +336,7 @@ function SelfLink(node, mouse) {
   this.anchorAngle = 0;
   this.mouseOffsetAngle = 0;
   this.text = '';
+  this.color = '#000000';
   if (mouse) this.setAnchorPoint(mouse.x, mouse.y);
 }
 SelfLink.prototype.setMouseStart = function(x, y) {
@@ -376,6 +390,7 @@ function StartLink(node, start) {
   this.deltaX = 0;
   this.deltaY = 0;
   this.text = '';
+  this.color = '#000000';
   if (start) {
     this.deltaX = start.x - node.x;
     this.deltaY = start.y - node.y;
@@ -500,12 +515,12 @@ function draw() {
 
   for (var i = 0; i < nodes.length; i++) {
     var sel = isSelected(nodes[i]);
-    c.strokeStyle = c.fillStyle = sel ? '#0a66ff' : '#000';
+    c.strokeStyle = c.fillStyle = sel ? '#0a66ff' : (nodes[i].color || '#000');
     nodes[i].draw(c, sel);
   }
   for (var i = 0; i < links.length; i++) {
     var sel = isSelected(links[i]);
-    c.strokeStyle = c.fillStyle = sel ? '#0a66ff' : '#000';
+    c.strokeStyle = c.fillStyle = sel ? '#0a66ff' : (links[i].color || '#000');
     links[i].draw(c, sel);
   }
   if (currentLink != null) {
@@ -555,6 +570,7 @@ canvas.addEventListener('dblclick', function(e) {
   var obj = selectObject(mouse.x, mouse.y);
   if (obj == null) {
     var node = new Node(mouse.x, mouse.y);
+    node.color = lastColor;
     nodes.push(node);
     setSingleSelection(node);
     objectIsBeingEdited = true;
@@ -649,6 +665,7 @@ canvas.addEventListener('mouseup', function(e) {
 
   if (currentLink != null) {
     if (!(currentLink instanceof TemporaryLink)) {
+      currentLink.color = lastColor;
       links.push(currentLink);
       setSingleSelection(currentLink);
       objectIsBeingEdited = true;
@@ -867,7 +884,7 @@ function copySelection() {
   for (var i = 0; i < selNodes.length; i++) idx[nodes.indexOf(selNodes[i])] = i;
 
   var cbNodes = selNodes.map(function(n) {
-    return { x: n.x, y: n.y, text: n.text, isAcceptState: n.isAcceptState };
+    return { x: n.x, y: n.y, text: n.text, isAcceptState: n.isAcceptState, color: n.color };
   });
 
   var cbLinks = [];
@@ -879,15 +896,15 @@ function copySelection() {
     if (l instanceof Link) {
       var a = nodes.indexOf(l.nodeA), b = nodes.indexOf(l.nodeB);
       if (a in idx && b in idx) {
-        cbLinks.push({ type: 'Link', a: idx[a], b: idx[b], text: l.text,
+        cbLinks.push({ type: 'Link', a: idx[a], b: idx[b], text: l.text, color: l.color,
           lineAngleAdjust: l.lineAngleAdjust, parallelPart: l.parallelPart, perpendicularPart: l.perpendicularPart });
       }
     } else if (l instanceof SelfLink) {
       var n = nodes.indexOf(l.node);
-      if (n in idx) cbLinks.push({ type: 'SelfLink', node: idx[n], text: l.text, anchorAngle: l.anchorAngle });
+      if (n in idx) cbLinks.push({ type: 'SelfLink', node: idx[n], text: l.text, color: l.color, anchorAngle: l.anchorAngle });
     } else if (l instanceof StartLink) {
       var n = nodes.indexOf(l.node);
-      if (n in idx) cbLinks.push({ type: 'StartLink', node: idx[n], text: l.text, deltaX: l.deltaX, deltaY: l.deltaY });
+      if (n in idx) cbLinks.push({ type: 'StartLink', node: idx[n], text: l.text, color: l.color, deltaX: l.deltaX, deltaY: l.deltaY });
     }
   }
   clipboard = { nodes: cbNodes, links: cbLinks };
@@ -902,6 +919,7 @@ function pasteClipboard() {
     var n = new Node(d.x + offset, d.y + offset);
     n.text = d.text;
     n.isAcceptState = d.isAcceptState;
+    n.color = d.color || '#000000';
     nodes.push(n);
     newNodes.push(n);
   }
@@ -925,6 +943,7 @@ function pasteClipboard() {
       l.deltaX = d.deltaX;
       l.deltaY = d.deltaY;
     }
+    if (l) l.color = d.color || '#000000';
     if (l) { links.push(l); newLinks.push(l); }
   }
   // seleciona o que foi colado
@@ -940,7 +959,23 @@ function resetCaret() {
   caretVisible = true;
 }
 
+/* ===================== Cor da seleção ===================== */
+var lastColor = '#000000';
+function setColor(color) {
+  lastColor = color;
+  if (selectedObjects.length === 0) return;
+  for (var i = 0; i < selectedObjects.length; i++) {
+    if (selectedObjects[i] && 'color' in selectedObjects[i]) {
+      selectedObjects[i].color = color;
+    }
+  }
+  draw();
+}
+
 /* ===================== Botões da barra ===================== */
+document.getElementById('colBlack').onclick = function(){ setColor('#000000'); };
+document.getElementById('colRed').onclick = function(){ setColor('#e02424'); };
+document.getElementById('colBlue').onclick = function(){ setColor('#1a56db'); };
 document.getElementById('btnSelectAll').onclick = function(){ selectAll(); draw(); };
 document.getElementById('btnCopy').onclick = function(){ copySelection(); };
 document.getElementById('btnPaste').onclick = function(){ pasteClipboard(); };
@@ -974,8 +1009,8 @@ function exportSVG() {
   var oldFill = null;
   // desenhar tudo num contexto SVG fake
   exporter.lineWidth = 1;
-  for (var i = 0; i < nodes.length; i++) { exporter.strokeStyle = exporter.fillStyle = 'black'; nodes[i].draw(exporter, false); }
-  for (var i = 0; i < links.length; i++) { exporter.strokeStyle = exporter.fillStyle = 'black'; links[i].draw(exporter, false); }
+  for (var i = 0; i < nodes.length; i++) { exporter.strokeStyle = exporter.fillStyle = (nodes[i].color || 'black'); nodes[i].draw(exporter, false); }
+  for (var i = 0; i < links.length; i++) { exporter.strokeStyle = exporter.fillStyle = (links[i].color || 'black'); links[i].draw(exporter, false); }
   selectedObjects = prev;
   draw();
   var svgData = exporter.toSVG();
@@ -984,11 +1019,18 @@ function exportSVG() {
   output.select();
 }
 
+function tikzColor(hex) {
+  switch ((hex || '').toLowerCase()) {
+    case '#e02424': return 'red';
+    case '#1a56db': return 'blue';
+    default: return 'black';
+  }
+}
 function exportLaTeX() {
   var prev = deselectForExport();
   var exporter = new ExportAsLaTeX();
-  for (var i = 0; i < nodes.length; i++) { nodes[i].draw(exporter, false); }
-  for (var i = 0; i < links.length; i++) { links[i].draw(exporter, false); }
+  for (var i = 0; i < nodes.length; i++) { exporter.strokeStyle = tikzColor(nodes[i].color); nodes[i].draw(exporter, false); }
+  for (var i = 0; i < links.length; i++) { exporter.strokeStyle = tikzColor(links[i].color); links[i].draw(exporter, false); }
   selectedObjects = prev;
   draw();
   output.style.display = 'block';
